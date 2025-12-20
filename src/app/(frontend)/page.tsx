@@ -1,3 +1,80 @@
+import { ProductGrid } from '@/components/products'
+import { CategoryScroll } from '@/components/categories'
+
+const demoCategories = [
+  {
+    slug: 'furniture',
+    name: 'Furniture',
+    image: { url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=600&fit=crop', alt: 'Furniture' },
+    productCount: 24,
+  },
+  {
+    slug: 'lighting',
+    name: 'Lighting',
+    image: { url: 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=600&h=600&fit=crop', alt: 'Lighting' },
+    productCount: 18,
+  },
+  {
+    slug: 'decorative',
+    name: 'Decorative Arts',
+    image: { url: 'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?w=600&h=600&fit=crop', alt: 'Decorative' },
+    productCount: 32,
+  },
+  {
+    slug: 'art',
+    name: 'Fine Art',
+    image: { url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&h=600&fit=crop', alt: 'Art' },
+    productCount: 15,
+  },
+  {
+    slug: 'jewelry',
+    name: 'Jewelry',
+    image: { url: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop', alt: 'Jewelry' },
+    productCount: 42,
+  },
+  {
+    slug: 'ceramics',
+    name: 'Ceramics',
+    image: { url: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&h=600&fit=crop', alt: 'Ceramics' },
+    productCount: 27,
+  },
+]
+
+const demoProducts = [
+  {
+    slug: 'victorian-mahogany-cabinet',
+    title: 'Victorian Mahogany Display Cabinet',
+    price: 2400,
+    status: 'available' as const,
+    category: 'Furniture',
+    image: { url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop', alt: 'Victorian cabinet' },
+  },
+  {
+    slug: 'art-deco-chandelier',
+    title: 'Art Deco Crystal Chandelier',
+    price: 1850,
+    status: 'available' as const,
+    category: 'Lighting',
+    image: { url: 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=800&h=600&fit=crop', alt: 'Art deco chandelier' },
+  },
+  {
+    slug: 'brass-table-lamp',
+    title: 'Antique Brass Table Lamp',
+    price: 450,
+    status: 'pending' as const,
+    category: 'Lighting',
+    image: { url: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&h=600&fit=crop', alt: 'Brass lamp' },
+  },
+  {
+    slug: 'french-armchair',
+    title: 'French Louis XV Armchair',
+    price: 3200,
+    status: 'sold' as const,
+    category: 'Furniture',
+    image: { url: 'https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=800&h=600&fit=crop', alt: 'French armchair' },
+  },
+]
+
 export default function HomePage() {
   return (
     <div className="container mx-auto px-4 py-12">
@@ -22,35 +99,14 @@ export default function HomePage() {
 
       {/* Featured Categories */}
       <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-8 text-center">Categories</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {['Furniture', 'Lighting', 'Decorative', 'Art'].map((cat) => (
-            <a
-              key={cat}
-              href={`/categories/${cat.toLowerCase()}`}
-              className="aspect-square bg-card rounded-lg flex items-center justify-center hover:bg-card-hover transition-colors"
-            >
-              <span className="text-lg font-medium">{cat}</span>
-            </a>
-          ))}
-        </div>
+        <h2 className="text-2xl font-semibold mb-8 text-center">Browse Categories</h2>
+        <CategoryScroll categories={demoCategories} />
       </section>
 
-      {/* Featured Products Placeholder */}
+      {/* Featured Products */}
       <section className="mb-16">
         <h2 className="text-2xl font-semibold mb-8 text-center">Featured Items</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-card rounded-lg overflow-hidden group">
-              <div className="aspect-square bg-card-hover" />
-              <div className="p-4">
-                <p className="text-sm text-muted-foreground">Category</p>
-                <h3 className="font-medium">Antique Item {i}</h3>
-                <p className="text-accent mt-1">€1,200</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <ProductGrid products={demoProducts} columns={4} />
       </section>
 
       {/* Newsletter */}

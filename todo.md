@@ -31,8 +31,8 @@
 - [x] Create `src/collections/NewsletterSubscribers.ts`
 - [x] Create `src/globals/SiteSettings.ts`
 - [x] Update `payload.config.ts` with all collections and globals
-- [ ] Verify admin panel works at `/admin`
-- [ ] Create initial admin user
+- [x] Verify admin panel works at `/admin`
+- [x] Create initial admin user
 
 ---
 
@@ -45,10 +45,10 @@
   - [x] Logo
   - [x] Navigation links
   - [ ] Search bar (expandable on mobile)
-- [ ] Create `src/components/layout/MegaMenu.tsx`
-  - [ ] Main categories list
-  - [ ] Subcategories display
-  - [ ] Featured products preview (3 items)
+- [x] Create `src/components/layout/MegaMenu.tsx`
+  - [x] Main categories list
+  - [x] Subcategories display
+  - [x] Featured products preview (3 items)
 - [x] Create `src/components/layout/Footer.tsx`
   - [x] Site info
   - [x] Navigation links
@@ -74,17 +74,17 @@
 
 ### 3.2 Featured Categories
 - [x] Basic category grid on homepage (placeholder)
-- [ ] Create `src/components/categories/CategoryCard.tsx`
-- [ ] Create horizontal scrollable section
+- [x] Create `src/components/categories/CategoryCard.tsx`
+- [x] Create horizontal scrollable section (CategoryScroll)
 - [ ] Fetch featured categories from Payload
 
 ### 3.3 Featured Products
 - [x] Basic product grid on homepage (placeholder)
-- [ ] Create `src/components/products/ProductCard.tsx`
-  - [ ] Status badge (Available/Pending/Sold)
-  - [ ] Image with hover effect
-  - [ ] Title, category, price
-- [ ] Create `src/components/products/ProductGrid.tsx`
+- [x] Create `src/components/products/ProductCard.tsx`
+  - [x] Status badge (Available/Pending/Sold)
+  - [x] Image with hover effect
+  - [x] Title, category, price
+- [x] Create `src/components/products/ProductGrid.tsx`
 - [ ] Fetch featured products from Payload
 
 ### 3.4 Lifestyle/Promo Sections
@@ -260,3 +260,11 @@
 - Created base layout with Header and Footer
 - Created basic homepage with placeholder sections
 - **Next:** Install dependencies, set up MongoDB, test the setup
+
+### Session 2 - Dec 20, 2024
+- Fixed Payload admin panel config error
+- Root cause: (payload)/layout.tsx was missing the RootLayout wrapper that provides config context
+- Fixed layout.tsx to use RootLayout from @payloadcms/next/layouts with proper serverFunction
+- Fixed page.tsx and not-found.tsx to use the actual importMap instead of empty object
+- Created custom.scss for Payload admin
+- **Next:** Test admin panel, create first admin user
