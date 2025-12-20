@@ -123,24 +123,15 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return (
     <div className="fixed inset-0 z-modal">
-      {/* Overlay - dark for readability */}
+      {/* Overlay - click to close */}
       <div
         className="absolute inset-0 bg-black/85 backdrop-blur-sm animate-in fade-in duration-normal"
         onClick={onClose}
       />
 
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-6 right-6 z-10 w-11 h-11 flex items-center justify-center rounded-md bg-bg-secondary/80 text-text-secondary transition-colors duration-normal hover:text-text-primary hover:bg-bg-tertiary"
-        aria-label="Close search"
-      >
-        <X className="w-6 h-6" />
-      </button>
-
       {/* Modal content - vertically centered */}
-      <div className="relative h-full flex items-center justify-center px-6 py-12 overflow-y-auto">
-        <div className="w-full max-w-2xl my-auto animate-in fade-in slide-in-from-top-4 duration-slow">
+      <div className="relative h-full flex items-center justify-center px-6 py-12 overflow-y-auto pointer-events-none">
+        <div className="w-full max-w-2xl my-auto animate-in fade-in slide-in-from-top-4 duration-slow pointer-events-auto">
           {/* Search Input */}
           <div className="relative">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />

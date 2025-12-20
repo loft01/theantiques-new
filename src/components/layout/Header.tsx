@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Search, Menu, X } from 'lucide-react'
 import { MegaMenu } from './MegaMenu'
@@ -37,13 +38,20 @@ export function Header({ categories = [] }: HeaderProps) {
     <>
       <header className="sticky top-0 z-header bg-bg-secondary border-b border-border-default">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link
               href="/"
-              className="text-title-3 text-text-primary transition-opacity duration-normal hover:opacity-80"
+              className="transition-opacity duration-normal hover:opacity-80"
             >
-              The Antiques
+              <Image
+                src="/logo_theantiques.svg"
+                alt="The Antiques"
+                width={160}
+                height={24}
+                priority
+                className="h-6 w-auto invert"
+              />
             </Link>
 
             {/* Desktop Navigation with MegaMenu */}

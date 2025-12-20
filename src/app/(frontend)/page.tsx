@@ -40,18 +40,16 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="mx-auto max-w-7xl px-6 pt-10 pb-16">
-        <Hero
-          title={heroTitle}
-          subtitle={heroSubtitle}
-          ctaText="Browse Collection"
-          ctaLink="/categories"
-        />
-      </section>
+      {/* Hero Section - full width */}
+      <Hero
+        title={heroTitle}
+        subtitle={heroSubtitle}
+        ctaText="Browse Collection"
+        ctaLink="/categories"
+      />
 
       {/* Featured Categories */}
-      <section className="mx-auto max-w-7xl px-6 mb-20">
+      <section className="mx-auto max-w-7xl px-6 mt-16 mb-20">
         <h2 className="text-title-1 text-text-primary mb-8 text-center">Browse Categories</h2>
         {categoriesWithCounts.length > 0 ? (
           <CategoryScroll categories={categoriesWithCounts} />
