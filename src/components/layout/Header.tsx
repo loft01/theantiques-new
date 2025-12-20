@@ -64,8 +64,9 @@ export function Header({ categories = [] }: HeaderProps) {
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className="flex items-center gap-2 px-3 py-1.5 text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-zinc-800"
+                aria-label="Open search"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-5 h-5" aria-hidden="true" />
                 <span className="hidden sm:inline text-sm">Search</span>
               </button>
 
@@ -73,8 +74,10 @@ export function Header({ categories = [] }: HeaderProps) {
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="lg:hidden p-2 text-zinc-400 hover:text-white"
+                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isMenuOpen}
               >
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMenuOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
               </button>
             </div>
           </div>

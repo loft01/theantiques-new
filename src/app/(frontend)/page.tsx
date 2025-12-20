@@ -1,8 +1,20 @@
+import { Metadata } from 'next'
 import { ProductGrid } from '@/components/products'
 import { CategoryScroll } from '@/components/categories'
 import { Hero, LifestyleGrid } from '@/components/home'
 import { NewsletterForm } from '@/components/forms'
 import { getCategories, getProducts, getCategoryProductCount, transformCategory, transformProduct, getSiteSettings } from '@/lib/payload'
+
+export const metadata: Metadata = {
+  title: 'The Antiques | Curated Vintage & Antique Treasures',
+  description: 'Discover unique vintage and antique pieces with stories to tell. Browse our curated collection of furniture, art, ceramics, jewelry, and decorative arts.',
+  keywords: ['antiques', 'vintage', 'furniture', 'collectibles', 'art', 'ceramics', 'jewelry', 'decorative arts'],
+  openGraph: {
+    title: 'The Antiques | Curated Vintage & Antique Treasures',
+    description: 'Discover unique vintage and antique pieces with stories to tell.',
+    type: 'website',
+  },
+}
 
 export default async function HomePage() {
   // Fetch data in parallel

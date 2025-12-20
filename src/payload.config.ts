@@ -10,6 +10,7 @@ import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
 import { Offers } from './collections/Offers'
 import { NewsletterSubscribers } from './collections/NewsletterSubscribers'
+import { ContactMessages } from './collections/ContactMessages'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -22,7 +23,7 @@ export default buildConfig({
       titleSuffix: ' | The Antiques',
     },
   },
-  collections: [Users, Media, Categories, Products, Offers, NewsletterSubscribers],
+  collections: [Users, Media, Categories, Products, Offers, NewsletterSubscribers, ContactMessages],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

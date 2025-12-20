@@ -1,8 +1,14 @@
+import { Metadata } from 'next'
 import { searchProducts, getCategories, transformProduct } from '@/lib/payload'
 import { ProductGrid } from '@/components/products/ProductGrid'
 import { SearchBar } from '@/components/forms/SearchBar'
 import { SearchFilters } from './SearchFilters'
 import { Search } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Search | The Antiques',
+  description: 'Search our collection of vintage and antique pieces. Find furniture, art, ceramics, jewelry, and more.',
+}
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string; category?: string }>

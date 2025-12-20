@@ -160,18 +160,20 @@
 ## Phase 7: Static Pages
 
 ### 7.1 About Page
-- [ ] Create `src/app/(frontend)/about/page.tsx`
-- [ ] Story/history section
-- [ ] Team or owner info (optional)
-- [ ] Values or mission
-- [ ] Consider making content editable via Payload global
+- [x] Create `src/app/(frontend)/about/page.tsx`
+- [x] Story/history section
+- [x] Team or owner info (optional) - skipped, not needed for MVP
+- [x] Values or mission
+- [ ] Consider making content editable via Payload global (optional)
 
 ### 7.2 Contact Page
-- [ ] Create `src/app/(frontend)/contact/page.tsx`
-- [ ] Contact information display
-- [ ] Contact form
+- [x] Create `src/app/(frontend)/contact/page.tsx`
+- [x] Contact information display
+- [x] Contact form (with ContactForm component)
+- [x] Created ContactMessages collection in Payload
+- [x] Created /api/contact route
 - [ ] Map embed (optional)
-- [ ] Social links
+- [x] Social links
 
 ### 7.3 Additional Pages (if needed)
 - [ ] Privacy Policy
@@ -181,28 +183,29 @@
 
 ## Phase 8: Polish & Optimization
 
-### 8.1 SEO
-- [ ] Add metadata to all pages
-- [ ] Create `src/app/sitemap.ts`
-- [ ] Add Open Graph images
-- [ ] Structured data for products (optional)
+### 8.1 SEO (Completed - structural parts)
+- [x] Add metadata to all pages (title, description, keywords, OpenGraph)
+- [x] Create `src/app/sitemap.ts` (dynamic, includes all categories/products)
+- [x] Create `src/app/robots.ts`
+- [ ] Add Open Graph images (deferred to after UI redesign)
+- [x] Structured data for products (JSON-LD Product schema)
 
-### 8.2 Performance
+### 8.2 Performance (Deferred to after UI redesign)
 - [ ] Image optimization (Next.js Image component)
 - [ ] Lazy loading for below-fold content
 - [ ] Check Core Web Vitals
 
-### 8.3 UX Polish
+### 8.3 UX Polish (Deferred to after UI redesign)
 - [ ] Loading states (skeletons)
 - [ ] Error states
 - [ ] Empty states
 - [ ] Smooth transitions and animations
 - [ ] Mobile responsiveness check
 
-### 8.4 Accessibility
-- [ ] Keyboard navigation
-- [ ] Screen reader labels
-- [ ] Color contrast check
+### 8.4 Accessibility (Structural parts completed)
+- [x] Keyboard navigation (skip link added)
+- [x] Screen reader labels (aria-labels on icon buttons)
+- [ ] Color contrast check (deferred to after UI redesign)
 
 ---
 
@@ -324,3 +327,43 @@
   - Quick category links when no query
   - Created `/api/search` API route for real-time results
 - **Next:** Phase 7 (Static Pages - About, Contact)
+
+### Session 7 - Dec 20, 2024
+- Implemented Phase 7: Static Pages
+- Created About page (`/about`) with:
+  - Hero section
+  - Story/history section
+  - Values section with 4 value cards
+  - Quote block
+  - CTA section linking to categories and contact
+- Created Contact page (`/contact`) with:
+  - Hero section
+  - Contact information (email, phone, location, response time)
+  - Social links (Instagram, Facebook)
+  - ContactForm component with subject dropdown
+- Created ContactMessages Payload collection
+- Created `/api/contact` route for form submissions
+- Updated payload.config.ts with ContactMessages collection
+- **Next:** Phase 8 (Polish & Optimization) or additional static pages (Privacy, Terms)
+
+### Session 8 - Dec 20, 2024
+- Implemented Phase 8 SEO & Structure (non-visual parts only, saving visual polish for UI redesign):
+- Added metadata to all pages:
+  - Homepage: title, description, keywords, OpenGraph
+  - Search page: title, description
+  - (Categories, Products, About, Contact already had metadata)
+- Created `src/app/sitemap.ts`:
+  - Dynamic sitemap including all static pages
+  - Auto-generates category pages from database
+  - Auto-generates product pages from database
+- Created `src/app/robots.ts`:
+  - Allows all pages except /admin/ and /api/
+  - Links to sitemap.xml
+- Added JSON-LD structured data for products:
+  - Product schema with name, description, price, availability
+  - Proper OpenGraph metadata with images
+- Accessibility improvements:
+  - Added skip link to main content in layout
+  - Added aria-labels to icon buttons in header
+  - Added aria-expanded for mobile menu toggle
+- **Next:** UI Redesign, then complete remaining Phase 8 visual polish

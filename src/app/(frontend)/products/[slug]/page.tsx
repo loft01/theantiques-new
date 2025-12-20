@@ -54,6 +54,8 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params
   const product = await getProductBySlug(slug)
@@ -63,11 +65,74 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   const category = product.category as Category
+  const firstImage = product.images?.[0]?.image as Media | undefined
+  const imageUrl = firstImage ? getMediaUrl(firstImage, 'card') : undefined
 
   return {
     title: `${product.title} | The Antiques`,
     description: `${category?.name || 'Antique'} - ${product.title}. Price: $${product.price}`,
+    openGraph: {
+      title: product.title,
+      description: `${category?.name || 'Antique'} - ${product.title}`,
+      type: 'website',
+      images: imageUrl ? [{ url: imageUrl }] : undefined,
+    },
   }
+}
+
+// Generate JSON-LD structured data for products
+function generateProductJsonLd(product: {
+  title: string
+  slug: string
+  price: number
+  status: string
+  description?: unknown
+  images?: { image: string | Media }[]
+  category: Category
+}) {
+  const firstImage = product.images?.[0]?.image as Media | undefined
+  const imageUrl = firstImage ? getMediaUrl(firstImage, 'full') : undefined
+
+  const availability = {
+    available: 'https://schema.org/InStock',
+    pending: 'https://schema.org/LimitedAvailability',
+    sold: 'https://schema.org/SoldOut',
+  }[product.status] || 'https://schema.org/InStock'
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: richTextToPlainText(product.description),
+    image: imageUrl,
+    url: `${BASE_URL}/products/${product.slug}`,
+    category: product.category?.name,
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: 'USD',
+      availability,
+      seller: {
+        '@type': 'Organization',
+        name: 'The Antiques',
+      },
+    },
+  }
+}
+
+// Extract plain text from Lexical richText for schema
+function richTextToPlainText(content: unknown): string {
+  if (!content || typeof content !== 'object') return ''
+  const root = (content as { root?: { children?: unknown[] } }).root
+  if (!root?.children) return ''
+
+  return root.children
+    .map((node: unknown) => {
+      const n = node as { children?: { text?: string }[] }
+      return n.children?.map(c => c.text || '').join('') || ''
+    })
+    .join(' ')
+    .slice(0, 200)
 }
 
 export default async function ProductPage({ params }: PageProps) {
@@ -108,8 +173,24 @@ export default async function ProductPage({ params }: PageProps) {
 
   const priceDisplay = product.priceLabel === 'offer' ? 'Make an Offer' : formattedPrice
 
+  // Generate JSON-LD for structured data
+  const jsonLd = generateProductJsonLd({
+    title: product.title,
+    slug: product.slug,
+    price: product.price,
+    status: product.status,
+    description: product.description,
+    images: product.images,
+    category,
+  })
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="container mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
         <Link href="/" className="hover:text-white transition-colors">Home</Link>
@@ -213,6 +294,7 @@ export default async function ProductPage({ params }: PageProps) {
           <ProductGrid products={relatedProducts} columns={4} />
         </section>
       )}
-    </div>
+      </div>
+    </>
   )
 }
