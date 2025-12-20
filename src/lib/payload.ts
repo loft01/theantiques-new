@@ -143,6 +143,51 @@ export async function getSiteSettings() {
   return settings as SiteSetting
 }
 
+// Search Products
+export async function searchProducts(options: {
+  query: string
+  category?: string
+  limit?: number
+  page?: number
+}) {
+  const payload = await getPayloadClient()
+
+  const conditions: Record<string, unknown>[] = []
+
+  // Text search across title and description
+  if (options.query) {
+    conditions.push({
+      or: [
+        { title: { contains: options.query } },
+        { description: { contains: options.query } },
+      ],
+    })
+  }
+
+  // Category filter
+  if (options.category) {
+    conditions.push({ category: { equals: options.category } })
+  }
+
+  const where = conditions.length > 0 ? { and: conditions } : {}
+
+  const result = await payload.find({
+    collection: 'products',
+    where,
+    sort: '-createdAt',
+    limit: options.limit || 12,
+    page: options.page || 1,
+    depth: 2,
+  })
+
+  return {
+    products: result.docs as Product[],
+    totalDocs: result.totalDocs,
+    hasNextPage: result.hasNextPage,
+    page: result.page,
+  }
+}
+
 // Transform product for frontend use
 export function transformProduct(product: Product) {
   const category = product.category as Category
