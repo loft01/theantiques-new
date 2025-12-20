@@ -44,21 +44,21 @@ export default async function CategoryPage({ params }: PageProps) {
   }))
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-        <Link href="/" className="hover:text-white transition-colors">Home</Link>
+    <div className="mx-auto max-w-7xl px-6 py-12 pb-24">
+      {/* Breadcrumb - caption size, secondary color per rulebook */}
+      <nav className="flex items-center gap-2 text-caption text-text-secondary mb-8">
+        <Link href="/" className="transition-colors duration-normal hover:text-text-primary">Home</Link>
         <ChevronRight className="w-4 h-4" />
-        <Link href="/categories" className="hover:text-white transition-colors">Categories</Link>
+        <Link href="/categories" className="transition-colors duration-normal hover:text-text-primary">Categories</Link>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-white">{category.name}</span>
+        <span className="text-text-primary">{category.name}</span>
       </nav>
 
-      {/* Header */}
+      {/* Header - title-1 per rulebook */}
       <div className="mb-10">
-        <h1 className="text-4xl md:text-5xl font-semibold mb-4">{category.name}</h1>
+        <h1 className="text-display text-text-primary mb-3">{category.name}</h1>
         {category.description && (
-          <p className="text-zinc-400 max-w-3xl">{category.description}</p>
+          <p className="text-body text-text-secondary max-w-3xl">{category.description}</p>
         )}
       </div>
 
@@ -73,17 +73,17 @@ export default async function CategoryPage({ params }: PageProps) {
       )}
 
       {/* Filter Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-800">
-        <p className="text-zinc-400">
-          <span className="text-white font-medium">{productsResult.totalDocs}</span> items
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-default">
+        <p className="text-caption text-text-secondary">
+          <span className="text-text-primary font-medium">{productsResult.totalDocs}</span> items
         </p>
         <div className="flex items-center gap-4">
-          <select className="bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-amber-500">
+          <select className="input h-10 px-4 text-caption">
             <option>Sort by: Newest</option>
             <option>Price: Low to High</option>
             <option>Price: High to Low</option>
           </select>
-          <select className="bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-amber-500">
+          <select className="input h-10 px-4 text-caption">
             <option>All Status</option>
             <option>Available</option>
             <option>Pending</option>
@@ -96,9 +96,9 @@ export default async function CategoryPage({ params }: PageProps) {
       {products.length > 0 ? (
         <ProductGrid products={products} columns={4} />
       ) : (
-        <div className="text-center py-16">
-          <p className="text-zinc-400 text-lg">No products found in this category yet.</p>
-          <Link href="/categories" className="text-amber-500 hover:text-amber-400 mt-2 inline-block">
+        <div className="text-center py-20">
+          <p className="text-body text-text-secondary mb-3">No products found in this category yet.</p>
+          <Link href="/categories" className="text-text-primary transition-colors duration-normal hover:opacity-80 inline-block">
             Browse other categories
           </Link>
         </div>
@@ -107,7 +107,7 @@ export default async function CategoryPage({ params }: PageProps) {
       {/* Load More */}
       {productsResult.hasNextPage && (
         <div className="mt-12 text-center">
-          <button className="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-full font-medium transition-colors">
+          <button className="btn-secondary">
             Load More
           </button>
         </div>

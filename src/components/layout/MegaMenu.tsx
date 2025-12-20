@@ -42,10 +42,10 @@ export function MegaMenu({ categories }: MegaMenuProps) {
             onMouseLeave={() => setActiveCategory(null)}
           >
             <button
-              className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-colors ${
+              className={`flex items-center gap-1 px-4 py-2 text-small font-medium rounded-full transition-colors duration-normal ${
                 activeCategory === category.slug
-                  ? 'bg-zinc-800 text-white'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-bg-tertiary text-text-primary'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               {category.name}
@@ -57,11 +57,11 @@ export function MegaMenu({ categories }: MegaMenuProps) {
             {/* Dropdown */}
             {activeCategory === category.slug && (
               <div className="absolute left-1/2 -translate-x-1/2 top-full pt-4 z-50">
-                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl p-8 min-w-[900px]">
+                <div className="bg-bg-secondary border border-border-default rounded-lg shadow-lg p-8 min-w-[900px]">
                   <div className="flex gap-12">
                     {/* Subcategories */}
                     <div className="w-56">
-                      <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">
+                      <h3 className="text-caption font-semibold text-text-secondary uppercase tracking-wider mb-4">
                         {category.name}
                       </h3>
                       <ul className="space-y-3">
@@ -69,7 +69,7 @@ export function MegaMenu({ categories }: MegaMenuProps) {
                           <li key={sub.slug}>
                             <Link
                               href={`/categories/${category.slug}/${sub.slug}`}
-                              className="text-base text-zinc-300 hover:text-amber-500 transition-colors"
+                              className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
                             >
                               {sub.name}
                             </Link>
@@ -78,7 +78,7 @@ export function MegaMenu({ categories }: MegaMenuProps) {
                         <li className="pt-3">
                           <Link
                             href={`/categories/${category.slug}`}
-                            className="text-base text-amber-500 hover:text-amber-400 font-medium"
+                            className="text-body text-text-primary font-medium transition-colors duration-normal hover:opacity-80"
                           >
                             View All →
                           </Link>
@@ -87,11 +87,11 @@ export function MegaMenu({ categories }: MegaMenuProps) {
                     </div>
 
                     {/* Divider */}
-                    <div className="w-px bg-zinc-800" />
+                    <div className="w-px bg-border-default" />
 
                     {/* Featured Products */}
                     <div className="flex-1">
-                      <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">
+                      <h3 className="text-caption font-semibold text-text-secondary uppercase tracking-wider mb-4">
                         Featured Items
                       </h3>
                       <div className="grid grid-cols-3 gap-6">
@@ -101,7 +101,7 @@ export function MegaMenu({ categories }: MegaMenuProps) {
                             href={`/products/${product.slug}`}
                             className="group"
                           >
-                            <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-zinc-800 mb-3">
+                            <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-bg-tertiary mb-3">
                               <Image
                                 src={product.image.url}
                                 alt={product.image.alt}
@@ -110,8 +110,8 @@ export function MegaMenu({ categories }: MegaMenuProps) {
                                 sizes="200px"
                               />
                             </div>
-                            <p className="text-xs text-zinc-500 mb-1">{product.category}</p>
-                            <p className="text-sm text-zinc-200 group-hover:text-amber-500 transition-colors line-clamp-2">
+                            <p className="text-caption text-text-secondary mb-1">{product.category}</p>
+                            <p className="text-small text-text-primary transition-colors duration-normal line-clamp-2">
                               {product.title}
                             </p>
                           </Link>

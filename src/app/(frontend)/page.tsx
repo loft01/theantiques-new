@@ -39,9 +39,9 @@ export default async function HomePage() {
   const heroSubtitle = siteSettings.hero?.subtitle || 'Discover unique vintage and antique pieces with stories to tell'
 
   return (
-    <div>
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="container mx-auto px-4 pt-8 pb-16">
+      <section className="mx-auto max-w-7xl px-6 pt-10 pb-16">
         <Hero
           title={heroTitle}
           subtitle={heroSubtitle}
@@ -51,36 +51,36 @@ export default async function HomePage() {
       </section>
 
       {/* Featured Categories */}
-      <section className="container mx-auto px-4 mb-20">
-        <h2 className="text-3xl font-semibold mb-8 text-center">Browse Categories</h2>
+      <section className="mx-auto max-w-7xl px-6 mb-20">
+        <h2 className="text-title-1 text-text-primary mb-8 text-center">Browse Categories</h2>
         {categoriesWithCounts.length > 0 ? (
           <CategoryScroll categories={categoriesWithCounts} />
         ) : (
-          <p className="text-center text-zinc-500">No categories available yet.</p>
+          <p className="text-center text-text-secondary">No categories available yet.</p>
         )}
       </section>
 
       {/* Featured Products */}
-      <section className="container mx-auto px-4 mb-20">
-        <h2 className="text-3xl font-semibold mb-8 text-center">Featured Items</h2>
+      <section className="mx-auto max-w-7xl px-6 mb-20">
+        <h2 className="text-title-1 text-text-primary mb-8 text-center">Featured Items</h2>
         {featuredProducts.length > 0 ? (
           <ProductGrid products={featuredProducts} columns={4} />
         ) : (
-          <p className="text-center text-zinc-500">No featured products yet.</p>
+          <p className="text-center text-text-secondary">No featured products yet.</p>
         )}
       </section>
 
       {/* Lifestyle Grid */}
-      <section className="container mx-auto px-4 mb-20">
-        <h2 className="text-3xl font-semibold mb-8 text-center">Explore</h2>
+      <section className="mx-auto max-w-7xl px-6 mb-20">
+        <h2 className="text-title-1 text-text-primary mb-8 text-center">Explore</h2>
         <LifestyleGrid cards={[]} />
       </section>
 
-      {/* Newsletter */}
-      <section className="bg-zinc-900 py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-semibold mb-4">Stay Updated</h2>
-          <p className="text-zinc-400 mb-8 max-w-md mx-auto">
+      {/* Newsletter - elevated section */}
+      <section className="bg-bg-secondary border-y border-border-default py-20">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <h2 className="text-title-1 text-text-primary mb-4">Stay Updated</h2>
+          <p className="text-body text-text-secondary mb-8 max-w-md mx-auto">
             Subscribe to receive updates on new arrivals and exclusive pieces
           </p>
           <NewsletterForm />

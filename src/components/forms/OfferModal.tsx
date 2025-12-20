@@ -43,6 +43,19 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
     }
   }, [isOpen])
 
+  // Close on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && status !== 'loading') {
+        handleClose()
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, status])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -96,21 +109,22 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
   }).format(productPrice)
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-modal flex items-center justify-center p-6">
+      {/* Overlay - 50% opacity per rulebook */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 animate-in fade-in duration-normal"
         onClick={handleClose}
       />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-lg bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-800">
+      {/* Modal - 24px radius per rulebook */}
+      <div className="relative w-full max-w-lg bg-bg-secondary border border-border-default rounded-2xl shadow-lg animate-in zoom-in-95 fade-in duration-slow">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-zinc-800">
-          <h2 className="text-xl font-semibold">Make an Offer</h2>
+        <div className="flex items-center justify-between p-6 border-b border-border-default">
+          <h2 className="text-title-2 text-text-primary">Make an Offer</h2>
           <button
             onClick={handleClose}
-            className="p-2 text-zinc-400 hover:text-white transition-colors rounded-full hover:bg-zinc-800"
+            className="p-2 text-text-secondary transition-colors duration-normal hover:text-text-primary rounded-md hover:bg-bg-tertiary"
+            aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
@@ -120,32 +134,31 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
         <div className="p-6">
           {status === 'success' ? (
             <div className="text-center py-8">
-              <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Offer Submitted!</h3>
-              <p className="text-zinc-400 mb-6">
-                Thank you for your interest. We'll review your offer and get back to you soon.
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-success-muted flex items-center justify-center">
+                <CheckCircle className="w-8 h-8 text-success" />
+              </div>
+              <h3 className="text-title-2 text-text-primary mb-2">Offer Submitted!</h3>
+              <p className="text-caption text-text-secondary mb-6">
+                Thank you for your interest. We&apos;ll review your offer and get back to you soon.
               </p>
-              <button
-                onClick={handleClose}
-                className="px-8 py-3 bg-amber-600 text-white rounded-full font-medium hover:bg-amber-500 transition-colors"
-              >
+              <button onClick={handleClose} className="btn-primary w-full">
                 Close
               </button>
             </div>
           ) : (
             <>
               {/* Product info */}
-              <div className="bg-zinc-800/50 rounded-lg p-4 mb-6">
-                <p className="text-sm text-zinc-400 mb-1">You're making an offer for:</p>
-                <p className="font-medium line-clamp-2">{productTitle}</p>
-                <p className="text-amber-500 font-medium mt-1">Listed at {formattedPrice}</p>
+              <div className="bg-bg-tertiary rounded-lg p-4 mb-6">
+                <p className="text-small text-text-secondary mb-1">You&apos;re making an offer for:</p>
+                <p className="text-body-medium text-text-primary line-clamp-2">{productTitle}</p>
+                <p className="text-body-bold text-text-primary mt-1">Listed at {formattedPrice}</p>
               </div>
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-zinc-400 mb-2">
+                    <label htmlFor="name" className="block text-caption-medium text-text-secondary mb-2">
                       Name *
                     </label>
                     <input
@@ -155,14 +168,12 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg
-                                 text-white placeholder:text-zinc-500
-                                 focus:outline-none focus:border-amber-500 transition-colors"
+                      className="input"
                       placeholder="Your name"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-2">
+                    <label htmlFor="email" className="block text-caption-medium text-text-secondary mb-2">
                       Email *
                     </label>
                     <input
@@ -172,9 +183,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg
-                                 text-white placeholder:text-zinc-500
-                                 focus:outline-none focus:border-amber-500 transition-colors"
+                      className="input"
                       placeholder="your@email.com"
                     />
                   </div>
@@ -182,7 +191,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-zinc-400 mb-2">
+                    <label htmlFor="phone" className="block text-caption-medium text-text-secondary mb-2">
                       Phone
                     </label>
                     <input
@@ -191,14 +200,12 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg
-                                 text-white placeholder:text-zinc-500
-                                 focus:outline-none focus:border-amber-500 transition-colors"
+                      className="input"
                       placeholder="(optional)"
                     />
                   </div>
                   <div>
-                    <label htmlFor="offerAmount" className="block text-sm font-medium text-zinc-400 mb-2">
+                    <label htmlFor="offerAmount" className="block text-caption-medium text-text-secondary mb-2">
                       Your Offer (USD)
                     </label>
                     <input
@@ -209,16 +216,14 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       onChange={handleChange}
                       min="0"
                       step="1"
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg
-                                 text-white placeholder:text-zinc-500
-                                 focus:outline-none focus:border-amber-500 transition-colors"
+                      className="input"
                       placeholder="(optional)"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-zinc-400 mb-2">
+                  <label htmlFor="message" className="block text-caption-medium text-text-secondary mb-2">
                     Message *
                   </label>
                   <textarea
@@ -228,28 +233,24 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                     onChange={handleChange}
                     required
                     rows={4}
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg
-                               text-white placeholder:text-zinc-500 resize-none
-                               focus:outline-none focus:border-amber-500 transition-colors"
+                    className="input min-h-[120px] py-4 resize-none"
                     placeholder="Tell us about your interest in this piece..."
                   />
                 </div>
 
                 {/* Error message */}
                 {status === 'error' && (
-                  <div className="flex items-center gap-2 text-red-400 text-sm">
+                  <div className="flex items-center gap-2 text-error text-small">
                     <AlertCircle className="w-4 h-4" />
                     {errorMessage}
                   </div>
                 )}
 
-                {/* Submit button */}
+                {/* Submit button - 56px height, pill shape per rulebook */}
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full py-4 bg-amber-600 text-white rounded-full font-medium
-                             hover:bg-amber-500 disabled:opacity-50 transition-colors
-                             flex items-center justify-center gap-2"
+                  className="btn-primary w-full flex items-center justify-center gap-2"
                 >
                   {status === 'loading' ? (
                     <>

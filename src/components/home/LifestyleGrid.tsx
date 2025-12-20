@@ -59,7 +59,7 @@ export function LifestyleGrid({ cards = demoCards }: LifestyleGridProps) {
           <Link
             key={index}
             href={card.link}
-            className={`group relative overflow-hidden rounded-xl ${spanClass}`}
+            className={`group relative overflow-hidden rounded-lg ${spanClass}`}
           >
             <Image
               src={card.image.url}
@@ -74,16 +74,16 @@ export function LifestyleGrid({ cards = demoCards }: LifestyleGridProps) {
 
             {/* Content */}
             <div className="absolute inset-0 flex flex-col justify-end p-6">
-              <h3 className="text-xl md:text-2xl font-semibold text-white mb-1 group-hover:text-amber-500 transition-colors">
+              <h3 className="text-title-2 text-text-primary mb-1">
                 {card.title}
               </h3>
               {card.subtitle && (
-                <p className="text-sm text-zinc-300">{card.subtitle}</p>
+                <p className="text-small text-text-secondary">{card.subtitle}</p>
               )}
             </div>
 
             {/* Hover border effect */}
-            <div className="absolute inset-0 border-2 border-transparent group-hover:border-amber-500/50 rounded-xl transition-colors duration-300" />
+            <div className="absolute inset-0 border-2 border-transparent group-hover:border-text-primary/30 rounded-lg transition-colors duration-normal" />
           </Link>
         )
       })}

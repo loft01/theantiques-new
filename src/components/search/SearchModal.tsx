@@ -122,19 +122,28 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100]">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-modal">
+      {/* Overlay - dark for readability */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+        className="absolute inset-0 bg-black/85 backdrop-blur-sm animate-in fade-in duration-normal"
         onClick={onClose}
       />
 
-      {/* Modal */}
-      <div className="relative flex flex-col items-center pt-[15vh] px-4 animate-in fade-in slide-in-from-top-4 duration-300">
-        <div className="w-full max-w-2xl">
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 z-10 w-11 h-11 flex items-center justify-center rounded-md bg-bg-secondary/80 text-text-secondary transition-colors duration-normal hover:text-text-primary hover:bg-bg-tertiary"
+        aria-label="Close search"
+      >
+        <X className="w-6 h-6" />
+      </button>
+
+      {/* Modal content - vertically centered */}
+      <div className="relative h-full flex items-center justify-center px-6 py-12 overflow-y-auto">
+        <div className="w-full max-w-2xl my-auto animate-in fade-in slide-in-from-top-4 duration-slow">
           {/* Search Input */}
           <div className="relative">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-400" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
             <input
               ref={inputRef}
               type="text"
@@ -142,39 +151,39 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search for antiques..."
-              className="w-full px-6 py-5 pl-16 pr-14 bg-zinc-900 border border-zinc-700 rounded-2xl text-xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-all shadow-2xl"
+              className="w-full h-14 pl-14 pr-14 bg-bg-secondary border border-border-default rounded-lg text-body text-text-primary placeholder:text-text-secondary shadow-lg focus:outline-none focus:border-border-subtle transition-colors duration-normal"
               autoComplete="off"
             />
             {isLoading ? (
-              <Loader2 className="absolute right-5 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-400 animate-spin" />
+              <Loader2 className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary animate-spin" />
             ) : query ? (
               <button
                 onClick={() => setQuery('')}
-                className="absolute right-5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-white transition-colors"
+                className="absolute right-5 top-1/2 -translate-y-1/2 p-1 text-text-secondary transition-colors duration-normal hover:text-text-primary"
               >
                 <X className="w-5 h-5" />
               </button>
             ) : null}
           </div>
 
-
-          {/* Results */}
+          {/* Results - card style with border */}
           {query && (
-            <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl max-h-[50vh] overflow-y-auto">
+            <div className="mt-4 bg-bg-secondary border border-border-default rounded-lg overflow-hidden shadow-lg max-h-[60vh] overflow-y-auto">
               {results.length > 0 ? (
                 <>
-                  <div className="divide-y divide-zinc-800">
+                  <div className="divide-y divide-border-default">
                     {results.slice(0, 5).map((result, index) => (
                       <button
                         key={result.slug}
                         onClick={() => handleResultClick(result.slug)}
-                        className={`w-full flex items-center gap-4 p-4 text-left transition-colors ${
+                        className={`w-full flex items-center gap-4 p-4 text-left transition-colors duration-normal ${
                           selectedIndex === index
-                            ? 'bg-zinc-800'
-                            : 'hover:bg-zinc-800/50'
+                            ? 'bg-bg-tertiary'
+                            : 'hover:bg-bg-tertiary'
                         }`}
                       >
-                        <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-zinc-800 flex-shrink-0">
+                        {/* Thumbnail - 40px per list item pattern */}
+                        <div className="relative w-10 h-10 rounded-md overflow-hidden bg-bg-tertiary flex-shrink-0">
                           <Image
                             src={result.image.url}
                             alt={result.image.alt}
@@ -183,13 +192,13 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-white truncate">
+                          <h4 className="text-body-medium text-text-primary truncate">
                             {result.title}
                           </h4>
-                          <p className="text-sm text-zinc-400">{result.category}</p>
+                          <p className="text-small text-text-secondary">{result.category}</p>
                         </div>
                         <div className="text-right flex-shrink-0">
-                          <p className="font-medium text-amber-500">
+                          <p className="text-body-bold text-text-primary">
                             ${result.price.toLocaleString()}
                           </p>
                           <StatusBadge status={result.status} />
@@ -201,16 +210,16 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   {/* View all results */}
                   <button
                     onClick={handleViewAll}
-                    className="w-full flex items-center justify-center gap-2 p-4 bg-zinc-800/50 text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors border-t border-zinc-800"
+                    className="w-full flex items-center justify-center gap-2 p-4 bg-bg-tertiary text-text-secondary transition-colors duration-normal hover:text-text-primary border-t border-border-default"
                   >
-                    View all results for &ldquo;{query}&rdquo;
+                    <span className="text-caption-medium">View all results for &ldquo;{query}&rdquo;</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </>
               ) : !isLoading ? (
                 <div className="p-8 text-center">
-                  <p className="text-zinc-400">No results found for &ldquo;{query}&rdquo;</p>
-                  <p className="text-sm text-zinc-500 mt-1">Try different keywords</p>
+                  <p className="text-body text-text-secondary">No results found for &ldquo;{query}&rdquo;</p>
+                  <p className="text-small text-text-tertiary mt-1">Try different keywords</p>
                 </div>
               ) : null}
             </div>
@@ -219,14 +228,14 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {/* Quick links when empty */}
           {!query && (
             <div className="mt-6">
-              <p className="text-sm text-zinc-500 mb-3">Popular categories</p>
+              <p className="text-small text-text-tertiary mb-3">Popular categories</p>
               <div className="flex flex-wrap gap-2">
                 {['Furniture', 'Ceramics', 'Fine Art', 'Jewelry'].map((cat) => (
                   <Link
                     key={cat}
                     href={`/categories/${cat.toLowerCase().replace(' ', '-')}`}
                     onClick={onClose}
-                    className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-sm text-zinc-300 hover:text-white transition-colors"
+                    className="tag transition-colors duration-normal hover:text-text-primary"
                   >
                     {cat}
                   </Link>
@@ -241,15 +250,15 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 }
 
 function StatusBadge({ status }: { status: 'available' | 'pending' | 'sold' }) {
-  const styles = {
-    available: 'bg-emerald-500/20 text-emerald-400',
-    pending: 'bg-amber-500/20 text-amber-400',
-    sold: 'bg-red-500/20 text-red-400',
+  const config = {
+    available: 'badge-available',
+    pending: 'badge-pending',
+    sold: 'badge-sold',
   }
   const labels = { available: 'Available', pending: 'Pending', sold: 'Sold' }
 
   return (
-    <span className={`text-xs px-2 py-0.5 rounded ${styles[status]}`}>
+    <span className={`badge text-[10px] px-2 py-0.5 ${config[status]}`}>
       {labels[status]}
     </span>
   )

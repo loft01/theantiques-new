@@ -53,17 +53,17 @@ export function SubcategoryPills({
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`flex gap-3 overflow-x-auto scrollbar-hide pb-2 ${
+      className={`flex gap-2 overflow-x-auto scrollbar-hide pb-2 ${
         isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'
       }`}
     >
-      {/* All option */}
+      {/* All option - active when no subcategory selected */}
       <Link
         href={`/categories/${categorySlug}`}
-        className={`flex-none px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+        className={`flex-none h-9 px-4 rounded-full text-caption-medium transition-all duration-normal flex items-center ${
           !activeSubcategory
-            ? 'bg-amber-600 text-white'
-            : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+            ? 'bg-text-primary text-bg-primary'
+            : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
         }`}
         style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
       >
@@ -74,10 +74,10 @@ export function SubcategoryPills({
         <Link
           key={sub.slug}
           href={`/categories/${categorySlug}/${sub.slug}`}
-          className={`flex-none px-5 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+          className={`flex-none h-9 px-4 rounded-full text-caption-medium transition-all duration-normal whitespace-nowrap flex items-center ${
             activeSubcategory === sub.slug
-              ? 'bg-amber-600 text-white'
-              : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+              ? 'bg-text-primary text-bg-primary'
+              : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
           }`}
           style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
         >

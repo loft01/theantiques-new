@@ -20,7 +20,7 @@ export function Hero({
   image,
 }: HeroProps) {
   return (
-    <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden rounded-2xl">
+    <section className="relative min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden rounded-lg bg-bg-secondary border border-border-default">
       {/* Background */}
       {image ? (
         <Image
@@ -32,34 +32,27 @@ export function Hero({
           sizes="100vw"
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-br from-bg-tertiary via-bg-secondary to-bg-primary" />
       )}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold mb-6 tracking-tight">
+      <div className="relative z-10 px-6 py-12 md:py-16 max-w-2xl">
+        <h1 className="text-display md:text-[40px] md:leading-[48px] lg:text-[48px] lg:leading-[56px] text-text-primary mb-4">
           {title}
         </h1>
-        <p className="text-xl md:text-2xl text-zinc-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-body md:text-title-3 text-text-secondary mb-8 max-w-lg">
           {subtitle}
         </p>
-        <Link
-          href={ctaLink}
-          className="inline-block bg-white text-black px-10 py-4 rounded-full font-medium text-lg
-                     hover:bg-amber-500 hover:text-white transition-all duration-300
-                     shadow-lg hover:shadow-amber-500/25"
-        >
-          {ctaText}
-        </Link>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
-          <div className="w-1 h-2 bg-white/50 rounded-full" />
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Link href={ctaLink} className="btn-primary inline-flex items-center justify-center">
+            {ctaText}
+          </Link>
+          <Link href="/about" className="btn-secondary inline-flex items-center justify-center">
+            Our Story
+          </Link>
         </div>
       </div>
     </section>

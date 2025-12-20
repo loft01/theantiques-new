@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 type ProductStatus = 'available' | 'pending' | 'sold'
@@ -23,15 +22,15 @@ interface ProductCardProps {
 const statusConfig: Record<ProductStatus, { label: string; className: string }> = {
   available: {
     label: 'Available',
-    className: 'bg-emerald-500/90 text-white',
+    className: 'badge-available',
   },
   pending: {
     label: 'Pending',
-    className: 'bg-amber-500/90 text-white',
+    className: 'badge-pending',
   },
   sold: {
     label: 'Sold',
-    className: 'bg-red-500/90 text-white',
+    className: 'badge-sold',
   },
 }
 
@@ -62,55 +61,46 @@ export function ProductCard({
   }).format(price)
 
   return (
-    <article className="group relative">
+    <article className="group">
       <Link href={`/products/${slug}`} className="block">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-800">
-          <Image
-            src={image.url}
-            alt={image.alt}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          />
+        <div
+          className={cn(
+            'bg-bg-secondary border border-border-default rounded-lg overflow-hidden',
+            'transition-all duration-normal',
+            'hover:border-border-subtle hover:-translate-y-0.5'
+          )}
+        >
+          {/* Image container - 1:1 aspect ratio per rulebook */}
+          <div className="relative aspect-square overflow-hidden bg-bg-tertiary">
+            <Image
+              src={image.url}
+              alt={image.alt}
+              fill
+              className="object-cover transition-transform duration-slow group-hover:scale-[1.02]"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            />
 
-          {/* Status badge */}
-          <div
-            className={cn(
-              'absolute left-3 top-3 rounded px-2 py-1 text-xs font-medium',
-              statusInfo.className
-            )}
-          >
-            {statusInfo.label}
+            {/* Status badge - top left per rulebook */}
+            <div className={cn('badge absolute left-3 top-3', statusInfo.className)}>
+              {statusInfo.label}
+            </div>
           </div>
 
-          {/* Wishlist button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-            }}
-            className="absolute right-3 top-3 rounded-full bg-zinc-900/70 p-2 text-zinc-400
-                       opacity-0 transition-all duration-200 hover:bg-zinc-900 hover:text-amber-500
-                       group-hover:opacity-100"
-            aria-label="Add to wishlist"
-          >
-            <Heart className="h-4 w-4" />
-          </button>
+          {/* Content - 16px padding per rulebook */}
+          <div className="p-4">
+            {/* Category - small text, secondary color */}
+            <p className="text-small text-text-secondary mb-1">{category}</p>
 
-          {/* Hover overlay */}
-          <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
-        </div>
+            {/* Title - title-3 equivalent, max 2 lines */}
+            <h3 className="text-body-medium text-text-primary line-clamp-2 mb-2">
+              {title}
+            </h3>
 
-        {/* Product info */}
-        <div className="mt-3 space-y-1">
-          <p className="text-sm text-zinc-500">{category}</p>
-          <h3 className="font-medium text-zinc-100 line-clamp-2 group-hover:text-amber-500 transition-colors">
-            {title}
-          </h3>
-          <p className="text-amber-500 font-medium">
-            {priceLabel === 'offer' ? 'Make an Offer' : `${pricePrefix}${formattedPrice}`}
-          </p>
+            {/* Price - body-bold, primary color (NOT amber) */}
+            <p className="text-body-bold text-text-primary">
+              {priceLabel === 'offer' ? 'Make an Offer' : `${pricePrefix}${formattedPrice}`}
+            </p>
+          </div>
         </div>
       </Link>
     </article>

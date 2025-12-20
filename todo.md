@@ -367,3 +367,44 @@
   - Added aria-labels to icon buttons in header
   - Added aria-expanded for mobile menu toggle
 - **Next:** UI Redesign, then complete remaining Phase 8 visual polish
+
+### Session 9 - Dec 20, 2024
+- **FULL UI REDESIGN** based on locked design rulebook
+- Created `design.md` with immutable design rules derived from UI reference
+- Implemented design tokens as CSS variables in `globals.css`:
+  - Spacing system (8px base unit)
+  - Color palette (monochromatic dark theme with semantic colors)
+  - Typography scale (display, title-1/2/3, body, caption, small)
+  - Border radius tokens (16px cards, 12px inputs, pill buttons)
+  - Shadow and elevation tokens
+  - Animation/transition tokens (200ms normal, 300ms slow)
+- Updated `tailwind.config.ts` with custom theme values
+- Created CSS component classes: btn-primary, btn-secondary, input, badge-*, card
+- Redesigned all components following the locked rulebook:
+  - Header: 64px height, bg-secondary, proper text colors (no amber)
+  - Footer: bg-secondary, border-top, proper typography
+  - ProductCard: 1:1 aspect ratio, 16px radius, semantic status badges
+  - CategoryCard: square aspect, gradient overlay, proper typography
+  - SubcategoryPills: pill style with active/inactive states
+  - SearchModal: 50% overlay, card-style results
+  - OfferModal: 24px radius, proper form inputs
+  - NewsletterForm: input and btn-primary classes
+  - ContactForm: input class, proper labels
+  - Hero: card-style with gradient, btn-primary/secondary
+  - ImageGallery: card-style main image, 80px thumbnails
+  - SearchBar: input class for page variant, proper icon colors
+  - SearchFilters: input class for select
+- Updated all page layouts:
+  - Homepage: max-w-7xl px-6, text-title-1 section headers
+  - Category page: proper breadcrumbs, typography, filters
+  - Product page: display typography, semantic badges, btn-secondary
+  - About page: card pattern, border-text-primary for quote
+  - Contact page: icon containers with proper styling
+  - Search page: bg-bg-secondary header, text tokens throughout
+- Key changes from previous design:
+  - Removed all amber/accent colors (monochromatic only)
+  - Standardized all spacing to 8px base unit
+  - Consistent border radius across components
+  - Proper typography hierarchy throughout
+  - Semantic status colors only (success, warning, error)
+- **Next:** Test visually, complete remaining Phase 8 polish (loading states, etc.)

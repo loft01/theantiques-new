@@ -23,14 +23,14 @@ export function SearchFilters({ categories, currentCategory, query }: SearchFilt
 
   return (
     <div className="flex items-center gap-3">
-      <label htmlFor="category-filter" className="text-sm text-zinc-400">
+      <label htmlFor="category-filter" className="text-caption text-text-secondary">
         Category:
       </label>
       <select
         id="category-filter"
         value={currentCategory}
         onChange={handleCategoryChange}
-        className="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-600 transition-colors"
+        className="input h-10 px-4 text-caption"
       >
         <option value="">All Categories</option>
         {categories.map((cat) => (

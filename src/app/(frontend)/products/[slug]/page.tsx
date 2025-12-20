@@ -11,17 +11,17 @@ type ProductStatus = 'available' | 'pending' | 'sold'
 const statusConfig: Record<ProductStatus, { label: string; className: string; description: string }> = {
   available: {
     label: 'Available',
-    className: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    className: 'badge-available',
     description: 'This item is available for purchase',
   },
   pending: {
     label: 'Pending',
-    className: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    className: 'badge-pending',
     description: 'An offer is being considered',
   },
   sold: {
     label: 'Sold',
-    className: 'bg-red-500/20 text-red-400 border-red-500/30',
+    className: 'badge-sold',
     description: 'This item has been sold',
   },
 }
@@ -190,18 +190,18 @@ export default async function ProductPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="container mx-auto px-4 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-12 pb-24">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-        <Link href="/" className="hover:text-white transition-colors">Home</Link>
+      <nav className="flex items-center gap-2 text-caption text-text-secondary mb-6">
+        <Link href="/" className="transition-colors duration-normal hover:text-text-primary">Home</Link>
         <ChevronRight className="w-4 h-4" />
-        <Link href="/categories" className="hover:text-white transition-colors">Categories</Link>
+        <Link href="/categories" className="transition-colors duration-normal hover:text-text-primary">Categories</Link>
         <ChevronRight className="w-4 h-4" />
-        <Link href={`/categories/${category?.slug}`} className="hover:text-white transition-colors">
+        <Link href={`/categories/${category?.slug}`} className="transition-colors duration-normal hover:text-text-primary">
           {category?.name || 'Category'}
         </Link>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-zinc-400 line-clamp-1">{product.title}</span>
+        <span className="text-text-primary line-clamp-1">{product.title}</span>
       </nav>
 
       {/* Main content */}
@@ -214,30 +214,29 @@ export default async function ProductPage({ params }: PageProps) {
         {/* Product Info */}
         <div className="space-y-6">
           {/* Status badge */}
-          <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-sm ${statusInfo.className}`}>
-            <span className="w-2 h-2 rounded-full bg-current" />
+          <div className={`badge ${statusInfo.className}`}>
             {statusInfo.label}
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl font-semibold leading-tight">
+          <h1 className="text-display text-text-primary">
             {product.title}
           </h1>
 
           {/* Category */}
-          <div className="flex flex-wrap gap-4 text-zinc-400">
+          <div className="flex flex-wrap gap-4">
             <Link
               href={`/categories/${category?.slug}`}
-              className="hover:text-amber-500 transition-colors"
+              className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
             >
               {category?.name || 'Category'}
             </Link>
           </div>
 
           {/* Price */}
-          <div className="py-4 border-y border-zinc-800">
-            <p className="text-3xl font-semibold text-amber-500">{priceDisplay}</p>
-            <p className="text-sm text-zinc-500 mt-1">{statusInfo.description}</p>
+          <div className="py-4 border-y border-border-default">
+            <p className="text-title-1 text-text-primary">{priceDisplay}</p>
+            <p className="text-small text-text-secondary mt-1">{statusInfo.description}</p>
           </div>
 
           {/* Action buttons */}
@@ -248,17 +247,14 @@ export default async function ProductPage({ params }: PageProps) {
               productPrice={product.price}
               disabled={product.status === 'sold'}
             />
-            <button
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-zinc-800
-                         rounded-full font-medium hover:bg-zinc-700 transition-colors"
-            >
+            <button className="btn-secondary flex-1 flex items-center justify-center gap-2">
               <MessageCircle className="w-5 h-5" />
               Ask a Question
             </button>
           </div>
 
           {/* Share */}
-          <button className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
+          <button className="flex items-center gap-2 text-text-secondary transition-colors duration-normal hover:text-text-primary">
             <Share2 className="w-4 h-4" />
             Share this item
           </button>
@@ -268,12 +264,12 @@ export default async function ProductPage({ params }: PageProps) {
       {/* Description */}
       {descriptionHtml && (
         <div className="mt-16 max-w-4xl">
-          <h2 className="text-2xl font-semibold mb-6">Description</h2>
+          <h2 className="text-title-1 text-text-primary mb-6">Description</h2>
           <div
-            className="prose prose-invert prose-zinc max-w-none
-                       prose-headings:font-semibold prose-headings:text-white
-                       prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3
-                       prose-p:text-zinc-400 prose-p:leading-relaxed"
+            className="prose prose-invert max-w-none
+                       prose-headings:font-semibold prose-headings:text-text-primary
+                       prose-h3:text-title-3 prose-h3:mt-8 prose-h3:mb-3
+                       prose-p:text-text-secondary prose-p:leading-relaxed"
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
           />
         </div>
@@ -283,10 +279,10 @@ export default async function ProductPage({ params }: PageProps) {
       {relatedProducts.length > 0 && (
         <section className="mt-20">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-semibold">Related Items</h2>
+            <h2 className="text-title-1 text-text-primary">Related Items</h2>
             <Link
               href={`/categories/${category?.slug}`}
-              className="text-amber-500 hover:text-amber-400 transition-colors"
+              className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
             >
               View all {category?.name}
             </Link>

@@ -61,16 +61,11 @@ export function ContactForm() {
     }
   }
 
-  const inputClasses = `w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg
-    text-white placeholder:text-zinc-500
-    focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500
-    disabled:opacity-50 transition-all`
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid sm:grid-cols-2 gap-5">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-2">
+          <label htmlFor="name" className="block text-caption-medium text-text-secondary mb-2">
             Name
           </label>
           <input
@@ -81,11 +76,11 @@ export function ContactForm() {
             onChange={handleChange}
             placeholder="Your name"
             disabled={status === 'loading'}
-            className={inputClasses}
+            className="input"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2">
+          <label htmlFor="email" className="block text-caption-medium text-text-secondary mb-2">
             Email
           </label>
           <input
@@ -96,13 +91,13 @@ export function ContactForm() {
             onChange={handleChange}
             placeholder="your@email.com"
             disabled={status === 'loading'}
-            className={inputClasses}
+            className="input"
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-zinc-300 mb-2">
+        <label htmlFor="subject" className="block text-caption-medium text-text-secondary mb-2">
           Subject
         </label>
         <select
@@ -111,7 +106,7 @@ export function ContactForm() {
           value={formData.subject}
           onChange={handleChange}
           disabled={status === 'loading'}
-          className={inputClasses}
+          className="input"
         >
           <option value="">Select a subject</option>
           <option value="General Inquiry">General Inquiry</option>
@@ -123,7 +118,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-zinc-300 mb-2">
+        <label htmlFor="message" className="block text-caption-medium text-text-secondary mb-2">
           Message
         </label>
         <textarea
@@ -134,16 +129,14 @@ export function ContactForm() {
           placeholder="How can we help you?"
           rows={5}
           disabled={status === 'loading'}
-          className={`${inputClasses} resize-none`}
+          className="input min-h-[140px] py-4 resize-none"
         />
       </div>
 
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full sm:w-auto px-8 py-3 bg-amber-600 text-white rounded-lg font-medium
-          hover:bg-amber-500 disabled:opacity-50 disabled:hover:bg-amber-600
-          transition-all flex items-center justify-center gap-2"
+        className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2"
       >
         {status === 'loading' ? (
           <>
@@ -160,8 +153,8 @@ export function ContactForm() {
 
       {statusMessage && (
         <div
-          className={`flex items-center gap-2 text-sm ${
-            status === 'success' ? 'text-emerald-400' : 'text-red-400'
+          className={`flex items-center gap-2 text-small ${
+            status === 'success' ? 'text-success' : 'text-error'
           }`}
         >
           {status === 'success' ? (

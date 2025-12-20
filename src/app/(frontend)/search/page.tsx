@@ -41,11 +41,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const transformedProducts = products.map(transformProduct)
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen pb-24">
       {/* Search Header */}
-      <section className="bg-zinc-900/50 border-b border-zinc-800">
-        <div className="container mx-auto px-4 py-12">
-          <h1 className="text-3xl font-semibold mb-6">Search</h1>
+      <section className="bg-bg-secondary border-b border-border-default">
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          <h1 className="text-display text-text-primary mb-8">Search</h1>
           <div className="max-w-2xl">
             <SearchBar variant="page" defaultValue={query} autoFocus={!query} />
           </div>
@@ -53,19 +53,19 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       </section>
 
       {/* Results Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         {query ? (
           <>
             {/* Results header with filters */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-              <p className="text-zinc-400">
+              <p className="text-body text-text-secondary">
                 {totalDocs === 0 ? (
                   'No results found'
                 ) : (
                   <>
-                    Found <span className="text-white font-medium">{totalDocs}</span>{' '}
+                    Found <span className="text-text-primary font-medium">{totalDocs}</span>{' '}
                     {totalDocs === 1 ? 'result' : 'results'} for{' '}
-                    <span className="text-white font-medium">&ldquo;{query}&rdquo;</span>
+                    <span className="text-text-primary font-medium">&ldquo;{query}&rdquo;</span>
                   </>
                 )}
               </p>
@@ -93,12 +93,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
 function NoResults({ query }: { query: string }) {
   return (
-    <div className="text-center py-16">
-      <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-800 flex items-center justify-center">
-        <Search className="w-8 h-8 text-zinc-500" />
+    <div className="text-center py-20">
+      <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-bg-tertiary flex items-center justify-center">
+        <Search className="w-8 h-8 text-text-secondary" />
       </div>
-      <h2 className="text-xl font-medium mb-2">No results for &ldquo;{query}&rdquo;</h2>
-      <p className="text-zinc-400 max-w-md mx-auto">
+      <h2 className="text-title-2 text-text-primary mb-3">No results for &ldquo;{query}&rdquo;</h2>
+      <p className="text-body text-text-secondary max-w-md mx-auto">
         Try adjusting your search terms or browse our categories to find what you&apos;re looking for.
       </p>
     </div>
@@ -107,12 +107,12 @@ function NoResults({ query }: { query: string }) {
 
 function EmptySearch() {
   return (
-    <div className="text-center py-16">
-      <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-800 flex items-center justify-center">
-        <Search className="w-8 h-8 text-zinc-500" />
+    <div className="text-center py-20">
+      <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-bg-tertiary flex items-center justify-center">
+        <Search className="w-8 h-8 text-text-secondary" />
       </div>
-      <h2 className="text-xl font-medium mb-2">Search our collection</h2>
-      <p className="text-zinc-400 max-w-md mx-auto">
+      <h2 className="text-title-2 text-text-primary mb-3">Search our collection</h2>
+      <p className="text-body text-text-secondary max-w-md mx-auto">
         Enter a search term above to find antiques, furniture, decorative pieces, and more.
       </p>
     </div>

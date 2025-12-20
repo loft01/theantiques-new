@@ -55,18 +55,13 @@ export function NewsletterForm() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             disabled={status === 'loading'}
-            className="w-full px-5 py-4 bg-zinc-800 border border-zinc-700 rounded-full
-                       text-white placeholder:text-zinc-500
-                       focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500
-                       disabled:opacity-50 transition-all"
+            className="input w-full"
           />
         </div>
         <button
           type="submit"
           disabled={status === 'loading' || !email}
-          className="px-8 py-4 bg-amber-600 text-white rounded-full font-medium
-                     hover:bg-amber-500 disabled:opacity-50 disabled:hover:bg-amber-600
-                     transition-all flex items-center justify-center gap-2 min-w-[140px]"
+          className="btn-primary flex items-center justify-center gap-2 min-w-[140px]"
         >
           {status === 'loading' ? (
             <Loader2 className="w-5 h-5 animate-spin" />
@@ -82,8 +77,8 @@ export function NewsletterForm() {
       {/* Status message */}
       {message && (
         <div
-          className={`mt-4 flex items-center justify-center gap-2 text-sm ${
-            status === 'success' ? 'text-emerald-400' : 'text-red-400'
+          className={`mt-4 flex items-center justify-center gap-2 text-small ${
+            status === 'success' ? 'text-success' : 'text-error'
           }`}
         >
           {status === 'success' ? (

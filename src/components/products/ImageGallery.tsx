@@ -32,8 +32,8 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
   return (
     <>
       <div className="space-y-4">
-        {/* Main image */}
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-zinc-800 group">
+        {/* Main image - card style per rulebook */}
+        <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-bg-secondary border border-border-default group">
           <Image
             src={activeImage.url}
             alt={activeImage.alt}
@@ -43,11 +43,11 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
             priority
           />
 
-          {/* Zoom button */}
+          {/* Zoom button - icon button pattern */}
           <button
             onClick={() => setIsZoomed(true)}
-            className="absolute right-4 top-4 p-3 bg-zinc-900/70 rounded-full text-white
-                       opacity-0 group-hover:opacity-100 transition-opacity hover:bg-zinc-900"
+            className="absolute right-4 top-4 h-11 w-11 flex items-center justify-center bg-bg-secondary/90 rounded-md text-text-primary
+                       opacity-0 group-hover:opacity-100 transition-opacity duration-normal hover:bg-bg-tertiary"
             aria-label="Zoom image"
           >
             <ZoomIn className="w-5 h-5" />
@@ -58,16 +58,16 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
             <>
               <button
                 onClick={goToPrevious}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-zinc-900/70 rounded-full
-                           text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-zinc-900"
+                className="absolute left-4 top-1/2 -translate-y-1/2 h-11 w-11 flex items-center justify-center bg-bg-secondary/90 rounded-md
+                           text-text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-normal hover:bg-bg-tertiary"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={goToNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-zinc-900/70 rounded-full
-                           text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-zinc-900"
+                className="absolute right-4 top-1/2 -translate-y-1/2 h-11 w-11 flex items-center justify-center bg-bg-secondary/90 rounded-md
+                           text-text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-normal hover:bg-bg-tertiary"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -75,25 +75,25 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
             </>
           )}
 
-          {/* Image counter */}
+          {/* Image counter - tag badge style */}
           {images.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-zinc-900/70 rounded-full text-sm text-white">
+            <div className="tag absolute bottom-4 left-1/2 -translate-x-1/2">
               {activeIndex + 1} / {images.length}
             </div>
           )}
         </div>
 
-        {/* Thumbnails */}
+        {/* Thumbnails - 80px per rulebook */}
         {images.length > 1 && (
-          <div className="flex gap-3 overflow-x-auto pb-2">
+          <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
             {images.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={cn(
-                  'relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition-all',
+                  'relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all duration-normal',
                   index === activeIndex
-                    ? 'ring-2 ring-amber-500'
+                    ? 'ring-2 ring-text-primary ring-offset-2 ring-offset-bg-primary'
                     : 'opacity-60 hover:opacity-100'
                 )}
               >
@@ -110,15 +110,15 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
         )}
       </div>
 
-      {/* Zoom Modal */}
+      {/* Zoom Modal - full screen overlay */}
       {isZoomed && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 z-modal bg-black/90 flex items-center justify-center animate-in fade-in duration-normal"
           onClick={() => setIsZoomed(false)}
         >
           <button
             onClick={() => setIsZoomed(false)}
-            className="absolute top-6 right-6 p-3 text-white hover:text-amber-500 transition-colors"
+            className="absolute top-6 right-6 h-11 w-11 flex items-center justify-center text-text-primary hover:text-text-secondary transition-colors duration-normal"
             aria-label="Close zoom"
           >
             <X className="w-8 h-8" />
@@ -132,8 +132,8 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                   e.stopPropagation()
                   goToPrevious()
                 }}
-                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/80 rounded-full
-                           text-white hover:bg-zinc-700 transition-colors"
+                className="absolute left-6 top-1/2 -translate-y-1/2 h-12 w-12 flex items-center justify-center bg-bg-secondary/80 rounded-md
+                           text-text-primary transition-colors duration-normal hover:bg-bg-tertiary"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-8 h-8" />
@@ -143,8 +143,8 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                   e.stopPropagation()
                   goToNext()
                 }}
-                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-zinc-800/80 rounded-full
-                           text-white hover:bg-zinc-700 transition-colors"
+                className="absolute right-6 top-1/2 -translate-y-1/2 h-12 w-12 flex items-center justify-center bg-bg-secondary/80 rounded-md
+                           text-text-primary transition-colors duration-normal hover:bg-bg-tertiary"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-8 h-8" />
@@ -164,7 +164,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
 
           {/* Image counter in zoom */}
           {images.length > 1 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-zinc-800/80 rounded-full text-white">
+            <div className="tag absolute bottom-6 left-1/2 -translate-x-1/2">
               {activeIndex + 1} / {images.length}
             </div>
           )}

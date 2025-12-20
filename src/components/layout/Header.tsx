@@ -35,11 +35,14 @@ export function Header({ categories = [] }: HeaderProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4">
+      <header className="sticky top-0 z-header bg-bg-secondary border-b border-border-default">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="text-xl font-semibold tracking-tight">
+            <Link
+              href="/"
+              className="text-title-3 text-text-primary transition-opacity duration-normal hover:opacity-80"
+            >
               The Antiques
             </Link>
 
@@ -48,14 +51,20 @@ export function Header({ categories = [] }: HeaderProps) {
               {categories.length > 0 && <MegaMenu categories={categories} />}
             </div>
 
-            {/* Right side icons */}
-            <div className="flex items-center gap-4">
+            {/* Right side */}
+            <div className="flex items-center gap-2">
               {/* Desktop links */}
-              <nav className="hidden md:flex items-center gap-6">
-                <Link href="/about" className="text-sm text-zinc-400 hover:text-white transition-colors">
+              <nav className="hidden md:flex items-center gap-1">
+                <Link
+                  href="/about"
+                  className="px-4 py-2 text-caption-medium text-text-secondary transition-colors duration-normal hover:text-text-primary"
+                >
                   About
                 </Link>
-                <Link href="/contact" className="text-sm text-zinc-400 hover:text-white transition-colors">
+                <Link
+                  href="/contact"
+                  className="px-4 py-2 text-caption-medium text-text-secondary transition-colors duration-normal hover:text-text-primary"
+                >
                   Contact
                 </Link>
               </nav>
@@ -63,56 +72,72 @@ export function Header({ categories = [] }: HeaderProps) {
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-zinc-800"
+                className="flex items-center justify-center gap-2 h-11 min-w-11 px-3 text-text-secondary rounded-md transition-colors duration-normal hover:text-text-primary hover:bg-bg-tertiary"
                 aria-label="Open search"
               >
                 <Search className="w-5 h-5" aria-hidden="true" />
-                <span className="hidden sm:inline text-sm">Search</span>
+                <span className="hidden sm:inline text-caption-medium">Search</span>
               </button>
 
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-2 text-zinc-400 hover:text-white"
+                className="lg:hidden flex items-center justify-center h-11 w-11 text-text-secondary rounded-md transition-colors duration-normal hover:text-text-primary hover:bg-bg-tertiary"
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isMenuOpen}
               >
-                {isMenuOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
+                {isMenuOpen ? (
+                  <X className="w-6 h-6" aria-hidden="true" />
+                ) : (
+                  <Menu className="w-6 h-6" aria-hidden="true" />
+                )}
               </button>
             </div>
           </div>
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <nav className="lg:hidden py-4 border-t border-border">
-              <div className="flex flex-col gap-4">
+            <nav className="lg:hidden py-4 border-t border-border-default">
+              <div className="flex flex-col gap-1">
                 {/* Mobile Search Button */}
                 <button
                   onClick={() => {
                     setIsMenuOpen(false)
                     setIsSearchOpen(true)
                   }}
-                  className="flex items-center gap-3 p-3 bg-zinc-800/50 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                  className="flex items-center gap-3 h-12 px-4 bg-bg-tertiary rounded-lg text-text-secondary transition-colors duration-normal hover:text-text-primary"
                 >
                   <Search className="w-5 h-5" />
-                  <span>Search antiques...</span>
+                  <span className="text-body">Search antiques...</span>
                 </button>
-                <div className="h-px bg-border" />
+
+                <div className="h-px bg-border-default my-3" />
+
                 {categories.map((cat) => (
                   <Link
                     key={cat.slug}
                     href={`/categories/${cat.slug}`}
-                    className="text-zinc-300 hover:text-amber-500 transition-colors"
+                    className="h-11 flex items-center px-4 text-body text-text-primary rounded-md transition-colors duration-normal hover:bg-bg-tertiary"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {cat.name}
                   </Link>
                 ))}
-                <div className="h-px bg-border my-2" />
-                <Link href="/about" className="text-zinc-400 hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>
+
+                <div className="h-px bg-border-default my-3" />
+
+                <Link
+                  href="/about"
+                  className="h-11 flex items-center px-4 text-body text-text-secondary rounded-md transition-colors duration-normal hover:bg-bg-tertiary hover:text-text-primary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   About
                 </Link>
-                <Link href="/contact" className="text-zinc-400 hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>
+                <Link
+                  href="/contact"
+                  className="h-11 flex items-center px-4 text-body text-text-secondary rounded-md transition-colors duration-normal hover:bg-bg-tertiary hover:text-text-primary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   Contact
                 </Link>
               </div>

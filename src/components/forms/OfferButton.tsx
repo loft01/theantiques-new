@@ -19,9 +19,7 @@ export function OfferButton({ productSlug, productTitle, productPrice, disabled 
       <button
         onClick={() => setIsOpen(true)}
         disabled={disabled}
-        className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-amber-600 text-white
-                   rounded-full font-medium hover:bg-amber-500 disabled:opacity-50
-                   disabled:cursor-not-allowed transition-colors"
+        className="btn-primary flex-1 flex items-center justify-center gap-2"
       >
         <Send className="w-5 h-5" />
         Make an Offer

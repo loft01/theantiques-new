@@ -11,37 +11,37 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-zinc-900 py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-semibold mb-6">Get in Touch</h1>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+      <section className="bg-bg-secondary border-b border-border-default py-20">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <h1 className="text-display text-text-primary mb-4">Get in Touch</h1>
+          <p className="text-body text-text-secondary max-w-2xl mx-auto">
             Have a question about a piece? Looking for something specific? We would love to hear from you.
           </p>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="container mx-auto px-4 py-20">
+      <section className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid lg:grid-cols-5 gap-12 max-w-6xl mx-auto">
           {/* Contact Info */}
           <div className="lg:col-span-2 space-y-8">
             <div>
-              <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
-              <p className="text-zinc-400 mb-8">
+              <h2 className="text-title-1 text-text-primary mb-6">Contact Information</h2>
+              <p className="text-body text-text-secondary mb-8">
                 Reach out through any of these channels or fill out the form and we will get back to you shortly.
               </p>
             </div>
 
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-5 h-5 text-amber-500" />
+                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-5 h-5 text-text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Email</h3>
+                  <h3 className="text-body-medium text-text-primary mb-1">Email</h3>
                   <a
                     href="mailto:info@theantiques.com"
-                    className="text-zinc-400 hover:text-amber-500 transition-colors"
+                    className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
                   >
                     info@theantiques.com
                   </a>
@@ -49,14 +49,14 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-5 h-5 text-amber-500" />
+                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-5 h-5 text-text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Phone</h3>
+                  <h3 className="text-body-medium text-text-primary mb-1">Phone</h3>
                   <a
                     href="tel:+390000000000"
-                    className="text-zinc-400 hover:text-amber-500 transition-colors"
+                    className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
                   >
                     +39 000 000 0000
                   </a>
@@ -64,26 +64,26 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-5 h-5 text-amber-500" />
+                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-5 h-5 text-text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Location</h3>
-                  <p className="text-zinc-400">
+                  <h3 className="text-body-medium text-text-primary mb-1">Location</h3>
+                  <p className="text-body text-text-secondary">
                     By appointment only
                     <br />
-                    <span className="text-zinc-500 text-sm">Contact us to schedule a visit</span>
+                    <span className="text-small text-text-secondary">Contact us to schedule a visit</span>
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-5 h-5 text-amber-500" />
+                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-5 h-5 text-text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Response Time</h3>
-                  <p className="text-zinc-400">
+                  <h3 className="text-body-medium text-text-primary mb-1">Response Time</h3>
+                  <p className="text-body text-text-secondary">
                     We typically respond within 24-48 hours
                   </p>
                 </div>
@@ -91,13 +91,13 @@ export default function ContactPage() {
             </div>
 
             {/* Social Links */}
-            <div className="pt-6 border-t border-zinc-800">
-              <h3 className="font-medium mb-4">Follow Us</h3>
+            <div className="pt-6 border-t border-border-default">
+              <h3 className="text-body-medium text-text-primary mb-4">Follow Us</h3>
               <div className="flex gap-3">
                 <a
                   href="#"
-                  className="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center
-                    text-zinc-400 hover:text-amber-500 hover:border-amber-500/50 transition-all"
+                  className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center
+                    text-text-secondary transition-all duration-normal hover:text-text-primary hover:border-border-subtle"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -106,8 +106,8 @@ export default function ContactPage() {
                 </a>
                 <a
                   href="#"
-                  className="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center
-                    text-zinc-400 hover:text-amber-500 hover:border-amber-500/50 transition-all"
+                  className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center
+                    text-text-secondary transition-all duration-normal hover:text-text-primary hover:border-border-subtle"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -120,8 +120,8 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="lg:col-span-3">
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8">
-              <h2 className="text-xl font-semibold mb-6">Send us a message</h2>
+            <div className="card p-6 md:p-8">
+              <h2 className="text-title-2 text-text-primary mb-6">Send us a message</h2>
               <ContactForm />
             </div>
           </div>
