@@ -67,8 +67,8 @@
 
 ### 3.1 Hero Section
 - [x] Create hero section in homepage (basic structure)
-- [ ] Create `src/components/home/Hero.tsx` (separate component)
-- [ ] Full-width image with overlay (needs real image)
+- [x] Create `src/components/home/Hero.tsx` (separate component)
+- [x] Full-width image with overlay (needs real image)
 - [ ] Title and subtitle from SiteSettings
 - [x] CTA button
 
@@ -88,15 +88,15 @@
 - [ ] Fetch featured products from Payload
 
 ### 3.4 Lifestyle/Promo Sections
-- [ ] Create `src/components/home/LifestyleGrid.tsx`
-- [ ] Mixed-size image cards with text overlays
+- [x] Create `src/components/home/LifestyleGrid.tsx`
+- [x] Mixed-size image cards with text overlays
 - [ ] Make content manageable from CMS (optional)
 
 ### 3.5 Newsletter Section
 - [x] Basic newsletter form on homepage (UI only)
-- [ ] Create `src/components/forms/NewsletterForm.tsx`
-- [ ] API route to save subscriber
-- [ ] Success/error states
+- [x] Create `src/components/forms/NewsletterForm.tsx`
+- [x] API route to save subscriber
+- [x] Success/error states
 
 ### 3.6 Homepage Assembly
 - [x] Create `src/app/(frontend)/page.tsx`
@@ -108,17 +108,17 @@
 ## Phase 4: Category Pages
 
 ### 4.1 Categories Listing
-- [ ] Create `src/app/(frontend)/categories/page.tsx`
-- [ ] Grid of all categories
-- [ ] Show product count per category
+- [x] Create `src/app/(frontend)/categories/page.tsx`
+- [x] Grid of all categories
+- [x] Show product count per category
 
 ### 4.2 Category Detail Page
-- [ ] Create `src/app/(frontend)/categories/[slug]/page.tsx`
-- [ ] Category header with description
-- [ ] Create `src/components/categories/SubcategoryPills.tsx`
-- [ ] Product grid for category
-- [ ] Filter bar (price, status, sort)
-- [ ] Load more functionality (not pagination)
+- [x] Create `src/app/(frontend)/categories/[slug]/page.tsx`
+- [x] Category header with description
+- [x] Create `src/components/categories/SubcategoryPills.tsx`
+- [x] Product grid for category
+- [x] Filter bar (price, status, sort)
+- [x] Load more functionality (not pagination)
 
 ---
 
@@ -267,4 +267,18 @@
 - Fixed layout.tsx to use RootLayout from @payloadcms/next/layouts with proper serverFunction
 - Fixed page.tsx and not-found.tsx to use the actual importMap instead of empty object
 - Created custom.scss for Payload admin
-- **Next:** Test admin panel, create first admin user
+- Fixed nested html/body layout issue (root layout now passes through children)
+- Created first admin user successfully
+
+### Session 3 - Dec 20, 2024
+- Created ProductCard component with status badges, wishlist button, hover effects
+- Created ProductGrid component
+- Created CategoryCard and CategoryScroll with drag-to-scroll
+- Created MegaMenu with subcategories and featured products preview
+- Updated Header with MegaMenu integration
+- Created Hero component with scroll indicator
+- Created LifestyleGrid with mixed-size cards
+- Created NewsletterForm with API route (saves to Payload)
+- Created Categories listing page
+- Created Category detail page with filters and SubcategoryPills
+- **Next:** Product detail page, then connect to Payload CMS
