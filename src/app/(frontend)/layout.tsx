@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { getMenuCategories } from '@/lib/payload'
 import '../globals.css'
 
 const inter = Inter({
@@ -8,15 +9,17 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-export default function FrontendLayout({
+export default async function FrontendLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const menuCategories = await getMenuCategories()
+
   return (
     <html lang="en" className="dark">
       <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground`}>
-        <Header />
+        <Header categories={menuCategories} />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

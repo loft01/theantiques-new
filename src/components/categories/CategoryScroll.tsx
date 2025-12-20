@@ -19,30 +19,43 @@ interface CategoryScrollProps {
 
 export function CategoryScroll({ categories }: CategoryScrollProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [isMouseDown, setIsMouseDown] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
 
+  const DRAG_THRESHOLD = 5
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return
-    setIsDragging(true)
+    setIsMouseDown(true)
+    setIsDragging(false)
     setStartX(e.pageX - scrollRef.current.offsetLeft)
     setScrollLeft(scrollRef.current.scrollLeft)
   }
 
   const handleMouseUp = () => {
-    setIsDragging(false)
+    setIsMouseDown(false)
+    // Small delay to allow click to be blocked if we were dragging
+    setTimeout(() => setIsDragging(false), 0)
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return
-    e.preventDefault()
+    if (!isMouseDown || !scrollRef.current) return
+
     const x = e.pageX - scrollRef.current.offsetLeft
-    const walk = (x - startX) * 1.5
-    scrollRef.current.scrollLeft = scrollLeft - walk
+    const walk = x - startX
+
+    // Only start dragging after threshold
+    if (Math.abs(walk) > DRAG_THRESHOLD) {
+      setIsDragging(true)
+      e.preventDefault()
+      scrollRef.current.scrollLeft = scrollLeft - walk * 1.5
+    }
   }
 
   const handleMouseLeave = () => {
+    setIsMouseDown(false)
     setIsDragging(false)
   }
 
