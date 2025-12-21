@@ -29,7 +29,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
-  // Focus input when modal opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
@@ -41,7 +40,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     }
   }, [isOpen])
 
-  // Close on Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -58,7 +56,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     }
   }, [isOpen, onClose])
 
-  // Debounced search
   useEffect(() => {
     if (!query.trim()) {
       setResults([])
@@ -84,7 +81,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => clearTimeout(timer)
   }, [query])
 
-  // Keyboard navigation
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'ArrowDown') {
@@ -122,111 +118,108 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-modal">
-      {/* Overlay - click to close */}
-      <div
-        className="absolute inset-0 bg-black/85 backdrop-blur-sm animate-in fade-in duration-normal"
-        onClick={onClose}
-      />
+    <div className="fixed inset-0 z-modal bg-bg-primary">
+      {/* Header */}
+      <div className="flex items-center justify-between h-14 px-6 border-b border-border-primary">
+        <span className="text-caption text-text-tertiary">Search</span>
+        <button
+          onClick={onClose}
+          className="nav-link"
+        >
+          Close
+        </button>
+      </div>
 
-      {/* Modal content - vertically centered */}
-      <div className="relative h-full flex items-center justify-center px-6 py-12 overflow-y-auto pointer-events-none">
-        <div className="w-full max-w-2xl my-auto animate-in fade-in slide-in-from-top-4 duration-slow pointer-events-auto">
+      {/* Search Content */}
+      <div className="h-[calc(100vh-56px)] overflow-y-auto">
+        <div className="container-editorial py-12">
           {/* Search Input */}
-          <div className="relative">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
+          <div className="relative max-w-2xl mx-auto mb-12">
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Search for antiques..."
-              className="w-full h-14 pl-14 pr-14 bg-bg-secondary border border-border-default rounded-lg text-body text-text-primary placeholder:text-text-secondary shadow-lg focus:outline-none focus:border-border-subtle transition-colors duration-normal"
+              placeholder="What are you looking for?"
+              className="w-full h-14 px-0 bg-transparent border-0 border-b border-border-primary text-manifesto text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
               autoComplete="off"
             />
-            {isLoading ? (
-              <Loader2 className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary animate-spin" />
-            ) : query ? (
-              <button
-                onClick={() => setQuery('')}
-                className="absolute right-5 top-1/2 -translate-y-1/2 p-1 text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            ) : null}
+            {isLoading && (
+              <Loader2 className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary animate-spin" />
+            )}
           </div>
 
-          {/* Results - card style with border */}
-          {query && (
-            <div className="mt-4 bg-bg-secondary border border-border-default rounded-lg overflow-hidden shadow-lg max-h-[60vh] overflow-y-auto">
-              {results.length > 0 ? (
-                <>
-                  <div className="divide-y divide-border-default">
-                    {results.slice(0, 5).map((result, index) => (
-                      <button
-                        key={result.slug}
-                        onClick={() => handleResultClick(result.slug)}
-                        className={`w-full flex items-center gap-4 p-4 text-left transition-colors duration-normal ${
-                          selectedIndex === index
-                            ? 'bg-bg-tertiary'
-                            : 'hover:bg-bg-tertiary'
-                        }`}
-                      >
-                        {/* Thumbnail - 40px per list item pattern */}
-                        <div className="relative w-10 h-10 rounded-md overflow-hidden bg-bg-tertiary flex-shrink-0">
-                          <Image
-                            src={result.image.url}
-                            alt={result.image.alt}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-body-medium text-text-primary truncate">
-                            {result.title}
-                          </h4>
-                          <p className="text-small text-text-secondary">{result.category}</p>
-                        </div>
-                        <div className="text-right flex-shrink-0">
-                          <p className="text-body-bold text-text-primary">
-                            ${result.price.toLocaleString()}
-                          </p>
-                          <StatusBadge status={result.status} />
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* View all results */}
+          {/* Results */}
+          {query && results.length > 0 && (
+            <div className="max-w-2xl mx-auto">
+              <p className="text-caption text-text-tertiary mb-6">
+                {results.length} results
+              </p>
+              <div className="divide-y divide-border-primary">
+                {results.slice(0, 6).map((result, index) => (
                   <button
-                    onClick={handleViewAll}
-                    className="w-full flex items-center justify-center gap-2 p-4 bg-bg-tertiary text-text-secondary transition-colors duration-normal hover:text-text-primary border-t border-border-default"
+                    key={result.slug}
+                    onClick={() => handleResultClick(result.slug)}
+                    className={`w-full flex items-center gap-6 py-4 text-left transition-opacity hover:opacity-70 ${
+                      selectedIndex === index ? 'opacity-70' : ''
+                    }`}
                   >
-                    <span className="text-caption-medium">View all results for &ldquo;{query}&rdquo;</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <div className="relative w-16 h-16 bg-bg-tertiary flex-shrink-0">
+                      <Image
+                        src={result.image.url}
+                        alt={result.image.alt}
+                        fill
+                        className="object-contain p-2"
+                        sizes="64px"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-body-medium text-text-primary truncate">
+                        {result.title}
+                      </h4>
+                      <p className="text-caption text-text-tertiary">{result.category}</p>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-body text-text-secondary">
+                        ${result.price.toLocaleString()}
+                      </p>
+                    </div>
                   </button>
-                </>
-              ) : !isLoading ? (
-                <div className="p-8 text-center">
-                  <p className="text-body text-text-secondary">No results found for &ldquo;{query}&rdquo;</p>
-                  <p className="text-small text-text-tertiary mt-1">Try different keywords</p>
-                </div>
-              ) : null}
+                ))}
+              </div>
+
+              {results.length > 6 && (
+                <button
+                  onClick={handleViewAll}
+                  className="link-arrow mt-8"
+                >
+                  View all results
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* No results */}
+          {query && !isLoading && results.length === 0 && (
+            <div className="max-w-2xl mx-auto text-center py-12">
+              <p className="text-body text-text-secondary">No results found</p>
+              <p className="text-caption text-text-tertiary mt-2">Try different keywords</p>
             </div>
           )}
 
           {/* Quick links when empty */}
           {!query && (
-            <div className="mt-6">
-              <p className="text-small text-text-tertiary mb-3">Popular categories</p>
-              <div className="flex flex-wrap gap-2">
-                {['Furniture', 'Ceramics', 'Fine Art', 'Jewelry'].map((cat) => (
+            <div className="max-w-2xl mx-auto">
+              <p className="text-caption text-text-tertiary mb-6">Popular categories</p>
+              <div className="flex flex-wrap gap-3">
+                {['Furniture', 'Ceramics', 'Fine Art', 'Jewelry', 'Lighting', 'Decorative'].map((cat) => (
                   <Link
                     key={cat}
                     href={`/categories/${cat.toLowerCase().replace(' ', '-')}`}
                     onClick={onClose}
-                    className="tag transition-colors duration-normal hover:text-text-primary"
+                    className="btn-pill"
                   >
                     {cat}
                   </Link>
@@ -237,20 +230,5 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         </div>
       </div>
     </div>
-  )
-}
-
-function StatusBadge({ status }: { status: 'available' | 'pending' | 'sold' }) {
-  const config = {
-    available: 'badge-available',
-    pending: 'badge-pending',
-    sold: 'badge-sold',
-  }
-  const labels = { available: 'Available', pending: 'Pending', sold: 'Sold' }
-
-  return (
-    <span className={`badge text-[10px] px-2 py-0.5 ${config[status]}`}>
-      {labels[status]}
-    </span>
   )
 }

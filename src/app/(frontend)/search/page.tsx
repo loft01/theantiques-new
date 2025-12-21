@@ -53,11 +53,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       </section>
 
       {/* Results Section */}
-      <section className="mx-auto max-w-7xl px-6 py-12">
+      <section className="py-12">
         {query ? (
           <>
             {/* Results header with filters */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 px-6">
               <p className="text-body text-text-secondary">
                 {totalDocs === 0 ? (
                   'No results found'
@@ -78,7 +78,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
             {/* Results Grid */}
             {products.length > 0 ? (
-              <ProductGrid products={transformedProducts} columns={4} />
+              <ProductGrid products={transformedProducts} />
             ) : (
               <NoResults query={query} />
             )}

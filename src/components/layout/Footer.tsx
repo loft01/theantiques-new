@@ -1,196 +1,160 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { useState } from 'react'
 
 export function Footer() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setStatus('success')
+        setEmail('')
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
-    <footer className="relative bg-bg-primary border-t border-border-default mt-auto">
-      <div className="mx-auto max-w-7xl px-6 pt-16">
-        {/* Logo */}
-        <div className="mb-16">
-          <Link href="/" className="inline-block transition-opacity duration-normal hover:opacity-80">
-            <Image
-              src="/logo_theantiques.svg"
-              alt="The Antiques"
-              width={180}
-              height={32}
-              className="h-8 w-auto invert"
+    <footer className="relative bg-bg-primary">
+      {/* Newsletter Bar */}
+      <div className="border-t border-b border-border-primary">
+        <div className="container-editorial py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <p className="text-body-medium">
+            Subscribe for our Newsletter and get a 10% Discount.
+          </p>
+          <form onSubmit={handleSubmit} className="flex gap-3 max-w-md w-full md:w-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Your E-Mail"
+              className="input-field flex-1"
+              disabled={status === 'loading'}
             />
-          </Link>
+            <button
+              type="submit"
+              className="btn-pill-filled whitespace-nowrap"
+              disabled={status === 'loading'}
+            >
+              Subscribe
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </form>
         </div>
-
-        {/* Main Grid - Links + Newsletter */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-10">
-          {/* Menu */}
-          <div>
-            <h4 className="text-caption text-text-tertiary mb-5">Menu</h4>
-            <nav className="flex flex-col gap-3">
-              <Link
-                href="/"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                Home
-              </Link>
-              <Link
-                href="/categories"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                Shop
-              </Link>
-              <Link
-                href="/about"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                Contact
-              </Link>
-            </nav>
+        {status === 'success' && (
+          <div className="container-editorial pb-4">
+            <p className="text-caption text-green-500">Thank you for subscribing!</p>
           </div>
+        )}
+      </div>
 
-          {/* Legal */}
+      {/* Main Footer Grid */}
+      <div className="container-editorial py-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10">
+          {/* Column 1 - Brand Info */}
           <div>
-            <h4 className="text-caption text-text-tertiary mb-5">Legal</h4>
-            <nav className="flex flex-col gap-3">
-              <Link
-                href="/privacy"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/cookies"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                Cookie Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                Terms and Conditions
-              </Link>
-              <Link
-                href="/shipping"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                Delivery and Return
-              </Link>
-            </nav>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-caption text-text-tertiary mb-5">Contact</h4>
-            <div className="flex flex-col gap-3">
-              <a
-                href="tel:+390000000000"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                +39 000 000 0000
-              </a>
-              <a
-                href="mailto:hello@theantiques.com"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                hello@theantiques.com
-              </a>
+            <p className="text-caption text-text-secondary mb-4">
+              &copy; {new Date().getFullYear()} The Antiques
+            </p>
+            <div className="space-y-2">
+              <p className="text-caption text-text-tertiary">Made with care</p>
             </div>
           </div>
 
-          {/* Follow Us */}
+          {/* Column 2 - Legal Links */}
           <div>
-            <h4 className="text-caption text-text-tertiary mb-5">Follow us</h4>
+            <nav className="flex flex-col gap-3">
+              <Link
+                href="/terms"
+                className="text-caption text-text-primary hover:opacity-70 transition-opacity"
+              >
+                Terms & Conditions
+              </Link>
+              <Link
+                href="/shipping"
+                className="text-caption text-text-primary hover:opacity-70 transition-opacity"
+              >
+                Shipping & Returns
+              </Link>
+              <Link
+                href="/privacy"
+                className="text-caption text-text-primary hover:opacity-70 transition-opacity"
+              >
+                Privacy Policy
+              </Link>
+            </nav>
+          </div>
+
+          {/* Column 3 - Social Links */}
+          <div>
             <nav className="flex flex-col gap-3">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
+                className="text-caption text-text-primary hover:opacity-70 transition-opacity"
               >
                 Instagram
               </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
+              <Link
+                href="/about"
+                className="text-caption text-text-primary hover:opacity-70 transition-opacity"
               >
-                Facebook
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
+                About
+              </Link>
+              <Link
+                href="/contact"
+                className="text-caption text-text-primary hover:opacity-70 transition-opacity"
               >
-                Twitter
-              </a>
-              <a
-                href="https://tiktok.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-caption text-text-secondary transition-colors duration-normal hover:text-text-primary"
-              >
-                TikTok
-              </a>
+                Contact
+              </Link>
             </nav>
           </div>
-
-          {/* Newsletter - spans 2 columns */}
-          <div className="col-span-2">
-            <h4 className="text-caption text-text-tertiary mb-5">Newsletter</h4>
-            <form className="flex gap-3" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="flex-1 max-w-[240px] h-11 px-4 bg-transparent border border-border-subtle rounded-lg text-caption text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-secondary transition-colors duration-normal"
-              />
-              <button
-                type="submit"
-                className="flex items-center justify-center h-11 w-11 rounded-full border border-text-primary text-text-primary transition-all duration-normal hover:bg-text-primary hover:text-bg-primary flex-shrink-0"
-                aria-label="Subscribe to newsletter"
-              >
-                <ArrowUpRight className="w-5 h-5" />
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Copyright */}
-        <div className="mt-20 py-8 border-t border-border-default">
-          <p className="text-small text-text-tertiary text-center">
-            &copy; {new Date().getFullYear()} - The Antiques. All rights reserved.
-          </p>
         </div>
       </div>
 
-      {/* Large Gradient Watermark Logo */}
+      {/* Large Watermark Logo */}
       <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none select-none overflow-hidden h-[30vh] md:h-[40vh]"
+        className="relative pointer-events-none select-none overflow-hidden h-[20vh] md:h-[25vh]"
         aria-hidden="true"
       >
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex justify-center">
           <span
-            className="text-[18vw] md:text-[15vw] lg:text-[12vw] font-bold tracking-tighter whitespace-nowrap uppercase"
+            className="text-[11vw] font-bold tracking-[-0.04em] whitespace-nowrap uppercase"
             style={{
-              background: 'linear-gradient(to top, rgba(39, 39, 42, 0.5) 0%, rgba(30, 30, 34, 0.25) 40%, transparent 80%)',
+              lineHeight: '1',
+              background: 'linear-gradient(to bottom, rgba(80, 80, 80, 0.9) 0%, rgba(60, 60, 60, 0.6) 30%, rgba(40, 40, 40, 0.3) 70%, transparent 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              lineHeight: '0.8',
-              transform: 'translateY(25%)',
             }}
           >
             THE ANTIQUES
           </span>
         </div>
+      </div>
+
+      {/* Copyright */}
+      <div className="absolute bottom-6 left-0 right-0 text-center">
+        <p className="text-caption text-text-tertiary">
+          &copy; {new Date().getFullYear()} The Antiques
+        </p>
       </div>
     </footer>
   )

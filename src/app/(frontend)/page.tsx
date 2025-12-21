@@ -1,9 +1,15 @@
 import { Metadata } from 'next'
 import { ProductGrid } from '@/components/products'
-import { CategoryScroll } from '@/components/categories'
-import { Hero, LifestyleGrid } from '@/components/home'
-import { NewsletterForm } from '@/components/forms'
-import { getCategories, getProducts, getCategoryProductCount, transformCategory, transformProduct, getSiteSettings } from '@/lib/payload'
+import {
+  Hero,
+  ManifestoSection,
+  CinematicBreak,
+  HighlightedObject,
+  EditorialStories,
+  QuoteSection,
+  FeaturedProductsSection
+} from '@/components/home'
+import { getCategories, getProducts, transformProduct } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'The Antiques | Curated Vintage & Antique Treasures',
@@ -18,72 +24,75 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   // Fetch data in parallel
-  const [categories, productsResult, siteSettings] = await Promise.all([
+  const [categories, productsResult] = await Promise.all([
     getCategories({ parentOnly: true }),
-    getProducts({ featured: true, limit: 8 }),
-    getSiteSettings(),
+    getProducts({ featured: true, limit: 9 }),
   ])
-
-  // Get product counts for categories
-  const categoriesWithCounts = await Promise.all(
-    categories.map(async (cat) => {
-      const count = await getCategoryProductCount(cat.id)
-      return transformCategory(cat, count)
-    })
-  )
 
   const featuredProducts = productsResult.products.map(transformProduct)
 
-  // Hero content from site settings or defaults
-  const heroTitle = siteSettings.hero?.title || 'Timeless Treasures'
-  const heroSubtitle = siteSettings.hero?.subtitle || 'Discover unique vintage and antique pieces with stories to tell'
+  // Get a featured product for the highlighted section
+  const highlightedProduct = featuredProducts[0]
+
+  // Prepare categories for hero
+  const heroCategories = categories.map(cat => ({
+    slug: cat.slug,
+    name: cat.name,
+  }))
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section - full width */}
-      <Hero
-        title={heroTitle}
-        subtitle={heroSubtitle}
-        ctaText="Browse Collection"
-        ctaLink="/categories"
+      {/* 1. Hero Editorial Block */}
+      <Hero categories={heroCategories} />
+
+      {/* 2. Manifesto Section */}
+      <ManifestoSection />
+
+      {/* 3. Featured Collection Grid */}
+      <FeaturedProductsSection>
+        {featuredProducts.length > 0 ? (
+          <ProductGrid products={featuredProducts.slice(0, 6)} />
+        ) : (
+          <p className="text-center text-text-secondary py-12">
+            No featured products yet.
+          </p>
+        )}
+      </FeaturedProductsSection>
+
+      {/* 4. Cinematic Break */}
+      <CinematicBreak
+        image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop&sat=-100"
+        alt="Antique furniture in natural setting"
       />
 
-      {/* Featured Categories */}
-      <section className="mx-auto max-w-7xl px-6 mt-16 mb-20">
-        <h2 className="text-title-1 text-text-primary mb-8 text-center">Browse Categories</h2>
-        {categoriesWithCounts.length > 0 ? (
-          <CategoryScroll categories={categoriesWithCounts} />
-        ) : (
-          <p className="text-center text-text-secondary">No categories available yet.</p>
-        )}
-      </section>
+      {/* 5. Highlighted Object Section */}
+      {highlightedProduct && (
+        <HighlightedObject
+          title={highlightedProduct.title}
+          description="A stunning piece that embodies timeless elegance and superior craftsmanship. Each detail tells a story of artistry and dedication to quality that transcends generations."
+          image={highlightedProduct.image.url}
+          link={`/products/${highlightedProduct.slug}`}
+          ctaText="View Object"
+        />
+      )}
 
-      {/* Featured Products */}
-      <section className="mx-auto max-w-7xl px-6 mb-20">
-        <h2 className="text-title-1 text-text-primary mb-8 text-center">Featured Items</h2>
-        {featuredProducts.length > 0 ? (
-          <ProductGrid products={featuredProducts} columns={4} />
-        ) : (
-          <p className="text-center text-text-secondary">No featured products yet.</p>
-        )}
-      </section>
+      {/* 6. More Products */}
+      {featuredProducts.length > 6 && (
+        <FeaturedProductsSection>
+          <ProductGrid products={featuredProducts.slice(6, 9)} />
+        </FeaturedProductsSection>
+      )}
 
-      {/* Lifestyle Grid */}
-      <section className="mx-auto max-w-7xl px-6 mb-20">
-        <h2 className="text-title-1 text-text-primary mb-8 text-center">Explore</h2>
-        <LifestyleGrid cards={[]} />
-      </section>
+      {/* 7. Editorial Stories */}
+      <EditorialStories />
 
-      {/* Newsletter - elevated section */}
-      <section className="bg-bg-secondary border-y border-border-default py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
-          <h2 className="text-title-1 text-text-primary mb-4">Stay Updated</h2>
-          <p className="text-body text-text-secondary mb-8 max-w-md mx-auto">
-            Subscribe to receive updates on new arrivals and exclusive pieces
-          </p>
-          <NewsletterForm />
-        </div>
-      </section>
+      {/* 8. Quote Section */}
+      <QuoteSection
+        quote="The Antiques redefines the concept of curated design. In a world saturated with options, this collection excels by focusing on the essentials—carefully selected pieces that embody timeless sophistication and pure simplicity."
+        author="Interior Design Weekly"
+      />
+
+      {/* Footer handles newsletter */}
     </div>
   )
 }

@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ChevronRight } from 'lucide-react'
 import { ProductGrid } from '@/components/products'
-import { SubcategoryPills } from '@/components/categories/SubcategoryPills'
 import { getCategoryBySlug, getSubcategories, getProducts, transformProduct } from '@/lib/payload'
 
 interface PageProps {
@@ -31,7 +29,6 @@ export default async function CategoryPage({ params }: PageProps) {
     notFound()
   }
 
-  // Get subcategories and products in parallel
   const [subcategories, productsResult] = await Promise.all([
     getSubcategories(slug),
     getProducts({ category: category.id, limit: 12 }),
@@ -44,74 +41,78 @@ export default async function CategoryPage({ params }: PageProps) {
   }))
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12 pb-24">
-      {/* Breadcrumb - caption size, secondary color per rulebook */}
-      <nav className="flex items-center gap-2 text-caption text-text-secondary mb-8">
-        <Link href="/" className="transition-colors duration-normal hover:text-text-primary">Home</Link>
-        <ChevronRight className="w-4 h-4" />
-        <Link href="/categories" className="transition-colors duration-normal hover:text-text-primary">Categories</Link>
-        <ChevronRight className="w-4 h-4" />
-        <span className="text-text-primary">{category.name}</span>
-      </nav>
+    <div className="min-h-screen">
+      {/* Header */}
+      <section className="py-12 border-b border-border-primary">
+        <div className="container-editorial">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-2 text-caption text-text-tertiary mb-8">
+            <Link href="/" className="hover:text-text-primary transition-opacity">Home</Link>
+            <span>/</span>
+            <Link href="/categories" className="hover:text-text-primary transition-opacity">Shop</Link>
+            <span>/</span>
+            <span className="text-text-primary">{category.name}</span>
+          </nav>
 
-      {/* Header - title-1 per rulebook */}
-      <div className="mb-10">
-        <h1 className="text-display text-text-primary mb-3">{category.name}</h1>
-        {category.description && (
-          <p className="text-body text-text-secondary max-w-3xl">{category.description}</p>
-        )}
-      </div>
-
-      {/* Subcategory Pills */}
-      {subcategoryData.length > 0 && (
-        <div className="mb-8">
-          <SubcategoryPills
-            subcategories={subcategoryData}
-            categorySlug={slug}
-          />
+          <h1 className="text-manifesto mb-4">{category.name}</h1>
+          {category.description && (
+            <p className="text-body text-text-secondary max-w-2xl">{category.description}</p>
+          )}
         </div>
-      )}
+      </section>
 
-      {/* Filter Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-default">
-        <p className="text-caption text-text-secondary">
-          <span className="text-text-primary font-medium">{productsResult.totalDocs}</span> items
-        </p>
-        <div className="flex items-center gap-4">
-          <select className="input h-10 px-4 text-caption">
-            <option>Sort by: Newest</option>
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
-          </select>
-          <select className="input h-10 px-4 text-caption">
-            <option>All Status</option>
-            <option>Available</option>
-            <option>Pending</option>
-            <option>Sold</option>
-          </select>
+      {/* Filters & Count */}
+      <section className="py-6 border-b border-border-primary">
+        <div className="container-editorial flex flex-wrap items-center justify-between gap-4">
+          <p className="text-caption text-text-secondary">
+            <span className="text-text-primary">{productsResult.totalDocs}</span> items
+          </p>
+
+          {/* Subcategory Pills */}
+          {subcategoryData.length > 0 && (
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href={`/categories/${slug}`}
+                className="btn-pill text-sm"
+              >
+                All
+              </Link>
+              {subcategoryData.map((sub) => (
+                <Link
+                  key={sub.slug}
+                  href={`/categories/${sub.slug}`}
+                  className="btn-pill text-sm"
+                >
+                  {sub.name}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
-      </div>
+      </section>
 
       {/* Products Grid */}
-      {products.length > 0 ? (
-        <ProductGrid products={products} columns={4} />
-      ) : (
-        <div className="text-center py-20">
-          <p className="text-body text-text-secondary mb-3">No products found in this category yet.</p>
-          <Link href="/categories" className="text-text-primary transition-colors duration-normal hover:opacity-80 inline-block">
-            Browse other categories
-          </Link>
-        </div>
-      )}
+      <section>
+        {products.length > 0 ? (
+          <ProductGrid products={products} />
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-body text-text-secondary mb-4">No products found in this category yet.</p>
+            <Link href="/categories" className="link-arrow inline-flex">
+              Browse other categories
+            </Link>
+          </div>
+        )}
 
-      {/* Load More */}
-      {productsResult.hasNextPage && (
-        <div className="mt-12 text-center">
-          <button className="btn-secondary">
-            Load More
-          </button>
-        </div>
-      )}
+        {/* Load More */}
+        {productsResult.hasNextPage && (
+          <div className="py-12 text-center">
+            <button className="btn-pill">
+              Load More
+            </button>
+          </div>
+        )}
+      </section>
     </div>
   )
 }

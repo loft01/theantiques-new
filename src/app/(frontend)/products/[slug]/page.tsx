@@ -1,53 +1,31 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { ChevronRight, MessageCircle, Share2 } from 'lucide-react'
-import { ImageGallery, ProductGrid } from '@/components/products'
+import { ArrowRight } from 'lucide-react'
+import { ProductGrid } from '@/components/products'
 import { OfferButton } from '@/components/forms/OfferButton'
 import { getProductBySlug, getRelatedProducts, getMediaUrl, transformProduct } from '@/lib/payload'
 import type { Category, Media } from '@/payload-types'
 
 type ProductStatus = 'available' | 'pending' | 'sold'
 
-const statusConfig: Record<ProductStatus, { label: string; className: string; description: string }> = {
-  available: {
-    label: 'Available',
-    className: 'badge-available',
-    description: 'This item is available for purchase',
-  },
-  pending: {
-    label: 'Pending',
-    className: 'badge-pending',
-    description: 'An offer is being considered',
-  },
-  sold: {
-    label: 'Sold',
-    className: 'badge-sold',
-    description: 'This item has been sold',
-  },
+const statusLabels: Record<ProductStatus, string> = {
+  available: 'Available',
+  pending: 'Pending',
+  sold: 'Sold',
 }
 
-// Convert Lexical richText to HTML
-function richTextToHtml(content: unknown): string {
+function richTextToPlainText(content: unknown): string {
   if (!content || typeof content !== 'object') return ''
-
   const root = (content as { root?: { children?: unknown[] } }).root
   if (!root?.children) return ''
 
   return root.children
     .map((node: unknown) => {
-      const n = node as { type: string; tag?: string; children?: { text?: string }[] }
-      const text = n.children?.map(c => c.text || '').join('') || ''
-
-      if (n.type === 'heading') {
-        const tag = n.tag || 'h3'
-        return `<${tag}>${text}</${tag}>`
-      }
-      if (n.type === 'paragraph') {
-        return `<p>${text}</p>`
-      }
-      return ''
+      const n = node as { children?: { text?: string }[] }
+      return n.children?.map(c => c.text || '').join('') || ''
     })
-    .join('\n')
+    .join(' ')
 }
 
 interface PageProps {
@@ -80,7 +58,6 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-// Generate JSON-LD structured data for products
 function generateProductJsonLd(product: {
   title: string
   slug: string
@@ -120,21 +97,6 @@ function generateProductJsonLd(product: {
   }
 }
 
-// Extract plain text from Lexical richText for schema
-function richTextToPlainText(content: unknown): string {
-  if (!content || typeof content !== 'object') return ''
-  const root = (content as { root?: { children?: unknown[] } }).root
-  if (!root?.children) return ''
-
-  return root.children
-    .map((node: unknown) => {
-      const n = node as { children?: { text?: string }[] }
-      return n.children?.map(c => c.text || '').join('') || ''
-    })
-    .join(' ')
-    .slice(0, 200)
-}
-
 export default async function ProductPage({ params }: PageProps) {
   const { slug } = await params
   const product = await getProductBySlug(slug)
@@ -146,11 +108,9 @@ export default async function ProductPage({ params }: PageProps) {
   const category = product.category as Category
   const categoryId = typeof product.category === 'string' ? product.category : product.category.id
 
-  // Get related products
-  const relatedProductsData = await getRelatedProducts(categoryId, slug, 4)
+  const relatedProductsData = await getRelatedProducts(categoryId, slug, 3)
   const relatedProducts = relatedProductsData.map(transformProduct)
 
-  // Get product images - use placeholder if no images uploaded
   const productImages = product.images?.length ? product.images.map(img => {
     const media = img.image as Media
     return {
@@ -159,21 +119,16 @@ export default async function ProductPage({ params }: PageProps) {
     }
   }) : [{ url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=900&fit=crop', alt: product.title }]
 
-  const images = productImages
-
-  const statusInfo = statusConfig[product.status]
-  const descriptionHtml = richTextToHtml(product.description)
+  const mainImage = productImages[0]
+  const description = richTextToPlainText(product.description)
 
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(product.price)
 
-  const priceDisplay = product.priceLabel === 'offer' ? 'Make an Offer' : formattedPrice
-
-  // Generate JSON-LD for structured data
   const jsonLd = generateProductJsonLd({
     title: product.title,
     slug: product.slug,
@@ -190,106 +145,106 @@ export default async function ProductPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mx-auto max-w-7xl px-6 py-12 pb-24">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-caption text-text-secondary mb-6">
-        <Link href="/" className="transition-colors duration-normal hover:text-text-primary">Home</Link>
-        <ChevronRight className="w-4 h-4" />
-        <Link href="/categories" className="transition-colors duration-normal hover:text-text-primary">Categories</Link>
-        <ChevronRight className="w-4 h-4" />
-        <Link href={`/categories/${category?.slug}`} className="transition-colors duration-normal hover:text-text-primary">
-          {category?.name || 'Category'}
-        </Link>
-        <ChevronRight className="w-4 h-4" />
-        <span className="text-text-primary line-clamp-1">{product.title}</span>
-      </nav>
 
-      {/* Main content */}
-      <div className="grid lg:grid-cols-2 gap-12">
-        {/* Image Gallery */}
-        <div>
-          <ImageGallery images={images} title={product.title} />
-        </div>
+      <div className="min-h-screen">
+        {/* Product Detail - Split Layout */}
+        <section className="border-b border-border-primary">
+          <div className="grid lg:grid-cols-2">
+            {/* Left - Image */}
+            <div className="relative aspect-square lg:aspect-auto lg:min-h-[80vh] bg-bg-tertiary">
+              <Image
+                src={mainImage.url}
+                alt={mainImage.alt}
+                fill
+                className="object-contain p-8 lg:p-16"
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
 
-        {/* Product Info */}
-        <div className="space-y-6">
-          {/* Status badge */}
-          <div className={`badge ${statusInfo.className}`}>
-            {statusInfo.label}
+              {/* Thumbnails */}
+              {productImages.length > 1 && (
+                <div className="absolute bottom-4 left-4 right-4 flex gap-2 overflow-x-auto p-2">
+                  {productImages.map((img, idx) => (
+                    <div
+                      key={idx}
+                      className="relative w-16 h-16 flex-shrink-0 bg-bg-secondary border border-border-primary"
+                    >
+                      <Image
+                        src={img.url}
+                        alt={img.alt}
+                        fill
+                        className="object-contain p-1"
+                        sizes="64px"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right - Info */}
+            <div className="p-8 lg:p-16 flex flex-col justify-center border-l border-border-primary">
+              {/* Breadcrumb */}
+              <nav className="flex items-center gap-2 text-caption text-text-tertiary mb-8">
+                <Link href="/" className="hover:text-text-primary transition-opacity">Home</Link>
+                <span>/</span>
+                <Link href="/categories" className="hover:text-text-primary transition-opacity">Shop</Link>
+                <span>/</span>
+                <Link href={`/categories/${category?.slug}`} className="hover:text-text-primary transition-opacity">
+                  {category?.name || 'Category'}
+                </Link>
+              </nav>
+
+              {/* Title & Price */}
+              <div className="mb-8">
+                <h1 className="text-section-title mb-4">{product.title}</h1>
+                <p className="text-body text-text-secondary">{formattedPrice}</p>
+              </div>
+
+              {/* Status */}
+              <div className="mb-8 py-4 border-y border-border-primary">
+                <p className="text-caption text-text-tertiary mb-1">Status</p>
+                <p className="text-body-medium">{statusLabels[product.status]}</p>
+              </div>
+
+              {/* Description */}
+              {description && (
+                <div className="mb-8">
+                  <p className="text-body text-text-secondary leading-relaxed">
+                    {description}
+                  </p>
+                </div>
+              )}
+
+              {/* CTA */}
+              <div className="mt-auto">
+                <OfferButton
+                  productSlug={product.slug}
+                  productTitle={product.title}
+                  productPrice={product.price}
+                  disabled={product.status === 'sold'}
+                />
+              </div>
+            </div>
           </div>
-
-          {/* Title */}
-          <h1 className="text-display text-text-primary">
-            {product.title}
-          </h1>
-
-          {/* Category */}
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href={`/categories/${category?.slug}`}
-              className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
-            >
-              {category?.name || 'Category'}
-            </Link>
-          </div>
-
-          {/* Price */}
-          <div className="py-4 border-y border-border-default">
-            <p className="text-title-1 text-text-primary">{priceDisplay}</p>
-            <p className="text-small text-text-secondary mt-1">{statusInfo.description}</p>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <OfferButton
-              productSlug={product.slug}
-              productTitle={product.title}
-              productPrice={product.price}
-              disabled={product.status === 'sold'}
-            />
-            <button className="btn-secondary flex-1 flex items-center justify-center gap-2">
-              <MessageCircle className="w-5 h-5" />
-              Ask a Question
-            </button>
-          </div>
-
-          {/* Share */}
-          <button className="flex items-center gap-2 text-text-secondary transition-colors duration-normal hover:text-text-primary">
-            <Share2 className="w-4 h-4" />
-            Share this item
-          </button>
-        </div>
-      </div>
-
-      {/* Description */}
-      {descriptionHtml && (
-        <div className="mt-16 max-w-4xl">
-          <h2 className="text-title-1 text-text-primary mb-6">Description</h2>
-          <div
-            className="prose prose-invert max-w-none
-                       prose-headings:font-semibold prose-headings:text-text-primary
-                       prose-h3:text-title-3 prose-h3:mt-8 prose-h3:mb-3
-                       prose-p:text-text-secondary prose-p:leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-          />
-        </div>
-      )}
-
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <section className="mt-20">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-title-1 text-text-primary">Related Items</h2>
-            <Link
-              href={`/categories/${category?.slug}`}
-              className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
-            >
-              View all {category?.name}
-            </Link>
-          </div>
-          <ProductGrid products={relatedProducts} columns={4} />
         </section>
-      )}
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <section>
+            <div className="px-6 py-12 flex items-center justify-between">
+              <h2 className="text-section-title">Related Items</h2>
+              <Link
+                href={`/categories/${category?.slug}`}
+                className="link-arrow"
+              >
+                View all {category?.name}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <ProductGrid products={relatedProducts} />
+          </section>
+        )}
       </div>
     </>
   )

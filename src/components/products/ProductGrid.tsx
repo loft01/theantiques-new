@@ -12,25 +12,20 @@ interface Product {
     url: string
     alt: string
   }
-  priceLabel?: 'asking' | 'starting' | 'estimate' | 'offer'
+  isNew?: boolean
 }
 
 interface ProductGridProps {
   products: Product[]
-  columns?: 2 | 3 | 4
 }
 
-export function ProductGrid({ products, columns = 4 }: ProductGridProps) {
-  const gridCols = {
-    2: 'grid-cols-1 sm:grid-cols-2',
-    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-  }
-
+export function ProductGrid({ products }: ProductGridProps) {
   return (
-    <div className={`grid ${gridCols[columns]} gap-6`}>
+    <div className="product-grid">
       {products.map((product) => (
-        <ProductCard key={product.slug} {...product} />
+        <div key={product.slug} className="product-grid-item">
+          <ProductCard {...product} />
+        </div>
       ))}
     </div>
   )

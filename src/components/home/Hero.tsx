@@ -1,49 +1,74 @@
-import Image from 'next/image'
-import Link from 'next/link'
+'use client'
 
-interface HeroProps {
-  title?: string
-  subtitle?: string
-  ctaText?: string
-  ctaLink?: string
+import Link from 'next/link'
+import Image from 'next/image'
+
+interface Category {
+  slug: string
+  name: string
 }
 
-export function Hero({
-  title = 'Timeless Treasures',
-  subtitle = 'Discover unique vintage and antique pieces with stories to tell',
-  ctaText = 'Browse Collection',
-  ctaLink = '/categories',
-}: HeroProps) {
+interface HeroProps {
+  categories?: Category[]
+  heroImage?: string
+}
+
+export function Hero({ categories = [], heroImage }: HeroProps) {
   return (
-    <section className="relative min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden">
-      {/* Background Image */}
-      <Image
-        src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop"
-        alt="Vintage antique collection"
-        fill
-        priority
-        className="object-cover"
-        sizes="100vw"
-      />
+    <section className="relative">
+      <div className="grid lg:grid-cols-[280px_1fr] min-h-[calc(100vh-98px)]">
+        {/* Left Sidebar - Categories (Desktop only) */}
+        <div className="hidden lg:flex flex-col justify-between p-6 border-r border-border-primary">
+          {/* Tagline */}
+          <div>
+            <p className="text-caption text-text-secondary">
+              Curated Design,
+              <br />
+              for a timeless living.
+            </p>
+          </div>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60" />
-
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-12 md:py-16">
-        <div className="max-w-2xl">
-          <h1 className="text-display md:text-[40px] md:leading-[48px] lg:text-[48px] lg:leading-[56px] text-text-primary mb-4">
-            {title}
-          </h1>
-          <p className="text-body md:text-title-3 text-text-secondary mb-8 max-w-lg">
-            {subtitle}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link href={ctaLink} className="btn-primary inline-flex items-center justify-center">
-              {ctaText}
+          {/* Category Links */}
+          <nav className="space-y-1 my-8">
+            <Link
+              href="/categories"
+              className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
+            >
+              Shop All
             </Link>
-            <Link href="/about" className="btn-secondary inline-flex items-center justify-center">
-              Our Story
+            {categories.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/categories/${cat.slug}`}
+                className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Empty space at bottom */}
+          <div />
+        </div>
+
+        {/* Right Side - Hero Image */}
+        <div className="relative min-h-[60vh] lg:min-h-0">
+          <Image
+            src={heroImage || "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop"}
+            alt="Featured antique piece"
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 1024px) 100vw, calc(100vw - 280px)"
+          />
+
+          {/* Minimal CTA overlay - bottom right */}
+          <div className="absolute bottom-6 right-6">
+            <Link
+              href="/categories"
+              className="btn-pill bg-bg-primary/80 backdrop-blur-sm"
+            >
+              Explore Collection
             </Link>
           </div>
         </div>

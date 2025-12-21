@@ -1,4 +1,5 @@
-import { CategoryCard } from '@/components/categories'
+import Link from 'next/link'
+import Image from 'next/image'
 import { getCategories, getCategoryProductCount, transformCategory } from '@/lib/payload'
 
 export const metadata = {
@@ -7,10 +8,8 @@ export const metadata = {
 }
 
 export default async function CategoriesPage() {
-  // Get only parent categories (no subcategories)
   const categories = await getCategories({ parentOnly: true })
 
-  // Get product counts for each category
   const categoriesWithCounts = await Promise.all(
     categories.map(async (cat) => {
       const count = await getCategoryProductCount(cat.id)
@@ -19,21 +18,54 @@ export default async function CategoriesPage() {
   )
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-semibold mb-4">Categories</h1>
-        <p className="text-zinc-400 max-w-2xl mx-auto">
-          Explore our carefully curated collection of antiques and vintage pieces across various categories
-        </p>
-      </div>
+      <section className="section-padding border-b border-border-primary">
+        <div className="container-editorial text-center">
+          <h1 className="text-manifesto mb-4">Shop All</h1>
+          <p className="text-body text-text-secondary max-w-2xl mx-auto">
+            Explore our carefully curated collection of antiques and vintage pieces
+          </p>
+        </div>
+      </section>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {categoriesWithCounts.map((category) => (
-          <CategoryCard key={category.slug} {...category} />
-        ))}
-      </div>
+      <section>
+        <div className="product-grid">
+          {categoriesWithCounts.map((category) => (
+            <div key={category.slug} className="product-grid-item">
+              <Link
+                href={`/categories/${category.slug}`}
+                className="group block"
+              >
+                <div className="product-card-image mb-4">
+                  {category.image?.url ? (
+                    <Image
+                      src={category.image.url}
+                      alt={category.image.alt || category.name}
+                      fill
+                      className="object-cover group-hover:scale-[1.02] transition-transform"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-text-tertiary">
+                      No image
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-between items-baseline">
+                  <h2 className="product-card-title group-hover:opacity-70 transition-opacity">
+                    {category.name}
+                  </h2>
+                  <span className="text-caption text-text-tertiary">
+                    {category.productCount} items
+                  </span>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

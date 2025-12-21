@@ -2,9 +2,8 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
-import { Search, Menu, X } from 'lucide-react'
-import { MegaMenu } from './MegaMenu'
+import { useState, useEffect } from 'react'
+import { Search } from 'lucide-react'
 import { SearchModal } from '../search/SearchModal'
 
 interface FeaturedProduct {
@@ -34,125 +33,181 @@ export function Header({ categories = [] }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
+  // Close menu on escape
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMenuOpen(false)
+      }
+    }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [])
+
+  // Prevent scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMenuOpen])
+
   return (
     <>
-      <header className="sticky top-0 z-header bg-bg-secondary border-b border-border-default">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
+      <header className="fixed top-0 left-0 right-0 z-header bg-bg-primary/90 backdrop-blur-sm">
+        {/* Main Nav Bar */}
+        <div className="flex items-center justify-between h-14 px-6 border-b border-border-primary/50">
+          {/* Left - Menu */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="nav-link"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+          >
+            Menu
+          </button>
+
+          {/* Center - Brand */}
+          <Link
+            href="/"
+            className="absolute left-1/2 -translate-x-1/2"
+          >
+            <Image
+              src="/logo_theantiques.svg"
+              alt="The Antiques"
+              width={140}
+              height={20}
+              priority
+              className="h-5 w-auto invert"
+            />
+          </Link>
+
+          {/* Right - Search */}
+          <div className="flex items-center gap-6">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="nav-link flex items-center gap-2"
+              aria-label="Open search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+      </header>
+
+      {/* Spacer for fixed header */}
+      <div className="h-14" />
+
+      {/* Full Screen Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-overlay bg-bg-primary">
+          {/* Menu Header */}
+          <div className="flex items-center justify-between h-14 px-6 border-b border-border-primary">
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="nav-link"
+            >
+              Close
+            </button>
             <Link
               href="/"
-              className="transition-opacity duration-normal hover:opacity-80"
+              className="absolute left-1/2 -translate-x-1/2"
+              onClick={() => setIsMenuOpen(false)}
             >
               <Image
                 src="/logo_theantiques.svg"
                 alt="The Antiques"
-                width={160}
-                height={24}
-                priority
-                className="h-6 w-auto invert"
+                width={140}
+                height={20}
+                className="h-5 w-auto invert"
               />
             </Link>
-
-            {/* Desktop Navigation with MegaMenu */}
-            <div className="hidden lg:block">
-              {categories.length > 0 && <MegaMenu categories={categories} />}
-            </div>
-
-            {/* Right side */}
-            <div className="flex items-center gap-2">
-              {/* Desktop links */}
-              <nav className="hidden md:flex items-center gap-1">
-                <Link
-                  href="/about"
-                  className="px-4 py-2 text-caption-medium text-text-secondary transition-colors duration-normal hover:text-text-primary"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/contact"
-                  className="px-4 py-2 text-caption-medium text-text-secondary transition-colors duration-normal hover:text-text-primary"
-                >
-                  Contact
-                </Link>
-              </nav>
-
-              {/* Search Button */}
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="flex items-center justify-center gap-2 h-11 min-w-11 px-3 text-text-secondary rounded-md transition-colors duration-normal hover:text-text-primary hover:bg-bg-tertiary"
-                aria-label="Open search"
-              >
-                <Search className="w-5 h-5" aria-hidden="true" />
-                <span className="hidden sm:inline text-caption-medium">Search</span>
-              </button>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden flex items-center justify-center h-11 w-11 text-text-secondary rounded-md transition-colors duration-normal hover:text-text-primary hover:bg-bg-tertiary"
-                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-                aria-expanded={isMenuOpen}
-              >
-                {isMenuOpen ? (
-                  <X className="w-6 h-6" aria-hidden="true" />
-                ) : (
-                  <Menu className="w-6 h-6" aria-hidden="true" />
-                )}
-              </button>
-            </div>
+            <div className="w-10" />
           </div>
 
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <nav className="lg:hidden py-4 border-t border-border-default">
-              <div className="flex flex-col gap-1">
-                {/* Mobile Search Button */}
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false)
-                    setIsSearchOpen(true)
-                  }}
-                  className="flex items-center gap-3 h-12 px-4 bg-bg-tertiary rounded-lg text-text-secondary transition-colors duration-normal hover:text-text-primary"
-                >
-                  <Search className="w-5 h-5" />
-                  <span className="text-body">Search antiques...</span>
-                </button>
+          {/* Menu Content */}
+          <div className="h-[calc(100vh-56px)] overflow-y-auto">
+            <div className="grid lg:grid-cols-2 min-h-full">
+              {/* Left Side - Navigation */}
+              <div className="p-6 lg:p-12 border-r border-border-primary">
+                {/* Categories Sidebar */}
+                <div className="mb-12">
+                  <p className="text-caption text-text-tertiary mb-4">
+                    Curated Design,
+                    <br />
+                    for a timeless living.
+                  </p>
+                </div>
 
-                <div className="h-px bg-border-default my-3" />
-
-                {categories.map((cat) => (
+                {/* Category Links */}
+                <nav className="space-y-1">
                   <Link
-                    key={cat.slug}
-                    href={`/categories/${cat.slug}`}
-                    className="h-11 flex items-center px-4 text-body text-text-primary rounded-md transition-colors duration-normal hover:bg-bg-tertiary"
+                    href="/categories"
                     onClick={() => setIsMenuOpen(false)}
+                    className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
                   >
-                    {cat.name}
+                    Shop All
                   </Link>
-                ))}
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.slug}
+                      href={`/categories/${cat.slug}`}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </nav>
 
-                <div className="h-px bg-border-default my-3" />
-
-                <Link
-                  href="/about"
-                  className="h-11 flex items-center px-4 text-body text-text-secondary rounded-md transition-colors duration-normal hover:bg-bg-tertiary hover:text-text-primary"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/contact"
-                  className="h-11 flex items-center px-4 text-body text-text-secondary rounded-md transition-colors duration-normal hover:bg-bg-tertiary hover:text-text-primary"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Contact
-                </Link>
+                {/* Secondary Links */}
+                <div className="mt-12 space-y-4">
+                  <Link
+                    href="/about"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
+                  >
+                    Contact
+                  </Link>
+                </div>
               </div>
-            </nav>
-          )}
+
+              {/* Right Side - Featured Image */}
+              <div className="hidden lg:block relative">
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{
+                    backgroundImage: 'url(/images/hero-antique.jpg)',
+                    filter: 'grayscale(20%)',
+                  }}
+                />
+                {/* Optional: Featured product or CTA */}
+                <div className="absolute bottom-6 right-6">
+                  <Link
+                    href="/categories"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="btn-pill bg-bg-primary/80 backdrop-blur-sm"
+                  >
+                    60%
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </header>
+      )}
 
       {/* Search Modal */}
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />

@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
-import { Mail, Phone, MapPin, Clock } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 import { ContactForm } from '@/components/forms'
 
 export const metadata: Metadata = {
@@ -10,122 +12,74 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-bg-secondary border-b border-border-default py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
-          <h1 className="text-display text-text-primary mb-4">Get in Touch</h1>
-          <p className="text-body text-text-secondary max-w-2xl mx-auto">
-            Have a question about a piece? Looking for something specific? We would love to hear from you.
-          </p>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="grid lg:grid-cols-5 gap-12 max-w-6xl mx-auto">
-          {/* Contact Info */}
-          <div className="lg:col-span-2 space-y-8">
+      {/* Split Layout */}
+      <section className="border-b border-border-primary">
+        <div className="grid lg:grid-cols-2 min-h-[60vh]">
+          {/* Left - Contact Info */}
+          <div className="p-8 lg:p-12 xl:p-16 flex flex-col justify-between border-r border-border-primary">
             <div>
-              <h2 className="text-title-1 text-text-primary mb-6">Contact Information</h2>
-              <p className="text-body text-text-secondary mb-8">
-                Reach out through any of these channels or fill out the form and we will get back to you shortly.
-              </p>
+              <h2 className="text-caption text-text-tertiary mb-8">Contact</h2>
+
+              {/* Large Address */}
+              <address className="not-italic mb-12">
+                <p className="text-manifesto leading-tight">
+                  The Antiques
+                  <br />
+                  25 Via del Design
+                  <br />
+                  20121 Milano
+                  <br />
+                  Italy
+                </p>
+              </address>
             </div>
 
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-5 h-5 text-text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-body-medium text-text-primary mb-1">Email</h3>
-                  <a
-                    href="mailto:info@theantiques.com"
-                    className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
-                  >
-                    info@theantiques.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-5 h-5 text-text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-body-medium text-text-primary mb-1">Phone</h3>
-                  <a
-                    href="tel:+390000000000"
-                    className="text-body text-text-secondary transition-colors duration-normal hover:text-text-primary"
-                  >
-                    +39 000 000 0000
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-5 h-5 text-text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-body-medium text-text-primary mb-1">Location</h3>
-                  <p className="text-body text-text-secondary">
-                    By appointment only
-                    <br />
-                    <span className="text-small text-text-secondary">Contact us to schedule a visit</span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-5 h-5 text-text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-body-medium text-text-primary mb-1">Response Time</h3>
-                  <p className="text-body text-text-secondary">
-                    We typically respond within 24-48 hours
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div className="pt-6 border-t border-border-default">
-              <h3 className="text-body-medium text-text-primary mb-4">Follow Us</h3>
-              <div className="flex gap-3">
-                <a
-                  href="#"
-                  className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center
-                    text-text-secondary transition-all duration-normal hover:text-text-primary hover:border-border-subtle"
-                  aria-label="Instagram"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="w-11 h-11 bg-bg-secondary border border-border-default rounded-md flex items-center justify-center
-                    text-text-secondary transition-all duration-normal hover:text-text-primary hover:border-border-subtle"
-                  aria-label="Facebook"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                  </svg>
-                </a>
-              </div>
+            {/* Contact Links */}
+            <div className="flex flex-wrap gap-6">
+              <a
+                href="mailto:info@theantiques.com"
+                className="link-arrow"
+              >
+                Email
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-arrow"
+              >
+                Insta
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href="tel:+390000000000"
+                className="link-arrow"
+              >
+                Call
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="lg:col-span-3">
-            <div className="card p-6 md:p-8">
-              <h2 className="text-title-2 text-text-primary mb-6">Send us a message</h2>
+          {/* Right - Form */}
+          <div className="p-8 lg:p-12 xl:p-16 flex flex-col justify-between">
+            <div>
+              <h2 className="text-caption text-text-tertiary mb-8">Message</h2>
               <ContactForm />
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Full Width Image */}
+      <section className="relative h-[50vh] lg:h-[60vh]">
+        <Image
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
+          alt="Mountain landscape"
+          fill
+          className="object-cover grayscale-[30%]"
+        />
       </section>
     </div>
   )
