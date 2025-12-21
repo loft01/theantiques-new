@@ -28,6 +28,7 @@ export function CategoryScroll({ categories }: CategoryScrollProps) {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return
+    e.preventDefault()
     setIsMouseDown(true)
     setIsDragging(false)
     setStartX(e.pageX - scrollRef.current.offsetLeft)
@@ -36,7 +37,6 @@ export function CategoryScroll({ categories }: CategoryScrollProps) {
 
   const handleMouseUp = () => {
     setIsMouseDown(false)
-    // Small delay to allow click to be blocked if we were dragging
     setTimeout(() => setIsDragging(false), 0)
   }
 
@@ -46,10 +46,8 @@ export function CategoryScroll({ categories }: CategoryScrollProps) {
     const x = e.pageX - scrollRef.current.offsetLeft
     const walk = x - startX
 
-    // Only start dragging after threshold
     if (Math.abs(walk) > DRAG_THRESHOLD) {
       setIsDragging(true)
-      e.preventDefault()
       scrollRef.current.scrollLeft = scrollLeft - walk * 1.5
     }
   }
@@ -59,6 +57,17 @@ export function CategoryScroll({ categories }: CategoryScrollProps) {
     setIsDragging(false)
   }
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (isDragging) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
+
+  const scrollClass = isMouseDown 
+    ? 'flex gap-4 overflow-x-auto pb-4 scrollbar-hide select-none cursor-grabbing'
+    : 'flex gap-4 overflow-x-auto pb-4 scrollbar-hide select-none cursor-grab'
+
   return (
     <div className="relative -mx-4 px-4">
       <div
@@ -67,9 +76,8 @@ export function CategoryScroll({ categories }: CategoryScrollProps) {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className={`flex gap-4 overflow-x-auto pb-4 scrollbar-hide ${
-          isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'
-        }`}
+        onClickCapture={handleClick}
+        className={scrollClass}
         style={{ scrollBehavior: isDragging ? 'auto' : 'smooth' }}
       >
         {categories.map((category) => (

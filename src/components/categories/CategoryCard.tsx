@@ -22,7 +22,8 @@ export function CategoryCard({ slug, name, image, productCount }: CategoryCardPr
           src={image.url}
           alt={image.alt}
           fill
-          className="object-cover transition-transform duration-slow group-hover:scale-[1.03]"
+          draggable={false}
+          className="object-cover transition-transform duration-slow group-hover:scale-[1.03] pointer-events-none"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
       ) : (
