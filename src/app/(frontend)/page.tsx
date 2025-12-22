@@ -42,7 +42,10 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       {/* 1. Hero Editorial Block */}
-      <Hero categories={heroCategories} />
+      <Hero
+        categories={heroCategories}
+        heroImageMobile="/IMG_9478.jpg"
+      />
 
       {/* 2. Manifesto Section */}
       <ManifestoSection />
@@ -61,6 +64,7 @@ export default async function HomePage() {
       {/* 4. Cinematic Break */}
       <CinematicBreak
         image="/IMG_9415.jpg"
+        imageMobile="/IMG_9846.jpg"
         alt="Mobili antichi in ambiente naturale"
       />
 
@@ -91,6 +95,7 @@ export default async function HomePage() {
       {/* 9. Final Cinematic Break */}
       <CinematicBreak
         image="/IMG_Sfondo.jpg"
+        imageMobile="/Antiques_dicembre_1.jpg"
         alt="Sfondo antiquariato"
       />
 

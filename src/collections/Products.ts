@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Products: CollectionConfig = {
   slug: 'products',
+  labels: {
+    singular: 'Prodotto',
+    plural: 'Prodotti',
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'status', 'price'],
@@ -12,11 +16,13 @@ export const Products: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: 'Titolo',
       type: 'text',
       required: true,
     },
     {
       name: 'slug',
+      label: 'Slug',
       type: 'text',
       required: true,
       unique: true,
@@ -26,15 +32,22 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'description',
+      label: 'Descrizione',
       type: 'richText',
     },
     {
       name: 'images',
+      label: 'Immagini',
       type: 'array',
       minRows: 1,
+      labels: {
+        singular: 'Immagine',
+        plural: 'Immagini',
+      },
       fields: [
         {
           name: 'image',
+          label: 'Immagine',
           type: 'upload',
           relationTo: 'media',
           required: true,
@@ -43,25 +56,28 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'category',
+      label: 'Categoria',
       type: 'relationship',
       relationTo: 'categories',
       required: true,
     },
     {
       name: 'price',
+      label: 'Prezzo',
       type: 'number',
       required: true,
       min: 0,
     },
     {
       name: 'priceLabel',
+      label: 'Etichetta Prezzo',
       type: 'select',
       defaultValue: 'asking',
       options: [
-        { label: 'Asking Price', value: 'asking' },
-        { label: 'Starting At', value: 'starting' },
-        { label: 'Estimate', value: 'estimate' },
-        { label: 'Make Offer', value: 'offer' },
+        { label: 'Prezzo Richiesto', value: 'asking' },
+        { label: 'A Partire Da', value: 'starting' },
+        { label: 'Stima', value: 'estimate' },
+        { label: 'Fai un\'Offerta', value: 'offer' },
       ],
       admin: {
         position: 'sidebar',
@@ -69,6 +85,7 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'featured',
+      label: 'In Evidenza',
       type: 'checkbox',
       defaultValue: false,
       admin: {
@@ -77,13 +94,14 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'status',
+      label: 'Stato',
       type: 'select',
       defaultValue: 'available',
       required: true,
       options: [
-        { label: 'Available', value: 'available' },
-        { label: 'Pending', value: 'pending' },
-        { label: 'Sold', value: 'sold' },
+        { label: 'Disponibile', value: 'available' },
+        { label: 'In Trattativa', value: 'pending' },
+        { label: 'Venduto', value: 'sold' },
       ],
       admin: {
         position: 'sidebar',

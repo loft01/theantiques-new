@@ -28,20 +28,31 @@ export function ManifestoSection() {
 // ============================================
 interface CinematicBreakProps {
   image?: string
+  imageMobile?: string
   alt?: string
 }
 
 export function CinematicBreak({
   image = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop",
+  imageMobile,
   alt = "Scena cinematografica di antiquariato"
 }: CinematicBreakProps) {
   return (
     <section className="relative h-[50vh] md:h-[70vh]">
+      {/* Desktop Image */}
       <Image
         src={image}
         alt={alt}
         fill
-        className="object-cover grayscale-[20%]"
+        className="object-cover hidden md:block"
+        sizes="100vw"
+      />
+      {/* Mobile Image */}
+      <Image
+        src={imageMobile || image}
+        alt={alt}
+        fill
+        className="object-cover md:hidden"
         sizes="100vw"
       />
     </section>

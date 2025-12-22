@@ -3,6 +3,7 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { it } from '@payloadcms/translations/languages/it'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -22,6 +23,10 @@ export default buildConfig({
     meta: {
       titleSuffix: ' | The Antiques',
     },
+  },
+  i18n: {
+    fallbackLanguage: 'it',
+    supportedLanguages: { it },
   },
   collections: [Users, Media, Categories, Products, Offers, NewsletterSubscribers, ContactMessages],
   globals: [SiteSettings],

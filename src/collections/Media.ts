@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'Media',
+    plural: 'Media',
+  },
   access: {
     read: () => true,
   },
@@ -33,6 +37,7 @@ export const Media: CollectionConfig = {
   fields: [
     {
       name: 'alt',
+      label: 'Testo Alternativo',
       type: 'text',
       required: true,
     },
