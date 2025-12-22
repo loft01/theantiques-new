@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
 import { ProductGrid } from '@/components/products'
+import { ImageGallery } from '@/components/products/ImageGallery'
 import { OfferButton } from '@/components/forms/OfferButton'
 import { getProductBySlug, getRelatedProducts, getMediaUrl, transformProduct } from '@/lib/payload'
 import type { Category, Media } from '@/payload-types'
@@ -150,36 +150,9 @@ export default async function ProductPage({ params }: PageProps) {
         {/* Product Detail - Split Layout */}
         <section className="border-b border-border-primary">
           <div className="grid lg:grid-cols-2">
-            {/* Left - Image */}
-            <div className="relative aspect-square lg:aspect-auto lg:min-h-[80vh] bg-bg-tertiary">
-              <Image
-                src={mainImage.url}
-                alt={mainImage.alt}
-                fill
-                className="object-contain p-8 lg:p-16"
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-
-              {/* Thumbnails */}
-              {productImages.length > 1 && (
-                <div className="absolute bottom-4 left-4 right-4 flex gap-2 overflow-x-auto p-2">
-                  {productImages.map((img, idx) => (
-                    <div
-                      key={idx}
-                      className="relative w-16 h-16 flex-shrink-0 bg-bg-secondary border border-border-primary"
-                    >
-                      <Image
-                        src={img.url}
-                        alt={img.alt}
-                        fill
-                        className="object-contain p-1"
-                        sizes="64px"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+            {/* Left - Image Gallery */}
+            <div className="p-4 lg:p-8">
+              <ImageGallery images={productImages} title={product.title} />
             </div>
 
             {/* Right - Info */}

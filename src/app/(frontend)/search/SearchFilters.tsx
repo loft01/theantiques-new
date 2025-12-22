@@ -30,7 +30,7 @@ export function SearchFilters({ categories, currentCategory, query }: SearchFilt
         id="category-filter"
         value={currentCategory}
         onChange={handleCategoryChange}
-        className="input h-10 px-4 text-caption"
+        className="h-10 px-4 bg-transparent border border-[var(--border-secondary)] rounded-full text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors cursor-pointer"
       >
         <option value="">Tutte le Categorie</option>
         {categories.map((cat) => (

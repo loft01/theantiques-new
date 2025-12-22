@@ -94,7 +94,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 function NoResults({ query }: { query: string }) {
   return (
     <div className="text-center py-20">
-      <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-bg-tertiary flex items-center justify-center">
+      <div className="w-16 h-16 mx-auto mb-6 bg-bg-tertiary flex items-center justify-center">
         <Search className="w-8 h-8 text-text-secondary" />
       </div>
       <h2 className="text-title-2 text-text-primary mb-3">Nessun risultato per &ldquo;{query}&rdquo;</h2>
@@ -108,7 +108,7 @@ function NoResults({ query }: { query: string }) {
 function EmptySearch() {
   return (
     <div className="text-center py-20">
-      <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-bg-tertiary flex items-center justify-center">
+      <div className="w-16 h-16 mx-auto mb-6 bg-bg-tertiary flex items-center justify-center">
         <Search className="w-8 h-8 text-text-secondary" />
       </div>
       <h2 className="text-title-2 text-text-primary mb-3">Cerca nella nostra collezione</h2>

@@ -54,7 +54,7 @@ export function Hero({ categories = [], heroImage }: HeroProps) {
         {/* Right Side - Hero Image */}
         <div className="relative min-h-[60vh] lg:min-h-0">
           <Image
-            src={heroImage || "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop"}
+            src={heroImage || "/Antiques_dicembre.jpg"}
             alt="Pezzo d'antiquariato in evidenza"
             fill
             className="object-cover"

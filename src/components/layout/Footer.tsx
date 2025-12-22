@@ -38,13 +38,13 @@ export function Footer() {
           <p className="text-body-medium">
             Iscriviti alla nostra Newsletter e ottieni uno sconto del 10%.
           </p>
-          <form onSubmit={handleSubmit} className="flex gap-3 max-w-md w-full md:w-auto">
+          <form onSubmit={handleSubmit} className="flex items-center gap-3 max-w-md w-full md:w-auto">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="La tua E-Mail"
-              className="input-field flex-1"
+              className="flex-1 h-10 px-5 bg-transparent border border-[var(--border-secondary)] rounded-full text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
               disabled={status === 'loading'}
             />
             <button

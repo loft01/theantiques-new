@@ -60,7 +60,7 @@ export function MegaMenu({ categories }: MegaMenuProps) {
       {/* Dropdown - centered below entire nav */}
       {activeCategoryData && (
         <div className="absolute left-1/2 -translate-x-1/2 top-full pt-4 z-50">
-          <div className="bg-bg-secondary border border-border-default rounded-lg shadow-lg p-8 min-w-[900px]">
+          <div className="bg-bg-secondary border border-border-default shadow-lg p-8 min-w-[900px]">
             <div className="flex gap-12">
               {/* Subcategories */}
               <div className="w-56">
@@ -104,7 +104,7 @@ export function MegaMenu({ categories }: MegaMenuProps) {
                       href={`/products/${product.slug}`}
                       className="group"
                     >
-                      <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-bg-tertiary mb-3">
+                      <div className="relative aspect-[4/3] overflow-hidden bg-bg-tertiary mb-3">
                         <Image
                           src={product.image.url}
                           alt={product.image.alt}

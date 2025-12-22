@@ -5,7 +5,6 @@ import {
   ManifestoSection,
   CinematicBreak,
   HighlightedObject,
-  EditorialStories,
   QuoteSection,
   FeaturedProductsSection
 } from '@/components/home'
@@ -61,7 +60,7 @@ export default async function HomePage() {
 
       {/* 4. Cinematic Break */}
       <CinematicBreak
-        image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop&sat=-100"
+        image="/IMG_9415.jpg"
         alt="Mobili antichi in ambiente naturale"
       />
 
@@ -83,13 +82,16 @@ export default async function HomePage() {
         </FeaturedProductsSection>
       )}
 
-      {/* 7. Editorial Stories */}
-      <EditorialStories />
-
       {/* 8. Quote Section */}
       <QuoteSection
         quote="The Antiques ridefinisce il concetto di design curato. In un mondo saturo di opzioni, questa collezione eccelle concentrandosi sull'essenziale—pezzi accuratamente selezionati che incarnano sofisticatezza senza tempo e pura semplicità."
         author="Interior Design Magazine"
+      />
+
+      {/* 9. Final Cinematic Break */}
+      <CinematicBreak
+        image="/IMG_Sfondo.jpg"
+        alt="Sfondo antiquariato"
       />
 
       {/* Footer handles newsletter */}

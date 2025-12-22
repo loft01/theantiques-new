@@ -15,7 +15,7 @@ export function CategoryCard({ slug, name, image, productCount }: CategoryCardPr
   return (
     <Link
       href={`/categories/${slug}`}
-      className="group relative block aspect-square overflow-hidden rounded-lg bg-bg-secondary border border-border-default transition-all duration-normal hover:border-border-subtle hover:-translate-y-0.5"
+      className="group relative block aspect-square overflow-hidden bg-bg-secondary border border-border-default transition-all duration-normal hover:border-border-subtle hover:-translate-y-0.5"
     >
       {image ? (
         <Image

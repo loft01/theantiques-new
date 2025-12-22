@@ -59,7 +59,7 @@ export function LifestyleGrid({ cards = demoCards }: LifestyleGridProps) {
           <Link
             key={index}
             href={card.link}
-            className={`group relative overflow-hidden rounded-lg ${spanClass}`}
+            className={`group relative overflow-hidden ${spanClass}`}
           >
             <Image
               src={card.image.url}
@@ -83,7 +83,7 @@ export function LifestyleGrid({ cards = demoCards }: LifestyleGridProps) {
             </div>
 
             {/* Hover border effect */}
-            <div className="absolute inset-0 border-2 border-transparent group-hover:border-text-primary/30 rounded-lg transition-colors duration-normal" />
+            <div className="absolute inset-0 border-2 border-transparent group-hover:border-text-primary/30 transition-colors duration-normal" />
           </Link>
         )
       })}

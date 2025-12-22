@@ -210,7 +210,11 @@ export function Header({ categories = [] }: HeaderProps) {
       )}
 
       {/* Search Modal */}
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        categories={categories.map(c => ({ slug: c.slug, name: c.name }))}
+      />
     </>
   )
 }

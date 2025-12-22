@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { ChevronLeft, ChevronRight, ZoomIn, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface GalleryImage {
@@ -18,6 +18,9 @@ interface ImageGalleryProps {
 export function ImageGallery({ images, title }: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isZoomed, setIsZoomed] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const activeImage = images[activeIndex]
 
@@ -29,58 +32,39 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
     setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
   }
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    setMousePosition({ x, y })
+  }
+
   return (
     <>
       <div className="space-y-4">
-        {/* Main image - card style per rulebook */}
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-bg-secondary border border-border-default group">
+        {/* Main image - square container, image contained at original ratio */}
+        <div
+          ref={containerRef}
+          className="relative aspect-square max-h-[70vh] overflow-hidden bg-bg-primary group mx-auto cursor-zoom-in"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          onMouseMove={handleMouseMove}
+          onClick={() => setIsZoomed(true)}
+        >
           <Image
             src={activeImage.url}
             alt={activeImage.alt}
             fill
-            className="object-cover"
+            className={cn(
+              "object-contain transition-transform duration-200 pointer-events-none",
+              isHovering && "scale-150"
+            )}
+            style={isHovering ? { transformOrigin: `${mousePosition.x}% ${mousePosition.y}%` } : undefined}
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
           />
 
-          {/* Zoom button - icon button pattern */}
-          <button
-            onClick={() => setIsZoomed(true)}
-            className="absolute right-4 top-4 h-11 w-11 flex items-center justify-center bg-bg-secondary/90 rounded-md text-text-primary
-                       opacity-0 group-hover:opacity-100 transition-opacity duration-normal hover:bg-bg-tertiary"
-            aria-label="Zoom image"
-          >
-            <ZoomIn className="w-5 h-5" />
-          </button>
-
-          {/* Navigation arrows */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={goToPrevious}
-                className="absolute left-4 top-1/2 -translate-y-1/2 h-11 w-11 flex items-center justify-center bg-bg-secondary/90 rounded-md
-                           text-text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-normal hover:bg-bg-tertiary"
-                aria-label="Previous image"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={goToNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 h-11 w-11 flex items-center justify-center bg-bg-secondary/90 rounded-md
-                           text-text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-normal hover:bg-bg-tertiary"
-                aria-label="Next image"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </>
-          )}
-
-          {/* Image counter - tag badge style */}
-          {images.length > 1 && (
-            <div className="tag absolute bottom-4 left-1/2 -translate-x-1/2">
-              {activeIndex + 1} / {images.length}
-            </div>
-          )}
         </div>
 
         {/* Thumbnails - 80px per rulebook */}
@@ -91,7 +75,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={cn(
-                  'relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all duration-normal',
+                  'relative flex-shrink-0 w-20 h-20 overflow-hidden transition-all duration-normal',
                   index === activeIndex
                     ? 'ring-2 ring-text-primary ring-offset-2 ring-offset-bg-primary'
                     : 'opacity-60 hover:opacity-100'

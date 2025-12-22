@@ -60,24 +60,24 @@ export function SubcategoryPills({
       {/* All option - active when no subcategory selected */}
       <Link
         href={`/categories/${categorySlug}`}
-        className={`flex-none h-9 px-4 rounded-full text-caption-medium transition-all duration-normal flex items-center ${
+        className={`flex-none h-9 px-4 rounded-full text-sm font-medium transition-all flex items-center ${
           !activeSubcategory
-            ? 'bg-text-primary text-bg-primary'
-            : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+            ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+            : 'border border-[var(--border-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)]'
         }`}
         style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
       >
-        All
+        Tutto
       </Link>
 
       {subcategories.map((sub) => (
         <Link
           key={sub.slug}
           href={`/categories/${categorySlug}/${sub.slug}`}
-          className={`flex-none h-9 px-4 rounded-full text-caption-medium transition-all duration-normal whitespace-nowrap flex items-center ${
+          className={`flex-none h-9 px-4 rounded-full text-sm font-medium transition-all whitespace-nowrap flex items-center ${
             activeSubcategory === sub.slug
-              ? 'bg-text-primary text-bg-primary'
-              : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+              ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+              : 'border border-[var(--border-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)]'
           }`}
           style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
         >

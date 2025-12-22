@@ -88,7 +88,7 @@ export function SearchBar({ variant = 'header', defaultValue = '', autoFocus = f
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Cerca..."
-              className="w-48 md:w-64 h-10 px-4 pl-10 bg-bg-tertiary border border-border-default rounded-md text-small text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-border-subtle transition-colors duration-normal"
+              className="w-48 md:w-64 h-10 px-4 pl-10 bg-bg-tertiary border border-border-default text-small text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-border-subtle transition-colors duration-normal"
               onBlur={() => {
                 if (!query) {
                   setTimeout(() => setIsExpanded(false), 150)

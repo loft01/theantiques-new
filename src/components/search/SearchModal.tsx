@@ -16,12 +16,18 @@ interface SearchResult {
   image: { url: string; alt: string }
 }
 
+interface Category {
+  slug: string
+  name: string
+}
+
 interface SearchModalProps {
   isOpen: boolean
   onClose: () => void
+  categories?: Category[]
 }
 
-export function SearchModal({ isOpen, onClose }: SearchModalProps) {
+export function SearchModal({ isOpen, onClose, categories = [] }: SearchModalProps) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -210,18 +216,18 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           )}
 
           {/* Quick links when empty */}
-          {!query && (
+          {!query && categories.length > 0 && (
             <div className="max-w-2xl mx-auto">
-              <p className="text-caption text-text-tertiary mb-6">Categorie popolari</p>
+              <p className="text-caption text-[var(--text-tertiary)] mb-6">Categorie</p>
               <div className="flex flex-wrap gap-3">
-                {['Mobili', 'Ceramiche', 'Arte', 'Gioielli', 'Illuminazione', 'Decorazioni'].map((cat) => (
+                {categories.map((cat) => (
                   <Link
-                    key={cat}
-                    href={`/categories/${cat.toLowerCase().replace(' ', '-')}`}
+                    key={cat.slug}
+                    href={`/categories/${cat.slug}`}
                     onClick={onClose}
-                    className="btn-pill"
+                    className="h-9 px-4 rounded-full text-sm font-medium border border-[var(--border-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-all flex items-center"
                   >
-                    {cat}
+                    {cat.name}
                   </Link>
                 ))}
               </div>

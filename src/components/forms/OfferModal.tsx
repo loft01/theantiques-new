@@ -109,21 +109,21 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
   }).format(productPrice)
 
   return (
-    <div className="fixed inset-0 z-modal flex items-center justify-center p-6">
-      {/* Overlay - 50% opacity per rulebook */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+      {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black/50 animate-in fade-in duration-normal"
+        className="absolute inset-0 bg-black/70"
         onClick={handleClose}
       />
 
-      {/* Modal - 24px radius per rulebook */}
-      <div className="relative w-full max-w-lg bg-bg-secondary border border-border-default rounded-2xl shadow-lg animate-in zoom-in-95 fade-in duration-slow">
+      {/* Modal */}
+      <div className="relative w-full max-w-lg bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border-default">
-          <h2 className="text-title-2 text-text-primary">Fai un'Offerta</h2>
+        <div className="flex items-center justify-between p-6 border-b border-[var(--border-primary)]">
+          <h2 className="text-section-title">Fai un'Offerta</h2>
           <button
             onClick={handleClose}
-            className="p-2 text-text-secondary transition-colors duration-normal hover:text-text-primary rounded-md hover:bg-bg-tertiary"
+            className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -134,31 +134,31 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
         <div className="p-6">
           {status === 'success' ? (
             <div className="text-center py-8">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-success-muted flex items-center justify-center">
-                <CheckCircle className="w-8 h-8 text-success" />
+              <div className="w-16 h-16 mx-auto mb-4 border border-[var(--border-primary)] flex items-center justify-center">
+                <CheckCircle className="w-8 h-8 text-[var(--text-primary)]" />
               </div>
-              <h3 className="text-title-2 text-text-primary mb-2">Offerta Inviata!</h3>
-              <p className="text-caption text-text-secondary mb-6">
+              <h3 className="text-section-title mb-2">Offerta Inviata!</h3>
+              <p className="text-body text-[var(--text-secondary)] mb-6">
                 Grazie per il tuo interesse. Esamineremo la tua offerta e ti risponderemo al più presto.
               </p>
-              <button onClick={handleClose} className="btn-primary w-full">
+              <button onClick={handleClose} className="btn-pill-filled w-full justify-center">
                 Chiudi
               </button>
             </div>
           ) : (
             <>
               {/* Product info */}
-              <div className="bg-bg-tertiary rounded-lg p-4 mb-6">
-                <p className="text-small text-text-secondary mb-1">Stai facendo un'offerta per:</p>
-                <p className="text-body-medium text-text-primary line-clamp-2">{productTitle}</p>
-                <p className="text-body-bold text-text-primary mt-1">Prezzo: {formattedPrice}</p>
+              <div className="border border-[var(--border-primary)] p-4 mb-6">
+                <p className="text-small text-[var(--text-tertiary)] mb-1">Stai facendo un'offerta per:</p>
+                <p className="text-body font-medium text-[var(--text-primary)] line-clamp-2">{productTitle}</p>
+                <p className="text-body font-medium text-[var(--text-primary)] mt-1">Prezzo: {formattedPrice}</p>
               </div>
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-caption-medium text-text-secondary mb-2">
+                    <label htmlFor="name" className="block text-small text-[var(--text-secondary)] mb-2">
                       Nome *
                     </label>
                     <input
@@ -168,12 +168,12 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="input"
+                      className="input-field"
                       placeholder="Il tuo nome"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-caption-medium text-text-secondary mb-2">
+                    <label htmlFor="email" className="block text-small text-[var(--text-secondary)] mb-2">
                       Email *
                     </label>
                     <input
@@ -183,7 +183,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="input"
+                      className="input-field"
                       placeholder="your@email.com"
                     />
                   </div>
@@ -191,7 +191,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="phone" className="block text-caption-medium text-text-secondary mb-2">
+                    <label htmlFor="phone" className="block text-small text-[var(--text-secondary)] mb-2">
                       Telefono
                     </label>
                     <input
@@ -200,12 +200,12 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="input"
+                      className="input-field"
                       placeholder="(opzionale)"
                     />
                   </div>
                   <div>
-                    <label htmlFor="offerAmount" className="block text-caption-medium text-text-secondary mb-2">
+                    <label htmlFor="offerAmount" className="block text-small text-[var(--text-secondary)] mb-2">
                       La Tua Offerta (EUR)
                     </label>
                     <input
@@ -216,14 +216,14 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       onChange={handleChange}
                       min="0"
                       step="1"
-                      className="input"
+                      className="input-field"
                       placeholder="(opzionale)"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-caption-medium text-text-secondary mb-2">
+                  <label htmlFor="message" className="block text-small text-[var(--text-secondary)] mb-2">
                     Messaggio *
                   </label>
                   <textarea
@@ -233,24 +233,24 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                     onChange={handleChange}
                     required
                     rows={4}
-                    className="input min-h-[120px] py-4 resize-none"
+                    className="textarea-field"
                     placeholder="Raccontaci del tuo interesse per questo pezzo..."
                   />
                 </div>
 
                 {/* Error message */}
                 {status === 'error' && (
-                  <div className="flex items-center gap-2 text-error text-small">
+                  <div className="flex items-center gap-2 text-red-500 text-small">
                     <AlertCircle className="w-4 h-4" />
                     {errorMessage}
                   </div>
                 )}
 
-                {/* Submit button - 56px height, pill shape per rulebook */}
+                {/* Submit button */}
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="btn-primary w-full flex items-center justify-center gap-2"
+                  className="btn-pill-filled w-full justify-center disabled:opacity-50"
                 >
                   {status === 'loading' ? (
                     <>
