@@ -102,9 +102,9 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
 
   if (!isOpen) return null
 
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat('it-IT', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'EUR',
     minimumFractionDigits: 0,
   }).format(productPrice)
 
@@ -120,7 +120,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
       <div className="relative w-full max-w-lg bg-bg-secondary border border-border-default rounded-2xl shadow-lg animate-in zoom-in-95 fade-in duration-slow">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border-default">
-          <h2 className="text-title-2 text-text-primary">Make an Offer</h2>
+          <h2 className="text-title-2 text-text-primary">Fai un'Offerta</h2>
           <button
             onClick={handleClose}
             className="p-2 text-text-secondary transition-colors duration-normal hover:text-text-primary rounded-md hover:bg-bg-tertiary"
@@ -137,21 +137,21 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-success-muted flex items-center justify-center">
                 <CheckCircle className="w-8 h-8 text-success" />
               </div>
-              <h3 className="text-title-2 text-text-primary mb-2">Offer Submitted!</h3>
+              <h3 className="text-title-2 text-text-primary mb-2">Offerta Inviata!</h3>
               <p className="text-caption text-text-secondary mb-6">
-                Thank you for your interest. We&apos;ll review your offer and get back to you soon.
+                Grazie per il tuo interesse. Esamineremo la tua offerta e ti risponderemo al più presto.
               </p>
               <button onClick={handleClose} className="btn-primary w-full">
-                Close
+                Chiudi
               </button>
             </div>
           ) : (
             <>
               {/* Product info */}
               <div className="bg-bg-tertiary rounded-lg p-4 mb-6">
-                <p className="text-small text-text-secondary mb-1">You&apos;re making an offer for:</p>
+                <p className="text-small text-text-secondary mb-1">Stai facendo un'offerta per:</p>
                 <p className="text-body-medium text-text-primary line-clamp-2">{productTitle}</p>
-                <p className="text-body-bold text-text-primary mt-1">Listed at {formattedPrice}</p>
+                <p className="text-body-bold text-text-primary mt-1">Prezzo: {formattedPrice}</p>
               </div>
 
               {/* Form */}
@@ -159,7 +159,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-caption-medium text-text-secondary mb-2">
-                      Name *
+                      Nome *
                     </label>
                     <input
                       type="text"
@@ -169,7 +169,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       onChange={handleChange}
                       required
                       className="input"
-                      placeholder="Your name"
+                      placeholder="Il tuo nome"
                     />
                   </div>
                   <div>
@@ -192,7 +192,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="phone" className="block text-caption-medium text-text-secondary mb-2">
-                      Phone
+                      Telefono
                     </label>
                     <input
                       type="tel"
@@ -201,12 +201,12 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       value={formData.phone}
                       onChange={handleChange}
                       className="input"
-                      placeholder="(optional)"
+                      placeholder="(opzionale)"
                     />
                   </div>
                   <div>
                     <label htmlFor="offerAmount" className="block text-caption-medium text-text-secondary mb-2">
-                      Your Offer (USD)
+                      La Tua Offerta (EUR)
                     </label>
                     <input
                       type="number"
@@ -217,14 +217,14 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       min="0"
                       step="1"
                       className="input"
-                      placeholder="(optional)"
+                      placeholder="(opzionale)"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-caption-medium text-text-secondary mb-2">
-                    Message *
+                    Messaggio *
                   </label>
                   <textarea
                     id="message"
@@ -234,7 +234,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                     required
                     rows={4}
                     className="input min-h-[120px] py-4 resize-none"
-                    placeholder="Tell us about your interest in this piece..."
+                    placeholder="Raccontaci del tuo interesse per questo pezzo..."
                   />
                 </div>
 
@@ -255,10 +255,10 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                   {status === 'loading' ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Submitting...
+                      Invio in corso...
                     </>
                   ) : (
-                    'Submit Offer'
+                    'Invia Offerta'
                   )}
                 </button>
               </form>

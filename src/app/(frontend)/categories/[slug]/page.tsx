@@ -12,12 +12,12 @@ export async function generateMetadata({ params }: PageProps) {
   const category = await getCategoryBySlug(slug)
 
   if (!category) {
-    return { title: 'Category Not Found | The Antiques' }
+    return { title: 'Categoria Non Trovata | The Antiques' }
   }
 
   return {
     title: `${category.name} | The Antiques`,
-    description: category.description || `Browse our ${category.name} collection`,
+    description: category.description || `Esplora la nostra collezione ${category.name}`,
   }
 }
 
@@ -49,7 +49,7 @@ export default async function CategoryPage({ params }: PageProps) {
           <nav className="flex items-center gap-2 text-caption text-text-tertiary mb-8">
             <Link href="/" className="hover:text-text-primary transition-opacity">Home</Link>
             <span>/</span>
-            <Link href="/categories" className="hover:text-text-primary transition-opacity">Shop</Link>
+            <Link href="/categories" className="hover:text-text-primary transition-opacity">Prodotti</Link>
             <span>/</span>
             <span className="text-text-primary">{category.name}</span>
           </nav>
@@ -65,7 +65,7 @@ export default async function CategoryPage({ params }: PageProps) {
       <section className="py-6 border-b border-border-primary">
         <div className="container-editorial flex flex-wrap items-center justify-between gap-4">
           <p className="text-caption text-text-secondary">
-            <span className="text-text-primary">{productsResult.totalDocs}</span> items
+            <span className="text-text-primary">{productsResult.totalDocs}</span> articoli
           </p>
 
           {/* Subcategory Pills */}
@@ -75,7 +75,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 href={`/categories/${slug}`}
                 className="btn-pill text-sm"
               >
-                All
+                Tutti
               </Link>
               {subcategoryData.map((sub) => (
                 <Link
@@ -97,9 +97,9 @@ export default async function CategoryPage({ params }: PageProps) {
           <ProductGrid products={products} />
         ) : (
           <div className="text-center py-20">
-            <p className="text-body text-text-secondary mb-4">No products found in this category yet.</p>
+            <p className="text-body text-text-secondary mb-4">Nessun prodotto trovato in questa categoria.</p>
             <Link href="/categories" className="link-arrow inline-flex">
-              Browse other categories
+              Esplora altre categorie
             </Link>
           </div>
         )}
@@ -108,7 +108,7 @@ export default async function CategoryPage({ params }: PageProps) {
         {productsResult.hasNextPage && (
           <div className="py-12 text-center">
             <button className="btn-pill">
-              Load More
+              Carica Altri
             </button>
           </div>
         )}

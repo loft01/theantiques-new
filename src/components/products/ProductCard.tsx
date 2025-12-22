@@ -26,9 +26,9 @@ export function ProductCard({
   image,
   isNew = false,
 }: ProductCardProps) {
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat('it-IT', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'EUR',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(price)
@@ -52,7 +52,7 @@ export function ProductCard({
           <div className="product-card-header">
             <h3 className="product-card-title">{title}</h3>
             {isNew && (
-              <span className="product-card-badge">New</span>
+              <span className="product-card-badge">Nuovo</span>
             )}
           </div>
           <p className="product-card-price">{formattedPrice}</p>

@@ -65,7 +65,7 @@ export function Header({ categories = [] }: HeaderProps) {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="nav-link"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={isMenuOpen ? 'Chiudi menu' : 'Apri menu'}
             aria-expanded={isMenuOpen}
           >
             Menu
@@ -91,7 +91,7 @@ export function Header({ categories = [] }: HeaderProps) {
             <button
               onClick={() => setIsSearchOpen(true)}
               className="nav-link flex items-center gap-2"
-              aria-label="Open search"
+              aria-label="Apri ricerca"
             >
               <Search className="w-4 h-4" />
             </button>
@@ -112,7 +112,7 @@ export function Header({ categories = [] }: HeaderProps) {
               onClick={() => setIsMenuOpen(false)}
               className="nav-link"
             >
-              Close
+              Chiudi
             </button>
             <Link
               href="/"
@@ -138,9 +138,9 @@ export function Header({ categories = [] }: HeaderProps) {
                 {/* Categories Sidebar */}
                 <div className="mb-12">
                   <p className="text-caption text-text-tertiary mb-4">
-                    Curated Design,
+                    Design Curato,
                     <br />
-                    for a timeless living.
+                    per un vivere senza tempo.
                   </p>
                 </div>
 
@@ -151,7 +151,7 @@ export function Header({ categories = [] }: HeaderProps) {
                     onClick={() => setIsMenuOpen(false)}
                     className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
                   >
-                    Shop All
+                    Tutti i Prodotti
                   </Link>
                   {categories.map((cat) => (
                     <Link
@@ -172,14 +172,14 @@ export function Header({ categories = [] }: HeaderProps) {
                     onClick={() => setIsMenuOpen(false)}
                     className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
                   >
-                    About
+                    Chi Siamo
                   </Link>
                   <Link
                     href="/contact"
                     onClick={() => setIsMenuOpen(false)}
                     className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
                   >
-                    Contact
+                    Contatti
                   </Link>
                 </div>
               </div>

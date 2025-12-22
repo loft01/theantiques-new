@@ -3,8 +3,8 @@ import Image from 'next/image'
 import { getCategories, getCategoryProductCount, transformCategory } from '@/lib/payload'
 
 export const metadata = {
-  title: 'Categories | The Antiques',
-  description: 'Browse our curated collection of antique categories',
+  title: 'Categorie | The Antiques',
+  description: 'Esplora la nostra collezione curata di categorie di antiquariato',
 }
 
 export default async function CategoriesPage() {
@@ -22,9 +22,9 @@ export default async function CategoriesPage() {
       {/* Header */}
       <section className="section-padding border-b border-border-primary">
         <div className="container-editorial text-center">
-          <h1 className="text-manifesto mb-4">Shop All</h1>
+          <h1 className="text-manifesto mb-4">Tutti i Prodotti</h1>
           <p className="text-body text-text-secondary max-w-2xl mx-auto">
-            Explore our carefully curated collection of antiques and vintage pieces
+            Esplora la nostra collezione accuratamente curata di antiquariato e pezzi vintage
           </p>
         </div>
       </section>
@@ -49,7 +49,7 @@ export default async function CategoriesPage() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-text-tertiary">
-                      No image
+                      Nessuna immagine
                     </div>
                   )}
                 </div>
@@ -58,7 +58,7 @@ export default async function CategoriesPage() {
                     {category.name}
                   </h2>
                   <span className="text-caption text-text-tertiary">
-                    {category.productCount} items
+                    {category.productCount} articoli
                   </span>
                 </div>
               </Link>

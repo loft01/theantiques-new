@@ -121,12 +121,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     <div className="fixed inset-0 z-modal bg-bg-primary">
       {/* Header */}
       <div className="flex items-center justify-between h-14 px-6 border-b border-border-primary">
-        <span className="text-caption text-text-tertiary">Search</span>
+        <span className="text-caption text-text-tertiary">Ricerca</span>
         <button
           onClick={onClose}
           className="nav-link"
         >
-          Close
+          Chiudi
         </button>
       </div>
 
@@ -141,7 +141,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="What are you looking for?"
+              placeholder="Cosa stai cercando?"
               className="w-full h-14 px-0 bg-transparent border-0 border-b border-border-primary text-manifesto text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
               autoComplete="off"
             />
@@ -154,7 +154,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {query && results.length > 0 && (
             <div className="max-w-2xl mx-auto">
               <p className="text-caption text-text-tertiary mb-6">
-                {results.length} results
+                {results.length} risultati
               </p>
               <div className="divide-y divide-border-primary">
                 {results.slice(0, 6).map((result, index) => (
@@ -194,7 +194,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   onClick={handleViewAll}
                   className="link-arrow mt-8"
                 >
-                  View all results
+                  Vedi tutti i risultati
                   <ArrowRight className="w-4 h-4" />
                 </button>
               )}
@@ -204,17 +204,17 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {/* No results */}
           {query && !isLoading && results.length === 0 && (
             <div className="max-w-2xl mx-auto text-center py-12">
-              <p className="text-body text-text-secondary">No results found</p>
-              <p className="text-caption text-text-tertiary mt-2">Try different keywords</p>
+              <p className="text-body text-text-secondary">Nessun risultato trovato</p>
+              <p className="text-caption text-text-tertiary mt-2">Prova con parole chiave diverse</p>
             </div>
           )}
 
           {/* Quick links when empty */}
           {!query && (
             <div className="max-w-2xl mx-auto">
-              <p className="text-caption text-text-tertiary mb-6">Popular categories</p>
+              <p className="text-caption text-text-tertiary mb-6">Categorie popolari</p>
               <div className="flex flex-wrap gap-3">
-                {['Furniture', 'Ceramics', 'Fine Art', 'Jewelry', 'Lighting', 'Decorative'].map((cat) => (
+                {['Mobili', 'Ceramiche', 'Arte', 'Gioielli', 'Illuminazione', 'Decorazioni'].map((cat) => (
                   <Link
                     key={cat}
                     href={`/categories/${cat.toLowerCase().replace(' ', '-')}`}

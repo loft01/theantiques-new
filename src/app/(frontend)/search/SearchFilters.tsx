@@ -24,7 +24,7 @@ export function SearchFilters({ categories, currentCategory, query }: SearchFilt
   return (
     <div className="flex items-center gap-3">
       <label htmlFor="category-filter" className="text-caption text-text-secondary">
-        Category:
+        Categoria:
       </label>
       <select
         id="category-filter"
@@ -32,7 +32,7 @@ export function SearchFilters({ categories, currentCategory, query }: SearchFilt
         onChange={handleCategoryChange}
         className="input h-10 px-4 text-caption"
       >
-        <option value="">All Categories</option>
+        <option value="">Tutte le Categorie</option>
         {categories.map((cat) => (
           <option key={cat.slug} value={cat.slug}>
             {cat.name}

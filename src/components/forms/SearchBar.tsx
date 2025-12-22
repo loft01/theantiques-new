@@ -51,7 +51,7 @@ export function SearchBar({ variant = 'header', defaultValue = '', autoFocus = f
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for antiques..."
+          placeholder="Cerca antiquariato..."
           className="input w-full pl-14"
         />
         <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
@@ -75,7 +75,7 @@ export function SearchBar({ variant = 'header', defaultValue = '', autoFocus = f
         <button
           onClick={handleExpand}
           className="p-2 text-text-secondary transition-colors duration-normal hover:text-text-primary"
-          aria-label="Open search"
+          aria-label="Apri ricerca"
         >
           <Search className="w-5 h-5" />
         </button>
@@ -87,7 +87,7 @@ export function SearchBar({ variant = 'header', defaultValue = '', autoFocus = f
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search..."
+              placeholder="Cerca..."
               className="w-48 md:w-64 h-10 px-4 pl-10 bg-bg-tertiary border border-border-default rounded-md text-small text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-border-subtle transition-colors duration-normal"
               onBlur={() => {
                 if (!query) {
@@ -101,7 +101,7 @@ export function SearchBar({ variant = 'header', defaultValue = '', autoFocus = f
             type="button"
             onClick={handleClose}
             className="ml-2 p-2 text-text-secondary transition-colors duration-normal hover:text-text-primary"
-            aria-label="Close search"
+            aria-label="Chiudi ricerca"
           >
             <X className="w-5 h-5" />
           </button>

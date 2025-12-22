@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "generate:types": "payload generate:types",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "seed:prodotti": "tsx scripts/seed-prodotti.ts"
   },
   "dependencies": {
     "@payloadcms/db-mongodb": "^3.69.0",

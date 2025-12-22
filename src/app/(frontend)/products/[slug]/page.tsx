@@ -10,9 +10,9 @@ import type { Category, Media } from '@/payload-types'
 type ProductStatus = 'available' | 'pending' | 'sold'
 
 const statusLabels: Record<ProductStatus, string> = {
-  available: 'Available',
-  pending: 'Pending',
-  sold: 'Sold',
+  available: 'Disponibile',
+  pending: 'In Trattativa',
+  sold: 'Venduto',
 }
 
 function richTextToPlainText(content: unknown): string {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps) {
   const product = await getProductBySlug(slug)
 
   if (!product) {
-    return { title: 'Product Not Found | The Antiques' }
+    return { title: 'Prodotto Non Trovato | The Antiques' }
   }
 
   const category = product.category as Category
@@ -48,10 +48,10 @@ export async function generateMetadata({ params }: PageProps) {
 
   return {
     title: `${product.title} | The Antiques`,
-    description: `${category?.name || 'Antique'} - ${product.title}. Price: $${product.price}`,
+    description: `${category?.name || 'Antiquariato'} - ${product.title}. Prezzo: ${product.price}€`,
     openGraph: {
       title: product.title,
-      description: `${category?.name || 'Antique'} - ${product.title}`,
+      description: `${category?.name || 'Antiquariato'} - ${product.title}`,
       type: 'website',
       images: imageUrl ? [{ url: imageUrl }] : undefined,
     },
@@ -122,9 +122,9 @@ export default async function ProductPage({ params }: PageProps) {
   const mainImage = productImages[0]
   const description = richTextToPlainText(product.description)
 
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat('it-IT', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'EUR',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(product.price)
@@ -188,10 +188,10 @@ export default async function ProductPage({ params }: PageProps) {
               <nav className="flex items-center gap-2 text-caption text-text-tertiary mb-8">
                 <Link href="/" className="hover:text-text-primary transition-opacity">Home</Link>
                 <span>/</span>
-                <Link href="/categories" className="hover:text-text-primary transition-opacity">Shop</Link>
+                <Link href="/categories" className="hover:text-text-primary transition-opacity">Prodotti</Link>
                 <span>/</span>
                 <Link href={`/categories/${category?.slug}`} className="hover:text-text-primary transition-opacity">
-                  {category?.name || 'Category'}
+                  {category?.name || 'Categoria'}
                 </Link>
               </nav>
 
@@ -203,7 +203,7 @@ export default async function ProductPage({ params }: PageProps) {
 
               {/* Status */}
               <div className="mb-8 py-4 border-y border-border-primary">
-                <p className="text-caption text-text-tertiary mb-1">Status</p>
+                <p className="text-caption text-text-tertiary mb-1">Stato</p>
                 <p className="text-body-medium">{statusLabels[product.status]}</p>
               </div>
 
@@ -233,12 +233,12 @@ export default async function ProductPage({ params }: PageProps) {
         {relatedProducts.length > 0 && (
           <section>
             <div className="px-6 py-12 flex items-center justify-between">
-              <h2 className="text-section-title">Related Items</h2>
+              <h2 className="text-section-title">Articoli Correlati</h2>
               <Link
                 href={`/categories/${category?.slug}`}
                 className="link-arrow"
               >
-                View all {category?.name}
+                Vedi tutti {category?.name}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

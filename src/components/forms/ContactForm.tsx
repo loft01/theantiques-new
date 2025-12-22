@@ -54,8 +54,8 @@ export function ContactForm() {
   if (status === 'success') {
     return (
       <div className="py-8">
-        <p className="text-body text-text-primary mb-2">Thank you for your message.</p>
-        <p className="text-caption text-text-secondary">We will get back to you soon.</p>
+        <p className="text-body text-text-primary mb-2">Grazie per il tuo messaggio.</p>
+        <p className="text-caption text-text-secondary">Ti risponderemo al più presto.</p>
       </div>
     )
   }
@@ -68,7 +68,7 @@ export function ContactForm() {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          placeholder="Name"
+          placeholder="Nome"
           disabled={status === 'loading'}
           className="input-field"
           required
@@ -93,7 +93,7 @@ export function ContactForm() {
           name="message"
           value={formData.message}
           onChange={handleChange}
-          placeholder="Message"
+          placeholder="Messaggio"
           rows={4}
           disabled={status === 'loading'}
           className="textarea-field"
@@ -111,11 +111,11 @@ export function ContactForm() {
           {status === 'loading' ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Sending
+              Invio in corso
             </>
           ) : (
             <>
-              Submit
+              Invia
               <ArrowRight className="w-4 h-4" />
             </>
           )}
@@ -124,7 +124,7 @@ export function ContactForm() {
 
       {status === 'error' && (
         <p className="text-caption text-red-500">
-          Something went wrong. Please try again.
+          Qualcosa è andato storto. Riprova.
         </p>
       )}
     </form>

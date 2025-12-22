@@ -22,9 +22,9 @@ export function Hero({ categories = [], heroImage }: HeroProps) {
           {/* Tagline */}
           <div>
             <p className="text-caption text-text-secondary">
-              Curated Design,
+              Design Curato,
               <br />
-              for a timeless living.
+              per un vivere senza tempo.
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export function Hero({ categories = [], heroImage }: HeroProps) {
               href="/categories"
               className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
             >
-              Shop All
+              Tutti i Prodotti
             </Link>
             {categories.map((cat) => (
               <Link
@@ -55,7 +55,7 @@ export function Hero({ categories = [], heroImage }: HeroProps) {
         <div className="relative min-h-[60vh] lg:min-h-0">
           <Image
             src={heroImage || "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop"}
-            alt="Featured antique piece"
+            alt="Pezzo d'antiquariato in evidenza"
             fill
             className="object-cover"
             priority
@@ -68,7 +68,7 @@ export function Hero({ categories = [], heroImage }: HeroProps) {
               href="/categories"
               className="btn-pill bg-bg-primary/80 backdrop-blur-sm"
             >
-              Explore Collection
+              Esplora la Collezione
             </Link>
           </div>
         </div>

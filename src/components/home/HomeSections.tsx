@@ -13,9 +13,9 @@ export function ManifestoSection() {
     <section className="section-padding border-b border-border-primary">
       <div className="container-editorial">
         <p className="text-manifesto text-center max-w-4xl mx-auto">
-          The Antiques is a carefully curated collection of timeless objects.
-          Each piece combines history with elegance, perfect for enhancing
-          modern spaces with purpose and character.
+          The Antiques è una collezione accuratamente curata di oggetti senza tempo.
+          Ogni pezzo combina storia ed eleganza, perfetto per arricchire
+          spazi moderni con carattere e significato.
         </p>
       </div>
     </section>
@@ -33,7 +33,7 @@ interface CinematicBreakProps {
 
 export function CinematicBreak({
   image = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop",
-  alt = "Cinematic antique scene"
+  alt = "Scena cinematografica di antiquariato"
 }: CinematicBreakProps) {
   return (
     <section className="relative h-[50vh] md:h-[70vh]">
@@ -61,11 +61,11 @@ interface HighlightedObjectProps {
 }
 
 export function HighlightedObject({
-  title = "Victorian Writing Desk",
-  description = "A stunning blend of functionality and art, this piece redefines design boundaries. Made from premium materials like mahogany and brass, this limited-edition treasure is a bold statement of elegance and craftsmanship. Own a piece of history today.",
+  title = "Scrivania Vittoriana",
+  description = "Una straordinaria fusione di funzionalità e arte, questo pezzo ridefinisce i confini del design. Realizzato con materiali pregiati come mogano e ottone, questo tesoro in edizione limitata è una dichiarazione audace di eleganza e artigianalità. Possiedi un pezzo di storia oggi.",
   image = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=1000&fit=crop",
   link = "/products/victorian-writing-desk",
-  ctaText = "View Object"
+  ctaText = "Scopri l'Oggetto"
 }: HighlightedObjectProps) {
   return (
     <section className="border-y border-border-primary">
@@ -116,20 +116,20 @@ interface EditorialStoriesProps {
 
 const defaultStories: Story[] = [
   {
-    title: "A Modern Masterpiece",
-    date: "9/24/25",
+    title: "Un Capolavoro Moderno",
+    date: "24/9/25",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=750&fit=crop",
     link: "/stories/modern-masterpiece"
   },
   {
-    title: "Sculptural Comfort has arrived",
+    title: "Il Comfort Scultoreo è Arrivato",
     date: "8/8/25",
     image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=750&fit=crop",
     link: "/stories/sculptural-comfort"
   },
   {
-    title: "A New Era in Design",
-    date: "6/20/25",
+    title: "Una Nuova Era nel Design",
+    date: "20/6/25",
     image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=750&fit=crop",
     link: "/stories/new-era-design"
   }
@@ -174,7 +174,7 @@ interface QuoteSectionProps {
 }
 
 export function QuoteSection({
-  quote = "The Antiques redefines the concept of curated design. In a world saturated with options, this collection excels by focusing on the essentials—carefully selected pieces that embody timeless sophistication and pure simplicity.",
+  quote = "The Antiques ridefinisce il concetto di design curato. In un mondo saturo di opzioni, questa collezione eccelle concentrandosi sull'essenziale—pezzi accuratamente selezionati che incarnano sofisticatezza senza tempo e pura semplicità.",
   author = "Interior Design Magazine",
   avatar = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
 }: QuoteSectionProps) {

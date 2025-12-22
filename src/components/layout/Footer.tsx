@@ -36,14 +36,14 @@ export function Footer() {
       <div className="border-t border-b border-border-primary">
         <div className="container-editorial py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-body-medium">
-            Subscribe for our Newsletter and get a 10% Discount.
+            Iscriviti alla nostra Newsletter e ottieni uno sconto del 10%.
           </p>
           <form onSubmit={handleSubmit} className="flex gap-3 max-w-md w-full md:w-auto">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your E-Mail"
+              placeholder="La tua E-Mail"
               className="input-field flex-1"
               disabled={status === 'loading'}
             />
@@ -52,14 +52,14 @@ export function Footer() {
               className="btn-pill-filled whitespace-nowrap"
               disabled={status === 'loading'}
             >
-              Subscribe
+              Iscriviti
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
         </div>
         {status === 'success' && (
           <div className="container-editorial pb-4">
-            <p className="text-caption text-green-500">Thank you for subscribing!</p>
+            <p className="text-caption text-green-500">Grazie per l'iscrizione!</p>
           </div>
         )}
       </div>
@@ -73,7 +73,7 @@ export function Footer() {
               &copy; {new Date().getFullYear()} The Antiques
             </p>
             <div className="space-y-2">
-              <p className="text-caption text-text-tertiary">Made with care</p>
+              <p className="text-caption text-text-tertiary">Fatto con cura</p>
             </div>
           </div>
 
@@ -84,13 +84,13 @@ export function Footer() {
                 href="/terms"
                 className="text-caption text-text-primary hover:opacity-70 transition-opacity"
               >
-                Terms & Conditions
+                Termini e Condizioni
               </Link>
               <Link
                 href="/shipping"
                 className="text-caption text-text-primary hover:opacity-70 transition-opacity"
               >
-                Shipping & Returns
+                Spedizioni e Resi
               </Link>
               <Link
                 href="/privacy"
@@ -116,13 +116,13 @@ export function Footer() {
                 href="/about"
                 className="text-caption text-text-primary hover:opacity-70 transition-opacity"
               >
-                About
+                Chi Siamo
               </Link>
               <Link
                 href="/contact"
                 className="text-caption text-text-primary hover:opacity-70 transition-opacity"
               >
-                Contact
+                Contatti
               </Link>
             </nav>
           </div>

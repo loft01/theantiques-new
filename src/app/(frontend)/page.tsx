@@ -12,12 +12,12 @@ import {
 import { getCategories, getProducts, transformProduct } from '@/lib/payload'
 
 export const metadata: Metadata = {
-  title: 'The Antiques | Curated Vintage & Antique Treasures',
-  description: 'Discover unique vintage and antique pieces with stories to tell. Browse our curated collection of furniture, art, ceramics, jewelry, and decorative arts.',
-  keywords: ['antiques', 'vintage', 'furniture', 'collectibles', 'art', 'ceramics', 'jewelry', 'decorative arts'],
+  title: 'The Antiques | Antiquariato e Oggetti d\'Epoca',
+  description: 'Scopri pezzi unici di antiquariato con storie da raccontare. Esplora la nostra collezione curata di mobili, arte, ceramiche, gioielli e oggetti decorativi.',
+  keywords: ['antiquariato', 'vintage', 'mobili', 'collezionismo', 'arte', 'ceramiche', 'gioielli', 'oggetti decorativi'],
   openGraph: {
-    title: 'The Antiques | Curated Vintage & Antique Treasures',
-    description: 'Discover unique vintage and antique pieces with stories to tell.',
+    title: 'The Antiques | Antiquariato e Oggetti d\'Epoca',
+    description: 'Scopri pezzi unici di antiquariato con storie da raccontare.',
     type: 'website',
   },
 }
@@ -54,7 +54,7 @@ export default async function HomePage() {
           <ProductGrid products={featuredProducts.slice(0, 6)} />
         ) : (
           <p className="text-center text-text-secondary py-12">
-            No featured products yet.
+            Nessun prodotto in evidenza.
           </p>
         )}
       </FeaturedProductsSection>
@@ -62,17 +62,17 @@ export default async function HomePage() {
       {/* 4. Cinematic Break */}
       <CinematicBreak
         image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=800&fit=crop&sat=-100"
-        alt="Antique furniture in natural setting"
+        alt="Mobili antichi in ambiente naturale"
       />
 
       {/* 5. Highlighted Object Section */}
       {highlightedProduct && (
         <HighlightedObject
           title={highlightedProduct.title}
-          description="A stunning piece that embodies timeless elegance and superior craftsmanship. Each detail tells a story of artistry and dedication to quality that transcends generations."
+          description="Un pezzo straordinario che incarna eleganza senza tempo e maestria artigianale. Ogni dettaglio racconta una storia di arte e dedizione alla qualità che trascende le generazioni."
           image={highlightedProduct.image.url}
           link={`/products/${highlightedProduct.slug}`}
-          ctaText="View Object"
+          ctaText="Scopri l'Oggetto"
         />
       )}
 
@@ -88,8 +88,8 @@ export default async function HomePage() {
 
       {/* 8. Quote Section */}
       <QuoteSection
-        quote="The Antiques redefines the concept of curated design. In a world saturated with options, this collection excels by focusing on the essentials—carefully selected pieces that embody timeless sophistication and pure simplicity."
-        author="Interior Design Weekly"
+        quote="The Antiques ridefinisce il concetto di design curato. In un mondo saturo di opzioni, questa collezione eccelle concentrandosi sull'essenziale—pezzi accuratamente selezionati che incarnano sofisticatezza senza tempo e pura semplicità."
+        author="Interior Design Magazine"
       />
 
       {/* Footer handles newsletter */}
