@@ -38,3 +38,4 @@ Thumbs.db
 # Media uploads
 public/media/*
 !public/media/.gitkeep
+.vercel

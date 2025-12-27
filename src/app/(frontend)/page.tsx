@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   },
 }
 
+//test
+
 export default async function HomePage() {
   // Fetch data in parallel
   const [categories, productsResult] = await Promise.all([
