@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
 }
 
-//test
+//test2
 
 export default async function HomePage() {
   // Fetch data in parallel
