@@ -23,7 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Payload
-src/payload-types.ts
+# (payload-types.ts is committed for Vercel builds)
 
 # IDE
 .idea
