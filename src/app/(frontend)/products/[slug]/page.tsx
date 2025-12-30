@@ -68,7 +68,7 @@ function generateProductJsonLd(product: {
   category: Category
 }) {
   const firstImage = product.images?.[0]?.image as Media | undefined
-  const imageUrl = firstImage ? getMediaUrl(firstImage, 'full') : undefined
+  const imageUrl = firstImage ? getMediaUrl(firstImage) : undefined
 
   const availability = {
     available: 'https://schema.org/InStock',
@@ -114,7 +114,7 @@ export default async function ProductPage({ params }: PageProps) {
   const productImages = product.images?.length ? product.images.map(img => {
     const media = img.image as Media
     return {
-      url: getMediaUrl(media, 'full') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=900&fit=crop',
+      url: getMediaUrl(media) || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=900&fit=crop',
       alt: media?.alt || product.title,
     }
   }) : [{ url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=900&fit=crop', alt: product.title }]
@@ -135,7 +135,7 @@ export default async function ProductPage({ params }: PageProps) {
     price: product.price,
     status: product.status,
     description: product.description,
-    images: product.images,
+    images: product.images ?? undefined,
     category,
   })
 

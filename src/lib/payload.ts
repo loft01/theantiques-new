@@ -1,4 +1,4 @@
-import { getPayload } from 'payload'
+import { getPayload, Where } from 'payload'
 import config from '@payload-config'
 import type { Category, Product, Media, SiteSetting } from '@/payload-types'
 
@@ -11,7 +11,7 @@ async function getPayloadClient() {
 type PopulatedMedia = Media & { url: string }
 
 // Helper to get image URL from media
-export function getMediaUrl(media: string | Media | null | undefined, size?: 'thumbnail' | 'card' | 'full'): string {
+export function getMediaUrl(media: string | Media | null | undefined, size?: 'thumbnail' | 'card'): string {
   if (!media || typeof media === 'string') return ''
   const m = media as PopulatedMedia
   if (size && m.sizes?.[size]?.url) return m.sizes[size].url!
@@ -22,7 +22,7 @@ export function getMediaUrl(media: string | Media | null | undefined, size?: 'th
 export async function getCategories(options?: { featured?: boolean; parentOnly?: boolean }) {
   const payload = await getPayloadClient()
 
-  const where: Record<string, unknown> = {}
+  const where: Where = {}
   if (options?.featured) where.featured = { equals: true }
   if (options?.parentOnly) where.parent = { exists: false }
 
@@ -83,7 +83,7 @@ export async function getProducts(options?: {
 }) {
   const payload = await getPayloadClient()
 
-  const where: Record<string, unknown> = {}
+  const where: Where = {}
   if (options?.featured) where.featured = { equals: true }
   if (options?.category) where.category = { equals: options.category }
   if (options?.status) where.status = { equals: options.status }
@@ -152,7 +152,7 @@ export async function searchProducts(options: {
 }) {
   const payload = await getPayloadClient()
 
-  const conditions: Record<string, unknown>[] = []
+  const conditions: Where[] = []
 
   // Text search across title and description
   if (options.query) {
@@ -169,7 +169,7 @@ export async function searchProducts(options: {
     conditions.push({ category: { equals: options.category } })
   }
 
-  const where = conditions.length > 0 ? { and: conditions } : {}
+  const where: Where | undefined = conditions.length > 0 ? { and: conditions } : undefined
 
   const result = await payload.find({
     collection: 'products',
