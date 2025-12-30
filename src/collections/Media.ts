@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { deleteFromR2 } from '../lib/r2'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -9,26 +10,63 @@ export const Media: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    afterDelete: [
+      async ({ doc }) => {
+        // Delete the main file
+        if (doc.filename) {
+          await deleteFromR2(doc.filename)
+        }
+        // Delete all image sizes
+        if (doc.sizes) {
+          for (const size of Object.values(doc.sizes) as { filename?: string }[]) {
+            if (size?.filename) {
+              await deleteFromR2(size.filename)
+            }
+          }
+        }
+      },
+    ],
+  },
   upload: {
-    staticDir: 'public/media',
+    disableLocalStorage: true,
+    // Resize original to max 1600px and convert to WebP
+    resizeOptions: {
+      width: 1600,
+      height: 1600,
+      fit: 'inside',
+      withoutEnlargement: true,
+    },
+    formatOptions: {
+      format: 'webp',
+      options: {
+        quality: 80,
+      },
+    },
     imageSizes: [
       {
         name: 'thumbnail',
         width: 400,
-        height: 300,
-        position: 'centre',
+        height: 400,
+        fit: 'inside',
+        formatOptions: {
+          format: 'webp',
+          options: {
+            quality: 75,
+          },
+        },
       },
       {
         name: 'card',
-        width: 768,
-        height: 576,
-        position: 'centre',
-      },
-      {
-        name: 'full',
-        width: 1920,
-        height: undefined,
-        position: 'centre',
+        width: 800,
+        height: 800,
+        fit: 'inside',
+        formatOptions: {
+          format: 'webp',
+          options: {
+            quality: 80,
+          },
+        },
       },
     ],
     adminThumbnail: 'thumbnail',

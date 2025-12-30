@@ -16,6 +16,7 @@
     "@payloadcms/db-mongodb": "^3.69.0",
     "@payloadcms/next": "^3.69.0",
     "@payloadcms/richtext-lexical": "^3.69.0",
+    "@payloadcms/storage-s3": "^3.69.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",

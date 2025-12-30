@@ -13,6 +13,46 @@ export const Products: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    beforeChange: [
+      async ({ data, originalDoc, req, operation }) => {
+        if (operation !== 'update' || !originalDoc) return data
+
+        // Get old image IDs
+        const oldImageIds = (originalDoc.images || [])
+          .map((img: { image: string | { id: string } }) =>
+            typeof img.image === 'string' ? img.image : img.image?.id
+          )
+          .filter(Boolean)
+
+        // Get new image IDs
+        const newImageIds = (data.images || [])
+          .map((img: { image: string | { id: string } }) =>
+            typeof img.image === 'string' ? img.image : img.image?.id
+          )
+          .filter(Boolean)
+
+        // Find removed images
+        const removedImageIds = oldImageIds.filter(
+          (id: string) => !newImageIds.includes(id)
+        )
+
+        // Delete removed media documents (this triggers R2 cleanup via Media afterDelete hook)
+        for (const mediaId of removedImageIds) {
+          try {
+            await req.payload.delete({
+              collection: 'media',
+              id: mediaId,
+            })
+          } catch (error) {
+            console.error(`Failed to delete media ${mediaId}:`, error)
+          }
+        }
+
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'title',

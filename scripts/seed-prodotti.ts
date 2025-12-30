@@ -335,7 +335,7 @@ async function runSeed() {
         featured: true,
       },
     })
-    categoryMap[cat.slug] = category.id
+    categoryMap[cat.slug] = String(category.id)
     console.log(`   Created: ${cat.name}`)
   }
   console.log('')
