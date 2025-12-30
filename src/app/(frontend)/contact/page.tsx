@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { ContactForm } from '@/components/forms'
 import { getSiteSettings } from '@/lib/payload'
+import type { SiteSetting } from '@/payload-types'
 
 export const metadata: Metadata = {
   title: 'Contatti | The Antiques',
@@ -21,7 +22,8 @@ export default async function ContactPage() {
   ]
 
   // Find Instagram link from social links
-  const instagramLink = settings.socialLinks?.find(s => s.platform === 'instagram')?.url || 'https://instagram.com'
+  type SocialLink = NonNullable<SiteSetting['socialLinks']>[number]
+  const instagramLink = settings.socialLinks?.find((s: SocialLink) => s.platform === 'instagram')?.url || 'https://instagram.com'
 
   return (
     <div className="min-h-screen">
