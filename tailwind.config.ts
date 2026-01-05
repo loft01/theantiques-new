@@ -10,52 +10,53 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // FF Design System Colors
-        'bg-primary': '#0E0E0E',
-        'bg-secondary': '#141414',
-        'bg-tertiary': '#1B1B1B',
-        'border-primary': '#2A2A2A',
-        'border-secondary': '#333333',
-        'text-primary': '#EDEDED',
-        'text-secondary': '#B5B5B5',
-        'text-tertiary': '#7A7A7A',
-        'accent-primary': '#EDEDED',
-        'accent-muted': '#8A8A8A',
+        // FF Design System Colors - using RGB CSS variables for opacity support
+        'bg-primary': 'rgb(var(--bg-primary-rgb) / <alpha-value>)',
+        'bg-secondary': 'rgb(var(--bg-secondary-rgb) / <alpha-value>)',
+        'bg-tertiary': 'rgb(var(--bg-tertiary-rgb) / <alpha-value>)',
+        'border-primary': 'rgb(var(--border-primary-rgb) / <alpha-value>)',
+        'border-secondary': 'rgb(var(--border-secondary-rgb) / <alpha-value>)',
+        'text-primary': 'rgb(var(--text-primary-rgb) / <alpha-value>)',
+        'text-secondary': 'rgb(var(--text-secondary-rgb) / <alpha-value>)',
+        'text-tertiary': 'rgb(var(--text-tertiary-rgb) / <alpha-value>)',
+        'accent-primary': 'rgb(var(--accent-primary-rgb) / <alpha-value>)',
+        'accent-muted': 'rgb(var(--accent-muted-rgb) / <alpha-value>)',
+        'product-bg': 'rgb(var(--product-bg-rgb) / <alpha-value>)',
 
-        // Legacy shadcn compatibility
-        background: '#0E0E0E',
-        foreground: '#EDEDED',
+        // Legacy shadcn compatibility - using RGB CSS variables
+        background: 'rgb(var(--bg-primary-rgb) / <alpha-value>)',
+        foreground: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
         card: {
-          DEFAULT: '#141414',
-          foreground: '#EDEDED',
+          DEFAULT: 'rgb(var(--bg-secondary-rgb) / <alpha-value>)',
+          foreground: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
         },
         popover: {
-          DEFAULT: '#141414',
-          foreground: '#EDEDED',
+          DEFAULT: 'rgb(var(--bg-secondary-rgb) / <alpha-value>)',
+          foreground: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
         },
         primary: {
-          DEFAULT: '#EDEDED',
-          foreground: '#0E0E0E',
+          DEFAULT: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
+          foreground: 'rgb(var(--bg-primary-rgb) / <alpha-value>)',
         },
         secondary: {
-          DEFAULT: '#1B1B1B',
-          foreground: '#EDEDED',
+          DEFAULT: 'rgb(var(--bg-tertiary-rgb) / <alpha-value>)',
+          foreground: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
         },
         muted: {
-          DEFAULT: '#1B1B1B',
-          foreground: '#7A7A7A',
+          DEFAULT: 'rgb(var(--bg-tertiary-rgb) / <alpha-value>)',
+          foreground: 'rgb(var(--text-tertiary-rgb) / <alpha-value>)',
         },
         accent: {
-          DEFAULT: '#1B1B1B',
-          foreground: '#EDEDED',
+          DEFAULT: 'rgb(var(--bg-tertiary-rgb) / <alpha-value>)',
+          foreground: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
         },
         destructive: {
           DEFAULT: '#EF4444',
-          foreground: '#EDEDED',
+          foreground: '#FFFFFF',
         },
-        border: '#2A2A2A',
-        input: '#2A2A2A',
-        ring: '#EDEDED',
+        border: 'rgb(var(--border-primary-rgb) / <alpha-value>)',
+        input: 'rgb(var(--border-primary-rgb) / <alpha-value>)',
+        ring: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
       },
       fontFamily: {
         sans: [

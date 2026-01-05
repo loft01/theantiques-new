@@ -222,6 +222,48 @@ export function transformCategory(category: Category, productCount?: number) {
   }
 }
 
+// Get homepage categories (all parent categories) with product counts
+export async function getHomepageCategories(limit = 10) {
+  const payload = await getPayloadClient()
+
+  const result = await payload.find({
+    collection: 'categories',
+    where: { parent: { exists: false } },
+    sort: 'name',
+    limit,
+    depth: 0,
+  })
+
+  const categoriesWithCounts = await Promise.all(
+    result.docs.map(async (category) => {
+      const count = await getCategoryProductCount(category.id)
+      // Handle icon - with depth:0, it's either a string ID or old invalid string
+      let iconUrl = ''
+      const iconId = category.icon
+      if (iconId && typeof iconId === 'string' && iconId.match(/^[0-9a-fA-F]{24}$/)) {
+        // Valid MongoDB ObjectId - fetch the media
+        try {
+          const media = await payload.findByID({ collection: 'media', id: iconId })
+          if (media) {
+            iconUrl = (media as Media).url || ''
+          }
+        } catch {
+          // Icon not found or invalid, skip
+        }
+      }
+      return {
+        id: category.id,
+        slug: category.slug,
+        name: category.name,
+        iconUrl,
+        productCount: count,
+      }
+    })
+  )
+
+  return categoriesWithCounts
+}
+
 // Get menu categories with subcategories and featured products
 export async function getMenuCategories() {
   const payload = await getPayloadClient()
@@ -264,7 +306,7 @@ export async function getMenuCategories() {
           slug: product.slug,
           title: product.title,
           image: {
-            url: getMediaUrl(firstImage, 'thumbnail') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop',
+            url: getMediaUrl(firstImage, 'card') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=800&fit=crop',
             alt: firstImage?.alt || product.title,
           },
           category: cat?.name || 'Uncategorized',

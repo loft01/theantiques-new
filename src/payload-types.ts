@@ -204,6 +204,10 @@ export interface Category {
   description?: string | null;
   image?: (string | null) | Media;
   featured?: boolean | null;
+  /**
+   * Icona SVG o immagine da mostrare nella homepage e altre sezioni
+   */
+  icon?: (string | null) | Media;
   parent?: (string | null) | Category;
   updatedAt: string;
   createdAt: string;
@@ -456,6 +460,7 @@ export interface CategoriesSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   featured?: T;
+  icon?: T;
   parent?: T;
   updatedAt?: T;
   createdAt?: T;

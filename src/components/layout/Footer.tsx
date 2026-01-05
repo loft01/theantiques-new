@@ -33,7 +33,7 @@ export function Footer() {
   return (
     <footer className="relative bg-bg-primary">
       {/* Newsletter Bar */}
-      <div className="border-t border-b border-border-primary">
+      <div className="border-t-2 border-b-2 border-border-primary">
         <div className="container-editorial py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-body-medium">
             Iscriviti alla nostra Newsletter e ottieni uno sconto del 10%.

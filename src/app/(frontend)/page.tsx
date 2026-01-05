@@ -2,13 +2,15 @@ import { Metadata } from 'next'
 import { ProductGrid } from '@/components/products'
 import {
   Hero,
+  CategoryIconsSection,
+  ServicesSection,
   ManifestoSection,
+  SplitImageSection,
   CinematicBreak,
-  HighlightedObject,
   QuoteSection,
   FeaturedProductsSection
 } from '@/components/home'
-import { getCategories, getProducts, transformProduct } from '@/lib/payload'
+import { getProducts, transformProduct, getHomepageCategories } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'The Antiques | Antiquariato e Oggetti d\'Epoca',
@@ -25,35 +27,32 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   // Fetch data in parallel
-  const [categories, productsResult] = await Promise.all([
-    getCategories({ parentOnly: true }),
+  const [productsResult, homepageCategories] = await Promise.all([
     getProducts({ featured: true, limit: 9 }),
+    getHomepageCategories(),
   ])
 
   const featuredProducts = productsResult.products.map(transformProduct)
 
-  // Get a featured product for the highlighted section
-  const highlightedProduct = featuredProducts[0]
-
-  // Prepare categories for hero
-  const heroCategories = categories.map(cat => ({
-    slug: cat.slug,
-    name: cat.name,
-  }))
-
   return (
     <div className="min-h-screen">
       {/* 1. Hero Editorial Block */}
-      <Hero
-        categories={heroCategories}
-        heroImageMobile="/IMG_9478.jpg"
+      <Hero heroImageMobile="/IMG_9478.jpg" />
+
+      {/* 2. Category Icons Section */}
+      <CategoryIconsSection categories={homepageCategories} />
+
+      {/* 3. Services Section */}
+      <ServicesSection
+        title="I Nostri Servizi"
+        subtitle="Scopri tutto quello che possiamo offrirti"
       />
 
-      {/* 2. Manifesto Section */}
-      <ManifestoSection />
-
-      {/* 3. Featured Collection Grid */}
-      <FeaturedProductsSection>
+      {/* 4. Featured Collection Grid */}
+      <FeaturedProductsSection
+        title="Collezione in Evidenza"
+        subtitle="I pezzi più ricercati della nostra selezione"
+      >
         {featuredProducts.length > 0 ? (
           <ProductGrid products={featuredProducts.slice(0, 6)} />
         ) : (
@@ -63,27 +62,24 @@ export default async function HomePage() {
         )}
       </FeaturedProductsSection>
 
-      {/* 4. Cinematic Break */}
-      <CinematicBreak
+      {/* 5. Manifesto Section */}
+      <ManifestoSection />
+
+      {/* 6. Split Image Section */}
+      <SplitImageSection
+        title="Pezzi Unici con Storie da Raccontare"
+        subtitle="Ogni oggetto della nostra collezione porta con sé decenni di storia, artigianalità e bellezza senza tempo."
         image="/IMG_9415.jpg"
         imageMobile="/IMG_9846.jpg"
-        alt="Mobili antichi in ambiente naturale"
+        imagePosition="left"
       />
-
-      {/* 5. Highlighted Object Section */}
-      {highlightedProduct && (
-        <HighlightedObject
-          title={highlightedProduct.title}
-          description="Un pezzo straordinario che incarna eleganza senza tempo e maestria artigianale. Ogni dettaglio racconta una storia di arte e dedizione alla qualità che trascende le generazioni."
-          image={highlightedProduct.image.url}
-          link={`/products/${highlightedProduct.slug}`}
-          ctaText="Scopri l'Oggetto"
-        />
-      )}
 
       {/* 6. More Products */}
       {featuredProducts.length > 6 && (
-        <FeaturedProductsSection>
+        <FeaturedProductsSection
+          title="Altri Pezzi Selezionati"
+          subtitle="Continua a esplorare la nostra collezione"
+        >
           <ProductGrid products={featuredProducts.slice(6, 9)} />
         </FeaturedProductsSection>
       )}

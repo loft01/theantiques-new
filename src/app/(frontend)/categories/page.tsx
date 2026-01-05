@@ -45,7 +45,7 @@ export default async function CategoriesPage() {
                       alt={category.image.alt || category.name}
                       fill
                       className="object-cover group-hover:scale-[1.02] transition-transform"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-text-tertiary">

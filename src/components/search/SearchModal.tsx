@@ -126,7 +126,7 @@ export function SearchModal({ isOpen, onClose, categories = [] }: SearchModalPro
   return (
     <div className="fixed inset-0 z-modal bg-bg-primary">
       {/* Header */}
-      <div className="flex items-center justify-between h-14 px-6 border-b border-border-primary">
+      <div className="flex items-center justify-between h-14 px-6 border-b-2 border-border-primary">
         <span className="text-caption text-text-tertiary">Ricerca</span>
         <button
           onClick={onClose}
@@ -148,7 +148,7 @@ export function SearchModal({ isOpen, onClose, categories = [] }: SearchModalPro
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Cosa stai cercando?"
-              className="w-full h-14 px-0 bg-transparent border-0 border-b border-border-primary text-manifesto text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
+              className="w-full h-14 px-0 bg-transparent border-0 border-b-2 border-border-primary text-manifesto text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-primary transition-colors"
               autoComplete="off"
             />
             {isLoading && (

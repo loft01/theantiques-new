@@ -3,24 +3,36 @@
 @tailwind utilities;
 
 /* ========================================
-   FF-INSPIRED DESIGN SYSTEM (DARK THEME)
+   FF-INSPIRED DESIGN SYSTEM
    ======================================== */
 
+/* ---- DARK THEME (Default) ---- */
 :root {
-  /* ---- CORE PALETTE ---- */
-  --bg-primary: #0E0E0E;
-  --bg-secondary: #141414;
-  --bg-tertiary: #1B1B1B;
+  /* ---- CORE PALETTE (RGB for Tailwind opacity support) ---- */
+  --bg-primary-rgb: 14 14 14;
+  --bg-secondary-rgb: 20 20 20;
+  --bg-tertiary-rgb: 27 27 27;
+  --border-primary-rgb: 55 55 55;
+  --border-secondary-rgb: 70 70 70;
+  --text-primary-rgb: 237 237 237;
+  --text-secondary-rgb: 181 181 181;
+  --text-tertiary-rgb: 122 122 122;
+  --accent-primary-rgb: 237 237 237;
+  --accent-muted-rgb: 138 138 138;
+  --product-bg-rgb: 200 196 188;
 
-  --border-primary: #2A2A2A;
-  --border-secondary: #333333;
-
-  --text-primary: #EDEDED;
-  --text-secondary: #B5B5B5;
-  --text-tertiary: #7A7A7A;
-
-  --accent-primary: #EDEDED;
-  --accent-muted: #8A8A8A;
+  /* CSS variables using RGB */
+  --bg-primary: rgb(var(--bg-primary-rgb));
+  --bg-secondary: rgb(var(--bg-secondary-rgb));
+  --bg-tertiary: rgb(var(--bg-tertiary-rgb));
+  --border-primary: rgb(var(--border-primary-rgb));
+  --border-secondary: rgb(var(--border-secondary-rgb));
+  --text-primary: rgb(var(--text-primary-rgb));
+  --text-secondary: rgb(var(--text-secondary-rgb));
+  --text-tertiary: rgb(var(--text-tertiary-rgb));
+  --accent-primary: rgb(var(--accent-primary-rgb));
+  --accent-muted: rgb(var(--accent-muted-rgb));
+  --product-bg: rgb(var(--product-bg-rgb));
 
   /* ---- SPACING ---- */
   --gutter: 24px;
@@ -42,6 +54,9 @@
   --z-header: 30;
   --z-overlay: 40;
   --z-modal: 50;
+
+  /* Color scheme for native elements */
+  color-scheme: dark;
 }
 
 /* ========================================
@@ -159,13 +174,13 @@ body {
 
   /* Divider line */
   .divider {
-    height: 1px;
+    height: 2px;
     background-color: var(--border-primary);
     width: 100%;
   }
 
   .divider-vertical {
-    width: 1px;
+    width: 2px;
     background-color: var(--border-primary);
     height: 100%;
   }
@@ -312,7 +327,7 @@ body {
   .product-card-image {
     position: relative;
     aspect-ratio: 1;
-    background-color: #c8c4bc;
+    background-color: var(--product-bg);
     overflow: hidden;
   }
 
@@ -513,8 +528,8 @@ body {
     display: flex;
     overflow: hidden;
     white-space: nowrap;
-    border-top: 1px solid var(--border-primary);
-    border-bottom: 1px solid var(--border-primary);
+    border-top: 2px solid var(--border-primary);
+    border-bottom: 2px solid var(--border-primary);
     padding: 12px 0;
   }
 
@@ -547,7 +562,7 @@ body {
 @layer utilities {
   .grid-editorial {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--gutter);
   }
 
@@ -566,17 +581,17 @@ body {
   /* Product Grid with border dividers */
   .product-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--border-primary);
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 2px solid var(--border-primary);
   }
 
   .product-grid-item {
-    padding: 24px;
-    border-bottom: 1px solid var(--border-primary);
-    border-right: 1px solid var(--border-primary);
+    padding: 20px;
+    border-bottom: 2px solid var(--border-primary);
+    border-right: 2px solid var(--border-primary);
   }
 
-  .product-grid-item:nth-child(3n) {
+  .product-grid-item:nth-child(4n) {
     border-right: none;
   }
 
@@ -585,8 +600,8 @@ body {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .product-grid-item:nth-child(3n) {
-      border-right: 1px solid var(--border-primary);
+    .product-grid-item:nth-child(4n) {
+      border-right: 2px solid var(--border-primary);
     }
 
     .product-grid-item:nth-child(2n) {
@@ -623,6 +638,14 @@ body {
 }
 
 /* ========================================
+   THEME-AWARE LOGO
+   ======================================== */
+
+.logo-themed {
+  filter: invert(1);
+}
+
+/* ========================================
    LEGACY SHADCN COMPATIBILITY
    ======================================== */
 
@@ -632,6 +655,7 @@ body {
   }
 }
 
+/* Dark theme shadcn vars */
 :root {
   --background: 240 6% 4%;
   --foreground: 0 0% 93%;

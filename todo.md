@@ -470,3 +470,27 @@
   - Minimal result cards
 - **Dev server running at http://localhost:3000**
 - **Next:** Visual testing, add real images, responsive polish
+
+### Session 11 - Jan 2, 2026
+- **Homepage Refinements & Theme Switching**
+- Removed side menu from hero section (now full-width)
+- Added CategoryIconsSection under hero with:
+  - `showOnHomepage` checkbox field in Categories collection
+  - `icon` select field in Categories collection
+  - Custom SVG icons for each category
+  - Product count display
+  - `getHomepageCategories` function in payload.ts
+- Implemented dark/light theme switching:
+  - Created ThemeProvider context with localStorage persistence
+  - Created ThemeToggle component (sun/moon icons)
+  - Updated CSS variables to RGB format for Tailwind opacity support
+  - Updated tailwind.config.ts with CSS variable colors
+- Created SectionHeader component for consistent title/subtitle styling
+- Replaced ManifestoSection with ServicesSection (4 services: Progettazione, Shop, Noleggio, Showroom)
+- Changed product grid from 3 to 4 columns on desktop
+- Replaced CinematicBreak with SplitImageSection (half image, half centered text)
+- Removed HighlightedObject section before testimonials
+- Applied custom SVG icons from public/icons for Illuminazione and Arredamento categories
+- Made category icons bigger (w-16 h-16, 64px)
+- Attempted Payload admin thumbnail preview but reverted due to breaking row clickability
+- **Next:** Visual testing, responsive polish, add real content

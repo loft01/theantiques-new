@@ -32,6 +32,11 @@ interface HeaderProps {
 export function Header({ categories = [] }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
+
+  // Get featured products for hovered category
+  const hoveredCategoryData = categories.find(c => c.slug === hoveredCategory)
+  const featuredImages = hoveredCategoryData?.featured || []
 
   // Close menu on escape
   useEffect(() => {
@@ -44,12 +49,13 @@ export function Header({ categories = [] }: HeaderProps) {
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
-  // Prevent scroll when menu is open
+  // Prevent scroll when menu is open and reset hover state when closed
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = ''
+      setHoveredCategory(null)
     }
     return () => {
       document.body.style.overflow = ''
@@ -60,7 +66,7 @@ export function Header({ categories = [] }: HeaderProps) {
     <>
       <header className="fixed top-0 left-0 right-0 z-header bg-bg-primary/90 backdrop-blur-sm">
         {/* Main Nav Bar */}
-        <div className="flex items-center justify-between h-14 px-6 border-b border-border-primary/50">
+        <div className="flex items-center justify-between h-14 px-6 border-b-2 border-border-primary">
           {/* Left - Menu */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -82,20 +88,18 @@ export function Header({ categories = [] }: HeaderProps) {
               width={140}
               height={20}
               priority
-              className="h-5 w-auto invert"
+              className="h-5 w-auto logo-themed"
             />
           </Link>
 
           {/* Right - Search */}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="nav-link flex items-center gap-2"
-              aria-label="Apri ricerca"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-          </div>
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="nav-link flex items-center gap-2"
+            aria-label="Apri ricerca"
+          >
+            <Search className="w-4 h-4" />
+          </button>
         </div>
 
       </header>
@@ -107,7 +111,7 @@ export function Header({ categories = [] }: HeaderProps) {
       {isMenuOpen && (
         <div className="fixed inset-0 z-overlay bg-bg-primary">
           {/* Menu Header */}
-          <div className="flex items-center justify-between h-14 px-6 border-b border-border-primary">
+          <div className="flex items-center justify-between h-14 px-6 border-b-2 border-border-primary">
             <button
               onClick={() => setIsMenuOpen(false)}
               className="nav-link"
@@ -124,7 +128,7 @@ export function Header({ categories = [] }: HeaderProps) {
                 alt="The Antiques"
                 width={140}
                 height={20}
-                className="h-5 w-auto invert"
+                className="h-5 w-auto logo-themed"
               />
             </Link>
             <div className="w-10" />
@@ -134,7 +138,7 @@ export function Header({ categories = [] }: HeaderProps) {
           <div className="h-[calc(100vh-56px)] overflow-y-auto">
             <div className="grid lg:grid-cols-2 min-h-full">
               {/* Left Side - Navigation */}
-              <div className="p-6 lg:p-12 border-r border-border-primary">
+              <div className="p-6 lg:p-12 border-r-2 border-border-primary">
                 {/* Categories Sidebar */}
                 <div className="mb-12">
                   <p className="text-caption text-text-tertiary mb-4">
@@ -149,7 +153,8 @@ export function Header({ categories = [] }: HeaderProps) {
                   <Link
                     href="/categories"
                     onClick={() => setIsMenuOpen(false)}
-                    className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
+                    onMouseEnter={() => setHoveredCategory(null)}
+                    className="block py-3 text-body-medium border-b-2 border-border-primary hover:opacity-70 transition-opacity"
                   >
                     Tutti i Prodotti
                   </Link>
@@ -158,7 +163,8 @@ export function Header({ categories = [] }: HeaderProps) {
                       key={cat.slug}
                       href={`/categories/${cat.slug}`}
                       onClick={() => setIsMenuOpen(false)}
-                      className="block py-3 text-body-medium border-b border-border-primary hover:opacity-70 transition-opacity"
+                      onMouseEnter={() => setHoveredCategory(cat.slug)}
+                      className="block py-3 text-body-medium border-b-2 border-border-primary hover:opacity-70 transition-opacity"
                     >
                       {cat.name}
                     </Link>
@@ -184,25 +190,48 @@ export function Header({ categories = [] }: HeaderProps) {
                 </div>
               </div>
 
-              {/* Right Side - Featured Image */}
-              <div className="hidden lg:block relative">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{
-                    backgroundImage: 'url(/images/hero-antique.jpg)',
-                    filter: 'grayscale(20%)',
-                  }}
-                />
-                {/* Optional: Featured product or CTA */}
-                <div className="absolute bottom-6 right-6">
-                  <Link
-                    href="/categories"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="btn-pill bg-bg-primary/80 backdrop-blur-sm"
-                  >
-                    60%
-                  </Link>
-                </div>
+              {/* Right Side - Featured Products */}
+              <div className="hidden lg:block relative bg-bg-secondary overflow-hidden">
+                {featuredImages.length > 0 ? (
+                  <div className="absolute inset-0 grid grid-cols-2 gap-1 p-1">
+                    {featuredImages.slice(0, 4).map((product) => (
+                      <Link
+                        key={product.slug}
+                        href={`/products/${product.slug}`}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="relative overflow-hidden group"
+                      >
+                        <Image
+                          src={product.image.url}
+                          alt={product.image.alt}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="25vw"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                        <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <p className="text-caption text-white truncate">{product.title}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-opacity duration-300"
+                    style={{
+                      backgroundImage: 'url(/images/hero-antique.jpg)',
+                      filter: 'grayscale(20%)',
+                    }}
+                  />
+                )}
+                {/* Category name overlay */}
+                {hoveredCategoryData && (
+                  <div className="absolute bottom-6 left-6">
+                    <p className="text-section-title text-white drop-shadow-lg">
+                      {hoveredCategoryData.name}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -50,6 +50,15 @@ export const Categories: CollectionConfig = {
       },
     },
     {
+      name: 'icon',
+      label: 'Icona',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Icona SVG o immagine da mostrare nella homepage e altre sezioni',
+      },
+    },
+    {
       name: 'parent',
       label: 'Categoria Padre',
       type: 'relationship',
