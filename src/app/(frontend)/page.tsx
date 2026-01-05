@@ -36,7 +36,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       {/* 1. Hero Editorial Block */}
-      <Hero heroImageMobile="/IMG_9478.jpg" />
+      <Hero />
 
       {/* 2. Category Icons Section */}
       <CategoryIconsSection categories={homepageCategories} />

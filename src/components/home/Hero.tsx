@@ -1,36 +1,38 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 interface HeroProps {
-  heroImage?: string
-  heroImageMobile?: string
+  heroVideo?: string
+  heroVideoMobile?: string
 }
 
 const heroText = "Il passato non è mai passato"
 
-export function Hero({ heroImage, heroImageMobile }: HeroProps) {
+export function Hero({
+  heroVideo = "https://pub-86a8f9e390ac437988ab1a5db1a20295.r2.dev/media/the_antiques_home_.mp4",
+  heroVideoMobile = "https://pub-86a8f9e390ac437988ab1a5db1a20295.r2.dev/media/videohome_antiques_verticale.mp4"
+}: HeroProps) {
   return (
     <section className="relative min-h-[calc(100vh-98px)]">
-      {/* Desktop Image */}
-      <Image
-        src={heroImage || "/Antiques_dicembre.jpg"}
-        alt="Pezzo d'antiquariato in evidenza"
-        fill
-        className="object-cover hidden lg:block"
-        priority
-        sizes="100vw"
+      {/* Desktop Video */}
+      <video
+        src={heroVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover hidden lg:block"
       />
-      {/* Mobile Image */}
-      <Image
-        src={heroImageMobile || heroImage || "/Antiques_dicembre.jpg"}
-        alt="Pezzo d'antiquariato in evidenza"
-        fill
-        className="object-cover lg:hidden"
-        priority
-        sizes="100vw"
+      {/* Mobile Video */}
+      <video
+        src={heroVideoMobile}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover lg:hidden"
       />
 
       {/* Dark overlay */}
