@@ -161,7 +161,7 @@ export interface User {
  */
 export interface Media {
   id: string;
-  alt: string;
+  alt?: string | null;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -235,12 +235,7 @@ export interface Product {
     };
     [k: string]: unknown;
   } | null;
-  images?:
-    | {
-        image: string | Media;
-        id?: string | null;
-      }[]
-    | null;
+  images: (string | Media)[];
   category: string | Category;
   price: number;
   priceLabel?: ('asking' | 'starting' | 'estimate' | 'offer') | null;
@@ -473,12 +468,7 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
+  images?: T;
   category?: T;
   price?: T;
   priceLabel?: T;

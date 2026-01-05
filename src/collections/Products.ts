@@ -18,17 +18,17 @@ export const Products: CollectionConfig = {
       async ({ data, originalDoc, req, operation }) => {
         if (operation !== 'update' || !originalDoc) return data
 
-        // Get old image IDs
+        // Get old image IDs (now images is array of IDs or media objects directly)
         const oldImageIds = (originalDoc.images || [])
-          .map((img: { image: string | { id: string } }) =>
-            typeof img.image === 'string' ? img.image : img.image?.id
+          .map((img: string | { id: string }) =>
+            typeof img === 'string' ? img : img?.id
           )
           .filter(Boolean)
 
         // Get new image IDs
         const newImageIds = (data.images || [])
-          .map((img: { image: string | { id: string } }) =>
-            typeof img.image === 'string' ? img.image : img.image?.id
+          .map((img: string | { id: string }) =>
+            typeof img === 'string' ? img : img?.id
           )
           .filter(Boolean)
 
@@ -78,21 +78,10 @@ export const Products: CollectionConfig = {
     {
       name: 'images',
       label: 'Immagini',
-      type: 'array',
-      minRows: 1,
-      labels: {
-        singular: 'Immagine',
-        plural: 'Immagini',
-      },
-      fields: [
-        {
-          name: 'image',
-          label: 'Immagine',
-          type: 'upload',
-          relationTo: 'media',
-          required: true,
-        },
-      ],
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
+      required: true,
     },
     {
       name: 'category',

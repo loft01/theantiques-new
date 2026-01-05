@@ -77,7 +77,6 @@ export const Media: CollectionConfig = {
       name: 'alt',
       label: 'Testo Alternativo',
       type: 'text',
-      required: true,
     },
   ],
 }

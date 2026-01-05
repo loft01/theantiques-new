@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   const category = product.category as Category
-  const firstImage = product.images?.[0]?.image as Media | undefined
+  const firstImage = product.images?.[0] as Media | undefined
   const imageUrl = firstImage ? getMediaUrl(firstImage, 'card') : undefined
 
   return {
@@ -83,10 +83,10 @@ function generateProductJsonLd(product: {
   price: number
   status: string
   description?: unknown
-  images?: { image: string | Media }[]
+  images?: (string | Media)[]
   category: Category
 }) {
-  const firstImage = product.images?.[0]?.image as Media | undefined
+  const firstImage = product.images?.[0] as Media | undefined
   const imageUrl = firstImage ? getMediaUrl(firstImage) : undefined
 
   const availability = {
@@ -131,7 +131,7 @@ export default async function ProductPage({ params }: PageProps) {
   const relatedProducts = relatedProductsData.map(transformProduct)
 
   const productImages = product.images?.length ? product.images.map(img => {
-    const media = img.image as Media
+    const media = img as Media
     return {
       url: getMediaUrl(media) || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=900&fit=crop',
       alt: media?.alt || product.title,

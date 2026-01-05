@@ -191,7 +191,7 @@ export async function searchProducts(options: {
 // Transform product for frontend use
 export function transformProduct(product: Product) {
   const category = product.category as Category
-  const firstImage = product.images?.[0]?.image as Media | undefined
+  const firstImage = product.images?.[0] as Media | undefined
 
   return {
     slug: product.slug,
@@ -234,32 +234,32 @@ export async function getHomepageCategories(limit = 10) {
     depth: 0,
   })
 
-  const categoriesWithCounts = await Promise.all(
-    result.docs.map(async (category) => {
-      const count = await getCategoryProductCount(category.id)
-      // Handle icon - with depth:0, it's either a string ID or old invalid string
-      let iconUrl = ''
-      const iconId = category.icon
-      if (iconId && typeof iconId === 'string' && iconId.match(/^[0-9a-fA-F]{24}$/)) {
-        // Valid MongoDB ObjectId - fetch the media
-        try {
-          const media = await payload.findByID({ collection: 'media', id: iconId })
-          if (media) {
-            iconUrl = (media as Media).url || ''
-          }
-        } catch {
-          // Icon not found or invalid, skip
+  // Process categories sequentially to avoid MongoDB session exhaustion
+  const categoriesWithCounts = []
+  for (const category of result.docs) {
+    const count = await getCategoryProductCount(category.id)
+    // Handle icon - with depth:0, it's either a string ID or old invalid string
+    let iconUrl = ''
+    const iconId = category.icon
+    if (iconId && typeof iconId === 'string' && iconId.match(/^[0-9a-fA-F]{24}$/)) {
+      // Valid MongoDB ObjectId - fetch the media
+      try {
+        const media = await payload.findByID({ collection: 'media', id: iconId })
+        if (media) {
+          iconUrl = (media as Media).url || ''
         }
+      } catch {
+        // Icon not found or invalid, skip
       }
-      return {
-        id: category.id,
-        slug: category.slug,
-        name: category.name,
-        iconUrl,
-        productCount: count,
-      }
+    }
+    categoriesWithCounts.push({
+      id: category.id,
+      slug: category.slug,
+      name: category.name,
+      iconUrl,
+      productCount: count,
     })
-  )
+  }
 
   return categoriesWithCounts
 }
@@ -276,54 +276,54 @@ export async function getMenuCategories() {
     limit: 6,
   })
 
-  const menuCategories = await Promise.all(
-    categoriesResult.docs.map(async (category) => {
-      // Get subcategories
-      const subcategoriesResult = await payload.find({
-        collection: 'categories',
-        where: { parent: { equals: category.id } },
-        sort: 'name',
-        limit: 8,
-      })
+  // Process categories sequentially to avoid MongoDB session exhaustion
+  const menuCategories = []
+  for (const category of categoriesResult.docs) {
+    // Get subcategories
+    const subcategoriesResult = await payload.find({
+      collection: 'categories',
+      where: { parent: { equals: category.id } },
+      sort: 'name',
+      limit: 8,
+    })
 
-      // Get featured products for this category
-      const productsResult = await payload.find({
-        collection: 'products',
-        where: {
-          and: [
-            { category: { equals: category.id } },
-            { featured: { equals: true } },
-          ],
-        },
-        limit: 3,
-        depth: 2,
-      })
+    // Get featured products for this category
+    const productsResult = await payload.find({
+      collection: 'products',
+      where: {
+        and: [
+          { category: { equals: category.id } },
+          { featured: { equals: true } },
+        ],
+      },
+      limit: 3,
+      depth: 2,
+    })
 
-      const featured = productsResult.docs.map((product) => {
-        const cat = product.category as Category
-        const firstImage = product.images?.[0]?.image as Media | undefined
-        return {
-          slug: product.slug,
-          title: product.title,
-          image: {
-            url: getMediaUrl(firstImage, 'card') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=800&fit=crop',
-            alt: firstImage?.alt || product.title,
-          },
-          category: cat?.name || 'Uncategorized',
-        }
-      })
-
+    const featured = productsResult.docs.map((product) => {
+      const cat = product.category as Category
+      const firstImage = product.images?.[0] as Media | undefined
       return {
-        slug: category.slug,
-        name: category.name,
-        subcategories: subcategoriesResult.docs.map((sub) => ({
-          slug: sub.slug,
-          name: sub.name,
-        })),
-        featured,
+        slug: product.slug,
+        title: product.title,
+        image: {
+          url: getMediaUrl(firstImage, 'card') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=800&fit=crop',
+          alt: firstImage?.alt || product.title,
+        },
+        category: cat?.name || 'Uncategorized',
       }
     })
-  )
+
+    menuCategories.push({
+      slug: category.slug,
+      name: category.name,
+      subcategories: subcategoriesResult.docs.map((sub) => ({
+        slug: sub.slug,
+        name: sub.name,
+      })),
+      featured,
+    })
+  }
 
   return menuCategories
 }
