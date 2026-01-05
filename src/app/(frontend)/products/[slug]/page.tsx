@@ -17,15 +17,34 @@ const statusLabels: Record<ProductStatus, string> = {
 
 function richTextToPlainText(content: unknown): string {
   if (!content || typeof content !== 'object') return ''
+
+  // Recursively extract text from any node structure
+  function extractText(node: unknown): string {
+    if (!node || typeof node !== 'object') return ''
+    const n = node as Record<string, unknown>
+
+    // Handle line break nodes
+    if (n.type === 'linebreak') return '\n'
+
+    // If it has a text property, return it
+    if (typeof n.text === 'string') return n.text
+
+    // If it has children, recurse into them
+    if (Array.isArray(n.children)) {
+      return n.children.map(extractText).join('')
+    }
+
+    return ''
+  }
+
   const root = (content as { root?: { children?: unknown[] } }).root
   if (!root?.children) return ''
 
+  // Process each top-level block (paragraph, list, etc.)
   return root.children
-    .map((node: unknown) => {
-      const n = node as { children?: { text?: string }[] }
-      return n.children?.map(c => c.text || '').join('') || ''
-    })
-    .join(' ')
+    .map((node: unknown) => extractText(node))
+    .filter(text => text.trim() !== '')
+    .join('\n\n')
 }
 
 interface PageProps {
@@ -48,7 +67,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   return {
     title: `${product.title} | The Antiques`,
-    description: `${category?.name || 'Antiquariato'} - ${product.title}. Prezzo: ${product.price}€`,
+    description: `${category?.name || 'Antiquariato'} - ${product.title}. Prezzo: €${product.price}`,
     openGraph: {
       title: product.title,
       description: `${category?.name || 'Antiquariato'} - ${product.title}`,
@@ -122,12 +141,7 @@ export default async function ProductPage({ params }: PageProps) {
   const mainImage = productImages[0]
   const description = richTextToPlainText(product.description)
 
-  const formattedPrice = new Intl.NumberFormat('it-IT', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(product.price)
+  const formattedPrice = `€${product.price.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
 
   const jsonLd = generateProductJsonLd({
     title: product.title,
@@ -183,20 +197,26 @@ export default async function ProductPage({ params }: PageProps) {
               {/* Description */}
               {description && (
                 <div className="mb-8">
-                  <p className="text-body text-text-secondary leading-relaxed">
+                  <p className="text-body text-text-secondary leading-relaxed whitespace-pre-line">
                     {description}
                   </p>
                 </div>
               )}
 
               {/* CTA */}
-              <div className="mt-auto">
+              <div className="mt-auto flex flex-wrap gap-3">
                 <OfferButton
                   productSlug={product.slug}
                   productTitle={product.title}
                   productPrice={product.price}
                   disabled={product.status === 'sold'}
                 />
+                <a
+                  href="tel:+390000000000"
+                  className="btn-pill"
+                >
+                  Chiama Ora
+                </a>
               </div>
             </div>
           </div>

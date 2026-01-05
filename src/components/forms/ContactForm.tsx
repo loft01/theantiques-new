@@ -8,6 +8,7 @@ type FormStatus = 'idle' | 'loading' | 'success' | 'error'
 interface FormData {
   name: string
   email: string
+  subject: string
   message: string
 }
 
@@ -15,6 +16,7 @@ export function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
+    subject: '',
     message: '',
   })
   const [status, setStatus] = useState<FormStatus>('idle')
@@ -27,7 +29,7 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
       return
     }
 
@@ -37,12 +39,12 @@ export function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, subject: 'Contact Form' }),
+        body: JSON.stringify(formData),
       })
 
       if (res.ok) {
         setStatus('success')
-        setFormData({ name: '', email: '', message: '' })
+        setFormData({ name: '', email: '', subject: '', message: '' })
       } else {
         setStatus('error')
       }
@@ -82,6 +84,19 @@ export function ContactForm() {
           value={formData.email}
           onChange={handleChange}
           placeholder="Email"
+          disabled={status === 'loading'}
+          className="input-field"
+          required
+        />
+      </div>
+
+      <div>
+        <input
+          type="text"
+          name="subject"
+          value={formData.subject}
+          onChange={handleChange}
+          placeholder="Oggetto"
           disabled={status === 'loading'}
           className="input-field"
           required

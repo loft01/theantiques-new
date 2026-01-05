@@ -21,7 +21,7 @@ export function OfferButton({ productSlug, productTitle, productPrice, disabled 
         disabled={disabled}
         className="btn-pill-filled disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {disabled ? 'Venduto' : 'Fai un\'Offerta'}
+        {disabled ? 'Venduto' : 'Richiedi Info'}
         <ArrowRight className="w-4 h-4" />
       </button>
 

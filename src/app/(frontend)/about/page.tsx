@@ -14,24 +14,28 @@ export default function AboutPage() {
       {/* Hero - Dark image bar */}
       <section className="relative h-[30vh] bg-bg-tertiary">
         <Image
-          src="https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=1920&h=600&fit=crop"
-          alt="Interno d'antiquariato"
+          src="/Maschera_africana_4-min.jpg"
+          alt="Maschera africana - The Antiques"
           fill
           className="object-cover opacity-50"
           priority
         />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <h1 className="text-manifesto text-white text-center drop-shadow-lg">
+            Chi Siamo
+          </h1>
+        </div>
       </section>
 
-      {/* Manifesto Text */}
+      {/* Intro Text */}
       <section className="section-padding border-b border-border-primary">
-        <div className="container-editorial">
-          <p className="text-manifesto text-center max-w-5xl mx-auto">
-            The Antiques è più di un semplice negozio di design; è un&apos;esperienza curata
-            che celebra la bellezza del design minimalista. Con sede in Europa, offriamo
-            una collezione accuratamente selezionata di mobili senza tempo e accessori
-            per la casa che portano lusso discreto negli spazi abitativi moderni. I nostri pezzi
-            sono scelti per la loro eleganza raffinata, l&apos;artigianalità di alta qualità e la capacità
-            di arricchire il quotidiano con bellezza semplice e ricercata.
+        <div className="container-editorial max-w-3xl mx-auto text-center">
+          <p className="text-body text-text-secondary leading-relaxed">
+            The Antiques è più di un semplice negozio di antiquariato; è un&apos;esperienza curata
+            che celebra la bellezza degli oggetti d&apos;epoca. Offriamo una collezione accuratamente
+            selezionata di mobili, arte e accessori che portano carattere e storia negli spazi
+            contemporanei. Ogni pezzo è scelto per la sua autenticità, qualità artigianale e
+            capacità di raccontare una storia unica.
           </p>
         </div>
       </section>
@@ -84,16 +88,11 @@ export default function AboutPage() {
       {/* Full Width Image */}
       <section className="relative h-[50vh] lg:h-[70vh]">
         <Image
-          src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=1920&h=1080&fit=crop"
-          alt="Collezione di antiquariato"
+          src="/Cavallina_12-min.jpg"
+          alt="Cavallina - Collezione The Antiques"
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h2 className="text-manifesto text-white text-center drop-shadow-lg">
-            Gli Oggetti The Antiques
-          </h2>
-        </div>
       </section>
     </div>
   )

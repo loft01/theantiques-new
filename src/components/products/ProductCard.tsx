@@ -26,12 +26,7 @@ export function ProductCard({
   image,
   isNew = false,
 }: ProductCardProps) {
-  const formattedPrice = new Intl.NumberFormat('it-IT', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price)
+  const formattedPrice = `€${price.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
 
   return (
     <article className="product-card">

@@ -5,7 +5,6 @@ import {
   CategoryIconsSection,
   ServicesSection,
   ManifestoSection,
-  SplitImageSection,
   CinematicBreak,
   QuoteSection,
   FeaturedProductsSection
@@ -65,16 +64,17 @@ export default async function HomePage() {
       {/* 5. Manifesto Section */}
       <ManifestoSection />
 
-      {/* 6. Split Image Section */}
-      <SplitImageSection
-        title="Pezzi Unici con Storie da Raccontare"
-        subtitle="Ogni oggetto della nostra collezione porta con sé decenni di storia, artigianalità e bellezza senza tempo."
-        image="/IMG_9415.jpg"
-        imageMobile="/IMG_9846.jpg"
-        imagePosition="left"
+      {/* 6. Cinematic Break */}
+      <CinematicBreak
+        image="/IMG_Sfondo.jpg"
+        imageMobile="/Antiques_dicembre_1.jpg"
+        alt="Sfondo antiquariato"
       />
 
-      {/* 6. More Products */}
+      {/* 7. Testimonials Section */}
+      <QuoteSection />
+
+      {/* 8. More Products */}
       {featuredProducts.length > 6 && (
         <FeaturedProductsSection
           title="Altri Pezzi Selezionati"
@@ -83,19 +83,6 @@ export default async function HomePage() {
           <ProductGrid products={featuredProducts.slice(6, 9)} />
         </FeaturedProductsSection>
       )}
-
-      {/* 8. Quote Section */}
-      <QuoteSection
-        quote="The Antiques ridefinisce il concetto di design curato. In un mondo saturo di opzioni, questa collezione eccelle concentrandosi sull'essenziale—pezzi accuratamente selezionati che incarnano sofisticatezza senza tempo e pura semplicità."
-        author="Interior Design Magazine"
-      />
-
-      {/* 9. Final Cinematic Break */}
-      <CinematicBreak
-        image="/IMG_Sfondo.jpg"
-        imageMobile="/Antiques_dicembre_1.jpg"
-        alt="Sfondo antiquariato"
-      />
 
       {/* Footer handles newsletter */}
     </div>

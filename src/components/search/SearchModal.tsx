@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, X, Loader2, ArrowRight } from 'lucide-react'
+import { Search, X, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -152,7 +152,7 @@ export function SearchModal({ isOpen, onClose, categories = [] }: SearchModalPro
               autoComplete="off"
             />
             {isLoading && (
-              <Loader2 className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary animate-spin" />
+              <span className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-text-primary rounded-full animate-ping" />
             )}
           </div>
 
@@ -188,7 +188,7 @@ export function SearchModal({ isOpen, onClose, categories = [] }: SearchModalPro
                     </div>
                     <div className="text-right flex-shrink-0">
                       <p className="text-body text-text-secondary">
-                        ${result.price.toLocaleString()}
+                        €{result.price.toLocaleString('it-IT')}
                       </p>
                     </div>
                   </button>

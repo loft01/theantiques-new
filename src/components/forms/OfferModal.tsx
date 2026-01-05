@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
+import { X, Loader2, CheckCircle, AlertCircle, AlertTriangle, XCircle, Crown } from 'lucide-react'
 
 interface OfferModalProps {
   isOpen: boolean
@@ -21,6 +21,31 @@ interface FormData {
   message: string
 }
 
+type OfferAcceptability = 'none' | 'premium' | 'good' | 'low' | 'too_low'
+
+function getOfferAcceptability(offerAmount: string, productPrice: number): OfferAcceptability {
+  if (!offerAmount || isNaN(parseFloat(offerAmount))) return 'none'
+
+  const offer = parseFloat(offerAmount)
+  if (offer <= 0) return 'none'
+
+  if (offer >= productPrice) return 'premium'
+
+  const percentOff = ((productPrice - offer) / productPrice) * 100
+
+  if (percentOff <= 10) return 'good'
+  if (percentOff <= 20) return 'low'
+  return 'too_low'
+}
+
+const acceptabilityConfig = {
+  none: { label: '', borderClass: '', textClass: '', icon: null },
+  premium: { label: 'Offerta Fantastica!', borderClass: '!border-amber-500 focus:!border-amber-500', textClass: 'text-amber-500', icon: Crown },
+  good: { label: 'Offerta buona', borderClass: '!border-green-500 focus:!border-green-500', textClass: 'text-green-500', icon: CheckCircle },
+  low: { label: 'Offerta bassa', borderClass: '!border-yellow-500 focus:!border-yellow-500', textClass: 'text-yellow-500', icon: AlertTriangle },
+  too_low: { label: 'Offerta troppo bassa', borderClass: '!border-red-500 focus:!border-red-500', textClass: 'text-red-500', icon: XCircle },
+}
+
 export function OfferModal({ isOpen, onClose, productSlug, productTitle, productPrice }: OfferModalProps) {
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -31,6 +56,9 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
   })
   const [status, setStatus] = useState<FormStatus>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+
+  const offerAcceptability = getOfferAcceptability(formData.offerAmount, productPrice)
+  const isOfferTooLow = offerAcceptability === 'too_low'
 
   useEffect(() => {
     if (isOpen) {
@@ -102,11 +130,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
 
   if (!isOpen) return null
 
-  const formattedPrice = new Intl.NumberFormat('it-IT', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 0,
-  }).format(productPrice)
+  const formattedPrice = `€${productPrice.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
@@ -120,7 +144,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
       <div className="relative w-full max-w-lg bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-[var(--border-primary)]">
-          <h2 className="text-section-title">Fai un'Offerta</h2>
+          <h2 className="text-section-title">Richiedi Info</h2>
           <button
             onClick={handleClose}
             className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
@@ -208,17 +232,32 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                     <label htmlFor="offerAmount" className="block text-small text-[var(--text-secondary)] mb-2">
                       La Tua Offerta (EUR)
                     </label>
-                    <input
-                      type="number"
-                      id="offerAmount"
-                      name="offerAmount"
-                      value={formData.offerAmount}
-                      onChange={handleChange}
-                      min="0"
-                      step="1"
-                      className="input-field"
-                      placeholder="(opzionale)"
-                    />
+                    <div className="relative">
+                      <input
+                        type="number"
+                        id="offerAmount"
+                        name="offerAmount"
+                        value={formData.offerAmount}
+                        onChange={handleChange}
+                        min="0"
+                        step="1"
+                        className={`input-field !border-2 ${acceptabilityConfig[offerAcceptability].borderClass} ${offerAcceptability !== 'none' ? 'pr-10' : ''}`}
+                        placeholder="(opzionale)"
+                      />
+                      {offerAcceptability !== 'none' && acceptabilityConfig[offerAcceptability].icon && (
+                        <div className={`absolute right-3 top-1/2 -translate-y-1/2 ${acceptabilityConfig[offerAcceptability].textClass}`}>
+                          {(() => {
+                            const Icon = acceptabilityConfig[offerAcceptability].icon
+                            return Icon ? <Icon className="w-5 h-5" /> : null
+                          })()}
+                        </div>
+                      )}
+                    </div>
+                    {offerAcceptability !== 'none' && (
+                      <p className={`text-small mt-1 ${acceptabilityConfig[offerAcceptability].textClass}`}>
+                        {acceptabilityConfig[offerAcceptability].label}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -249,8 +288,8 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                 {/* Submit button */}
                 <button
                   type="submit"
-                  disabled={status === 'loading'}
-                  className="btn-pill-filled w-full justify-center disabled:opacity-50"
+                  disabled={status === 'loading' || isOfferTooLow}
+                  className="btn-pill-filled w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {status === 'loading' ? (
                     <>
@@ -258,7 +297,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
                       Invio in corso...
                     </>
                   ) : (
-                    'Invia Offerta'
+                    'Invia Richiesta'
                   )}
                 </button>
               </form>

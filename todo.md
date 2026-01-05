@@ -494,3 +494,50 @@
 - Made category icons bigger (w-16 h-16, 64px)
 - Attempted Payload admin thumbnail preview but reverted due to breaking row clickability
 - **Next:** Visual testing, responsive polish, add real content
+
+### Session 12 - Jan 5, 2026
+- **UI Polish & Mobile Experience Improvements**
+- Removed theme toggle functionality (keeping dark theme only):
+  - Deleted ThemeProvider and ThemeToggle components
+  - Removed light theme CSS variables from globals.css
+  - Updated layout.tsx to always use dark theme
+- Made separator lines thicker and more visible:
+  - Increased border colors visibility (#373737, #464646)
+  - Changed all borders from 1px to 2px across all sections
+  - Updated dividers, ticker, product grid, Header, Footer, HomeSections
+- Category icon field changes:
+  - Removed `showOnHomepage` flag (all parent categories now shown on homepage)
+  - Changed `icon` from select dropdown to upload field for custom icons
+  - Updated `getHomepageCategories` to fetch all parent categories and handle uploaded media
+  - Created script to clear old string icon values causing MongoDB CastError
+  - Made icons larger (128px)
+- Added ManifestoSection back between featured products and testimonials
+- Added LoadingBar component for page transitions with progress animation
+- Services section updates:
+  - Changed to 1:1 aspect-square ratio
+  - Made full-width (edge-to-edge)
+  - Added border lines consistent with product grid
+  - Updated service images to new paths
+- Mobile carousel improvements:
+  - Converted categories and services to horizontal carousels on mobile
+  - Added auto-scroll with center snapping
+  - Carousels pause on hover/touch interaction
+- Menu featured products:
+  - Added hover functionality to show category's featured products
+  - Changed from thumbnail to card size images for better quality
+- Offer modal improvements:
+  - Changed button and modal title to "Richiedi Info"
+  - Added dynamic offer acceptability with colored borders and icons:
+    - Premium (≥ asking): amber/gold with Crown icon "Offerta Fantastica!"
+    - Good (≤10% off): green with CheckCircle "Offerta buona"
+    - Low (10-20% off): yellow with AlertTriangle "Offerta bassa"
+    - Too low (>20% off): red with XCircle "Offerta troppo bassa", submit disabled
+- Testimonials section updates:
+  - Added 6 testimonials with quotes and authors
+  - Removed profile picture/avatar
+  - Changed to horizontal swipeable carousel with snap points
+  - Added auto-scroll every 5 seconds
+  - Added title "Cosa Dicono di Noi" and subtitle
+  - Added dot indicators for navigation
+- Removed SplitImageSection from homepage
+- **Next:** Visual testing on mobile devices, verify testimonial carousel swipe

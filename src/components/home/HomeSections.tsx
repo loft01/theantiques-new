@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Auto-scroll hook for carousels
 function useAutoScroll(enabled: boolean, interval: number = 3000) {
@@ -169,9 +169,9 @@ export function ManifestoSection() {
     <section className="section-padding border-b-2 border-border-primary">
       <div className="container-editorial">
         <p className="text-manifesto text-center max-w-4xl mx-auto">
-          The Antiques è una collezione accuratamente curata di oggetti senza tempo.
-          Ogni pezzo combina storia ed eleganza, perfetto per arricchire
-          spazi moderni con carattere e significato.
+        The Antiques è una collezione di oggetti senza tempo,
+        selezionati per la loro storia e la loro eleganza,
+        capaci di dare carattere e profondità agli spazi contemporanei.
         </p>
       </div>
     </section>
@@ -508,43 +508,132 @@ export function EditorialStories({ stories = defaultStories }: EditorialStoriesP
 
 // ============================================
 // QUOTE SECTION
-// Centered testimonial with avatar
+// Auto-sliding testimonials carousel
 // ============================================
+interface Testimonial {
+  quote: string
+  author: string
+}
+
+const defaultTestimonials: Testimonial[] = [
+  {
+    quote: "The Antiques ridefinisce il concetto di design curato. In un mondo saturo di opzioni, questa collezione eccelle concentrandosi sull'essenziale—pezzi accuratamente selezionati che incarnano sofisticatezza senza tempo.",
+    author: "Interior Design Magazine"
+  },
+  {
+    quote: "Ogni pezzo racconta una storia. Ho trovato qui oggetti che non avrei mai scoperto altrove, con una qualità e un'autenticità impeccabili.",
+    author: "Marco R., Collezionista"
+  },
+  {
+    quote: "Un'esperienza d'acquisto raffinata e personale. Il team conosce ogni dettaglio dei loro pezzi e sa guidarti verso la scelta perfetta.",
+    author: "Giulia M., Interior Designer"
+  },
+  {
+    quote: "Finalmente un antiquario che unisce tradizione e modernità. I loro pezzi si integrano perfettamente negli ambienti contemporanei.",
+    author: "Casa & Design"
+  },
+  {
+    quote: "Professionalità e passione in ogni interazione. The Antiques è diventato il mio punto di riferimento per l'antiquariato di qualità.",
+    author: "Francesco L., Architetto"
+  },
+  {
+    quote: "La cura nella selezione è evidente. Ogni visita allo showroom è un viaggio nel tempo attraverso oggetti straordinari.",
+    author: "Elena S., Collezionista"
+  }
+]
+
 interface QuoteSectionProps {
-  quote?: string
-  author?: string
-  avatar?: string
+  testimonials?: Testimonial[]
+  title?: string
+  subtitle?: string
 }
 
 export function QuoteSection({
-  quote = "The Antiques ridefinisce il concetto di design curato. In un mondo saturo di opzioni, questa collezione eccelle concentrandosi sull'essenziale—pezzi accuratamente selezionati che incarnano sofisticatezza senza tempo e pura semplicità.",
-  author = "Interior Design Magazine",
-  avatar = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+  testimonials = defaultTestimonials,
+  title = "Cosa Dicono di Noi",
+  subtitle = "Le opinioni dei nostri clienti e della stampa"
 }: QuoteSectionProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  // Auto-scroll
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (scrollRef.current) {
+        const nextIndex = (currentIndex + 1) % testimonials.length
+        const container = scrollRef.current
+        const itemWidth = container.scrollWidth / testimonials.length
+        container.scrollTo({ left: itemWidth * nextIndex, behavior: 'smooth' })
+      }
+    }, 5000)
+
+    return () => clearInterval(timer)
+  }, [currentIndex, testimonials.length])
+
+  // Track scroll position to update dots
+  useEffect(() => {
+    const container = scrollRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const itemWidth = container.scrollWidth / testimonials.length
+      const newIndex = Math.round(container.scrollLeft / itemWidth)
+      setCurrentIndex(newIndex)
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [testimonials.length])
+
+  const scrollToIndex = (index: number) => {
+    if (scrollRef.current) {
+      const itemWidth = scrollRef.current.scrollWidth / testimonials.length
+      scrollRef.current.scrollTo({ left: itemWidth * index, behavior: 'smooth' })
+    }
+  }
+
   return (
     <section className="section-padding">
-      <div className="quote-block">
-        {/* Avatar */}
-        <div className="quote-avatar">
-          <Image
-            src={avatar}
-            alt={author}
-            width={64}
-            height={64}
-            className="object-cover"
+      <div className="container-editorial mb-8">
+        <SectionHeader title={title} subtitle={subtitle} />
+      </div>
+
+      {/* Horizontal scrollable testimonials */}
+      <div
+        ref={scrollRef}
+        className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+      >
+        {testimonials.map((testimonial, index) => (
+          <div
+            key={index}
+            className="flex-shrink-0 w-full snap-center px-6 md:px-16"
+          >
+            <div className="quote-block !pt-0 !pb-0">
+              <blockquote className="quote-text">
+                "{testimonial.quote}"
+              </blockquote>
+              <p className="text-body-medium text-text-secondary">
+                — {testimonial.author}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Dots indicator */}
+      <div className="flex justify-center gap-2 mt-8">
+        {testimonials.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollToIndex(index)}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              index === currentIndex
+                ? 'bg-text-primary w-6'
+                : 'bg-text-tertiary hover:bg-text-secondary w-2'
+            }`}
+            aria-label={`Vai alla testimonianza ${index + 1}`}
           />
-        </div>
-
-        {/* Quote */}
-        <blockquote className="quote-text">
-          "{quote}"
-        </blockquote>
-
-        {/* Author */}
-        <Link href="/about" className="link-arrow justify-center">
-          {author}
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+        ))}
       </div>
     </section>
   )

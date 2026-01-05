@@ -36,20 +36,20 @@ export function Footer() {
       <div className="border-t-2 border-b-2 border-border-primary">
         <div className="container-editorial py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-body-medium">
-            Iscriviti alla nostra Newsletter e ottieni uno sconto del 10%.
+            Iscriviti alla nostra Newsletter
           </p>
-          <form onSubmit={handleSubmit} className="flex items-center gap-3 max-w-md w-full md:w-auto">
+          <form onSubmit={handleSubmit} className="flex items-center max-w-md w-full md:w-auto border border-[var(--border-secondary)] p-2 focus-within:border-[var(--text-primary)] transition-colors">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="La tua E-Mail"
-              className="flex-1 h-10 px-5 bg-transparent border border-[var(--border-secondary)] rounded-full text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
+              className="flex-1 h-9 px-3 bg-transparent text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none"
               disabled={status === 'loading'}
             />
             <button
               type="submit"
-              className="btn-pill-filled whitespace-nowrap"
+              className="h-9 px-4 bg-[var(--text-primary)] text-[var(--bg-primary)] text-sm font-medium whitespace-nowrap rounded-full hover:bg-[var(--text-secondary)] transition-colors disabled:opacity-50 flex items-center gap-2"
               disabled={status === 'loading'}
             >
               Iscriviti
