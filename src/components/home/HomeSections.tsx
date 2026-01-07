@@ -161,7 +161,7 @@ export function CategoryIconsSection({
 }
 
 // ============================================
-// MANIFESTO SECTION
+// MANIFESTO SECTION 
 // Large centered statement text
 // ============================================
 export function ManifestoSection() {
