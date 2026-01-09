@@ -13,46 +13,6 @@ export const Products: CollectionConfig = {
   access: {
     read: () => true,
   },
-  hooks: {
-    beforeChange: [
-      async ({ data, originalDoc, req, operation }) => {
-        if (operation !== 'update' || !originalDoc) return data
-
-        // Get old image IDs (now images is array of IDs or media objects directly)
-        const oldImageIds = (originalDoc.images || [])
-          .map((img: string | { id: string }) =>
-            typeof img === 'string' ? img : img?.id
-          )
-          .filter(Boolean)
-
-        // Get new image IDs
-        const newImageIds = (data.images || [])
-          .map((img: string | { id: string }) =>
-            typeof img === 'string' ? img : img?.id
-          )
-          .filter(Boolean)
-
-        // Find removed images
-        const removedImageIds = oldImageIds.filter(
-          (id: string) => !newImageIds.includes(id)
-        )
-
-        // Delete removed media documents (this triggers R2 cleanup via Media afterDelete hook)
-        for (const mediaId of removedImageIds) {
-          try {
-            await req.payload.delete({
-              collection: 'media',
-              id: mediaId,
-            })
-          } catch (error) {
-            console.error(`Failed to delete media ${mediaId}:`, error)
-          }
-        }
-
-        return data
-      },
-    ],
-  },
   fields: [
     {
       name: 'title',
@@ -76,12 +36,20 @@ export const Products: CollectionConfig = {
       type: 'richText',
     },
     {
+      name: 'mainImage',
+      label: 'Immagine Principale',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Immagine mostrata nelle griglie e anteprime',
+      },
+    },
+    {
       name: 'images',
-      label: 'Immagini',
+      label: 'Galleria Immagini',
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
-      required: true,
     },
     {
       name: 'category',

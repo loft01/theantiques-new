@@ -62,8 +62,14 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   const category = product.category as Category
-  const firstImage = product.images?.[0] as Media | undefined
-  const imageUrl = firstImage ? getMediaUrl(firstImage, 'card') : undefined
+  const mainImage = product.mainImage && typeof product.mainImage === 'object'
+    ? product.mainImage as Media
+    : undefined
+  const firstGalleryImage = product.images?.[0] && typeof product.images[0] === 'object'
+    ? product.images[0] as Media
+    : undefined
+  const coverImage = mainImage || firstGalleryImage
+  const imageUrl = coverImage ? getMediaUrl(coverImage, 'card') : undefined
 
   return {
     title: `${product.title} | The Antiques`,
@@ -83,11 +89,18 @@ function generateProductJsonLd(product: {
   price: number
   status: string
   description?: unknown
+  mainImage?: string | Media | null
   images?: (string | Media)[]
   category: Category
 }) {
-  const firstImage = product.images?.[0] as Media | undefined
-  const imageUrl = firstImage ? getMediaUrl(firstImage) : undefined
+  const mainImage = product.mainImage && typeof product.mainImage === 'object'
+    ? product.mainImage as Media
+    : undefined
+  const firstGalleryImage = product.images?.[0] && typeof product.images[0] === 'object'
+    ? product.images[0] as Media
+    : undefined
+  const coverImage = mainImage || firstGalleryImage
+  const imageUrl = coverImage ? getMediaUrl(coverImage) : undefined
 
   const availability = {
     available: 'https://schema.org/InStock',
@@ -130,15 +143,40 @@ export default async function ProductPage({ params }: PageProps) {
   const relatedProductsData = await getRelatedProducts(categoryId, slug, 3)
   const relatedProducts = relatedProductsData.map(transformProduct)
 
-  const productImages = product.images?.length ? product.images.map(img => {
-    const media = img as Media
-    return {
-      url: getMediaUrl(media) || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=900&fit=crop',
-      alt: media?.alt || product.title,
-    }
-  }) : [{ url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=900&fit=crop', alt: product.title }]
+  // Build gallery: mainImage first (if exists), then gallery images
+  const galleryImages: { url: string; alt: string }[] = []
 
-  const mainImage = productImages[0]
+  // Check if mainImage is a populated Media object (not just a string ID)
+  const mainImageMedia = product.mainImage && typeof product.mainImage === 'object'
+    ? product.mainImage as Media
+    : undefined
+
+  if (mainImageMedia) {
+    const mainUrl = getMediaUrl(mainImageMedia)
+    if (mainUrl) {
+      galleryImages.push({
+        url: mainUrl,
+        alt: mainImageMedia.alt || product.title,
+      })
+    }
+  }
+
+  // Add gallery images (avoid duplicate if mainImage is also in gallery)
+  const mainImageId = mainImageMedia?.id
+  product.images?.forEach(img => {
+    const media = img as Media
+    if (media.id !== mainImageId) {
+      galleryImages.push({
+        url: getMediaUrl(media) || '/fallback.jpeg',
+        alt: media?.alt || product.title,
+      })
+    }
+  })
+
+  // Fallback if no images at all
+  const productImages = galleryImages.length > 0
+    ? galleryImages
+    : [{ url: '/fallback.jpeg', alt: product.title }]
   const description = richTextToPlainText(product.description)
 
   const formattedPrice = `€${product.price.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
@@ -149,6 +187,7 @@ export default async function ProductPage({ params }: PageProps) {
     price: product.price,
     status: product.status,
     description: product.description,
+    mainImage: product.mainImage,
     images: product.images ?? undefined,
     category,
   })

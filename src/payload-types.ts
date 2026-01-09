@@ -235,7 +235,11 @@ export interface Product {
     };
     [k: string]: unknown;
   } | null;
-  images: (string | Media)[];
+  /**
+   * Immagine mostrata nelle griglie e anteprime
+   */
+  mainImage?: (string | null) | Media;
+  images?: (string | Media)[] | null;
   category: string | Category;
   price: number;
   priceLabel?: ('asking' | 'starting' | 'estimate' | 'offer') | null;
@@ -468,6 +472,7 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  mainImage?: T;
   images?: T;
   category?: T;
   price?: T;

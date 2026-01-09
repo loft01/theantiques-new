@@ -191,7 +191,14 @@ export async function searchProducts(options: {
 // Transform product for frontend use
 export function transformProduct(product: Product) {
   const category = product.category as Category
-  const firstImage = product.images?.[0] as Media | undefined
+  // Use mainImage if available (and populated), fall back to first gallery image
+  const mainImage = product.mainImage && typeof product.mainImage === 'object'
+    ? product.mainImage as Media
+    : undefined
+  const firstGalleryImage = product.images?.[0] && typeof product.images[0] === 'object'
+    ? product.images[0] as Media
+    : undefined
+  const coverImage = mainImage || firstGalleryImage
 
   return {
     slug: product.slug,
@@ -202,8 +209,8 @@ export function transformProduct(product: Product) {
     category: category?.name || 'Uncategorized',
     categorySlug: category?.slug || '',
     image: {
-      url: getMediaUrl(firstImage, 'card') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop',
-      alt: firstImage?.alt || product.title,
+      url: getMediaUrl(coverImage, 'card') || '/fallback.jpeg',
+      alt: coverImage?.alt || product.title,
     },
   }
 }
@@ -215,7 +222,7 @@ export function transformCategory(category: Category, productCount?: number) {
     name: category.name,
     description: category.description || '',
     image: {
-      url: getMediaUrl(category.image as Media, 'card') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=600&fit=crop',
+      url: getMediaUrl(category.image as Media, 'card') || '/fallback.jpeg',
       alt: (category.image as Media)?.alt || category.name,
     },
     productCount: productCount ?? 0,
@@ -302,13 +309,19 @@ export async function getMenuCategories() {
 
     const featured = productsResult.docs.map((product) => {
       const cat = product.category as Category
-      const firstImage = product.images?.[0] as Media | undefined
+      const mainImage = product.mainImage && typeof product.mainImage === 'object'
+        ? product.mainImage as Media
+        : undefined
+      const firstGalleryImage = product.images?.[0] && typeof product.images[0] === 'object'
+        ? product.images[0] as Media
+        : undefined
+      const coverImage = mainImage || firstGalleryImage
       return {
         slug: product.slug,
         title: product.title,
         image: {
-          url: getMediaUrl(firstImage, 'card') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=800&fit=crop',
-          alt: firstImage?.alt || product.title,
+          url: getMediaUrl(coverImage, 'card') || '/fallback.jpeg',
+          alt: coverImage?.alt || product.title,
         },
         category: cat?.name || 'Uncategorized',
       }
