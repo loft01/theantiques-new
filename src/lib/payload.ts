@@ -12,10 +12,28 @@ type PopulatedMedia = Media & { url: string }
 
 // Helper to get image URL from media
 export function getMediaUrl(media: string | Media | null | undefined, size?: 'thumbnail' | 'card'): string {
-  if (!media || typeof media === 'string') return ''
+  if (!media) return ''
+  if (typeof media === 'string') return '' // Not populated, just ID
+
   const m = media as PopulatedMedia
-  if (size && m.sizes?.[size]?.url) return m.sizes[size].url!
-  return m.url || ''
+
+  // Always prefer main URL first (most reliable)
+  if (m.url) {
+    return m.url
+  }
+
+  // Try requested size as fallback
+  if (size && m.sizes?.[size]?.url) {
+    return m.sizes[size].url!
+  }
+
+  // Last resort: try any available size
+  if (m.sizes) {
+    const availableSize = m.sizes.card?.url || m.sizes.thumbnail?.url
+    if (availableSize) return availableSize
+  }
+
+  return ''
 }
 
 // Categories
@@ -200,6 +218,9 @@ export function transformProduct(product: Product) {
     : undefined
   const coverImage = mainImage || firstGalleryImage
 
+  // Get URL with fallback
+  const imageUrl = getMediaUrl(coverImage, 'card')
+
   return {
     slug: product.slug,
     title: product.title,
@@ -209,7 +230,7 @@ export function transformProduct(product: Product) {
     category: category?.name || 'Uncategorized',
     categorySlug: category?.slug || '',
     image: {
-      url: getMediaUrl(coverImage, 'card') || '/fallback.jpeg',
+      url: imageUrl || '/fallback.jpeg',
       alt: coverImage?.alt || product.title,
     },
   }

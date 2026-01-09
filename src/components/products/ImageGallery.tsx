@@ -42,11 +42,11 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
 
   return (
     <>
-      <div className="space-y-4">
+      <div className="space-y-4 w-full max-w-full">
         {/* Main image - square container, image contained at original ratio */}
         <div
           ref={containerRef}
-          className="relative aspect-square max-h-[70vh] overflow-hidden bg-bg-primary group mx-auto cursor-zoom-in"
+          className="relative aspect-square max-h-[70vh] w-full max-w-full overflow-hidden bg-bg-primary group mx-auto cursor-zoom-in"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
           onMouseMove={handleMouseMove}

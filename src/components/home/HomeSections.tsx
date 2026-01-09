@@ -63,6 +63,80 @@ function useAutoScroll(enabled: boolean, interval: number = 3000) {
   return scrollRef
 }
 
+// Infinite loop carousel hook - works with both auto-scroll and manual swipe
+function useInfiniteCarousel(enabled: boolean, interval: number = 3000) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const isHovering = useRef(false)
+  const isScrolling = useRef(false)
+
+  useEffect(() => {
+    if (!enabled) return
+
+    const container = scrollRef.current
+    if (!container) return
+
+    // Handle infinite loop reset on scroll
+    const handleScroll = () => {
+      if (isScrolling.current) return
+
+      const halfScroll = container.scrollWidth / 2
+
+      // If scrolled past the duplicate set, reset to first set
+      if (container.scrollLeft >= halfScroll) {
+        isScrolling.current = true
+        container.scrollLeft = container.scrollLeft - halfScroll
+        isScrolling.current = false
+      }
+      // If scrolled before start (negative would be caught by browser, but near 0 going left)
+      else if (container.scrollLeft <= 0) {
+        isScrolling.current = true
+        container.scrollLeft = halfScroll + container.scrollLeft
+        isScrolling.current = false
+      }
+    }
+
+    // Auto-scroll to next item
+    const scrollNext = () => {
+      if (isHovering.current) return
+
+      const children = container.children
+      if (children.length === 0) return
+
+      // Scroll by roughly one item width
+      const itemWidth = (children[0] as HTMLElement).offsetWidth + 24 // gap-6 = 24px
+      const nextScroll = container.scrollLeft + itemWidth
+
+      container.scrollTo({ left: nextScroll, behavior: 'smooth' })
+    }
+
+    const timer = setInterval(scrollNext, interval)
+
+    const handleMouseEnter = () => { isHovering.current = true }
+    const handleMouseLeave = () => { isHovering.current = false }
+    const handleTouchStart = () => { isHovering.current = true }
+    const handleTouchEnd = () => {
+      setTimeout(() => { isHovering.current = false }, 2000)
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    container.addEventListener('mouseenter', handleMouseEnter)
+    container.addEventListener('mouseleave', handleMouseLeave)
+    container.addEventListener('touchstart', handleTouchStart)
+    container.addEventListener('touchend', handleTouchEnd)
+
+    return () => {
+      clearInterval(timer)
+      container.removeEventListener('scroll', handleScroll)
+      container.removeEventListener('mouseenter', handleMouseEnter)
+      container.removeEventListener('mouseleave', handleMouseLeave)
+      container.removeEventListener('touchstart', handleTouchStart)
+      container.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [enabled, interval])
+
+  return scrollRef
+}
+
 // ============================================
 // SECTION HEADER
 // Reusable title + subtitle for all sections
@@ -107,9 +181,45 @@ export function CategoryIconsSection({
   title = "Esplora le Categorie",
   subtitle = "Scopri la nostra selezione curata di pezzi d'antiquariato"
 }: CategoryIconsSectionProps) {
-  const scrollRef = useAutoScroll(true, 3000)
+  const scrollRef = useInfiniteCarousel(true, 3000)
 
   if (!categories || categories.length === 0) return null
+
+  // Duplicate categories for infinite loop effect
+  const duplicatedCategories = [...categories, ...categories]
+
+  const CategoryItem = ({ category, index }: { category: CategoryIconItem; index: number }) => (
+    <Link
+      key={`${category.id}-${index}`}
+      href={`/categories/${category.slug}`}
+      className="group flex flex-col items-center gap-3 min-w-[120px] flex-shrink-0"
+    >
+      {/* Icon */}
+      <div className="w-32 h-32 flex items-center justify-center">
+        {category.iconUrl ? (
+          <Image
+            src={category.iconUrl}
+            alt={category.name}
+            width={128}
+            height={128}
+            className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+          />
+        ) : (
+          <div className="w-20 h-20 rounded-full bg-bg-tertiary" />
+        )}
+      </div>
+
+      {/* Name */}
+      <span className="text-body-medium text-text-primary group-hover:text-text-secondary transition-colors duration-300 text-center">
+        {category.name}
+      </span>
+
+      {/* Product Count */}
+      <span className="text-caption text-text-tertiary">
+        {category.productCount} {category.productCount === 1 ? 'prodotto' : 'prodotti'}
+      </span>
+    </Link>
+  )
 
   return (
     <section className="border-b-2 border-border-primary">
@@ -117,42 +227,19 @@ export function CategoryIconsSection({
         <div className="container-editorial">
           <SectionHeader title={title} subtitle={subtitle} />
         </div>
-        {/* Mobile: horizontal carousel / Desktop: centered flex */}
+        {/* Mobile: infinite horizontal carousel */}
         <div
           ref={scrollRef}
-          className="flex md:flex-wrap md:justify-center gap-6 md:gap-16 overflow-x-auto md:overflow-visible scrollbar-hide px-[30vw] md:px-0 snap-x snap-mandatory"
+          className="flex md:hidden gap-6 overflow-x-auto scrollbar-hide px-6"
         >
-          {categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/categories/${category.slug}`}
-              className="group flex flex-col items-center gap-3 min-w-[120px] flex-shrink-0 snap-center"
-            >
-              {/* Icon */}
-              <div className="w-32 h-32 flex items-center justify-center">
-                {category.iconUrl ? (
-                  <Image
-                    src={category.iconUrl}
-                    alt={category.name}
-                    width={128}
-                    height={128}
-                    className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-                  />
-                ) : (
-                  <div className="w-20 h-20 rounded-full bg-bg-tertiary" />
-                )}
-              </div>
-
-              {/* Name */}
-              <span className="text-body-medium text-text-primary group-hover:text-text-secondary transition-colors duration-300 text-center">
-                {category.name}
-              </span>
-
-              {/* Product Count */}
-              <span className="text-caption text-text-tertiary">
-                {category.productCount} {category.productCount === 1 ? 'prodotto' : 'prodotti'}
-              </span>
-            </Link>
+          {duplicatedCategories.map((category, index) => (
+            <CategoryItem key={`${category.id}-${index}`} category={category} index={index} />
+          ))}
+        </div>
+        {/* Desktop: centered flex (no infinite scroll) */}
+        <div className="hidden md:flex md:flex-wrap md:justify-center gap-16">
+          {categories.map((category, index) => (
+            <CategoryItem key={category.id} category={category} index={index} />
           ))}
         </div>
       </div>
@@ -198,7 +285,7 @@ const defaultServices: ServiceItem[] = [
   {
     title: "Progettazione",
     image: "/progettazione.jpg",
-    href: "/services/progettazione"
+    href: "/progettazione"
   },
   {
     title: "Shop",
@@ -208,12 +295,12 @@ const defaultServices: ServiceItem[] = [
   {
     title: "Noleggio",
     image: "/noleggio.jpg",
-    href: "/services/noleggio"
+    href: "/noleggio"
   },
   {
     title: "Showroom",
     image: "/showroom.jpg",
-    href: "/services/showroom"
+    href: "/showroom"
   }
 ]
 

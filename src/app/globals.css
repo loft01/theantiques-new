@@ -611,11 +611,7 @@ body {
 
   @media (max-width: 640px) {
     .product-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .product-grid-item {
-      border-right: none;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }

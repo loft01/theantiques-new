@@ -199,12 +199,12 @@ export default async function ProductPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="min-h-screen">
+      <div className="min-h-screen overflow-x-hidden">
         {/* Product Detail - Split Layout */}
         <section className="border-b border-border-primary">
           <div className="grid lg:grid-cols-2">
             {/* Left - Image Gallery */}
-            <div className="p-4 lg:p-8">
+            <div className="p-4 lg:p-8 overflow-hidden">
               <ImageGallery images={productImages} title={product.title} />
             </div>
 

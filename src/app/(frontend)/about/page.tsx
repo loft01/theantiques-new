@@ -12,7 +12,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero - Dark image bar */}
-      <section className="relative h-[30vh] bg-bg-tertiary">
+      <section className="relative h-[40vh] lg:h-[50vh] bg-bg-tertiary">
         <Image
           src="/Maschera_africana_4-min.jpg"
           alt="Maschera africana - The Antiques"
@@ -20,22 +20,12 @@ export default function AboutPage() {
           className="object-cover opacity-50"
           priority
         />
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
           <h1 className="text-manifesto text-white text-center drop-shadow-lg">
             Chi Siamo
           </h1>
-        </div>
-      </section>
-
-      {/* Intro Text */}
-      <section className="section-padding border-b border-border-primary">
-        <div className="container-editorial max-w-3xl mx-auto text-center">
-          <p className="text-body text-text-secondary leading-relaxed">
-            The Antiques è più di un semplice negozio di antiquariato; è un&apos;esperienza curata
-            che celebra la bellezza degli oggetti d&apos;epoca. Offriamo una collezione accuratamente
-            selezionata di mobili, arte e accessori che portano carattere e storia negli spazi
-            contemporanei. Ogni pezzo è scelto per la sua autenticità, qualità artigianale e
-            capacità di raccontare una storia unica.
+          <p className="text-body text-white/80 text-center mt-4 max-w-2xl drop-shadow-md">
+            Creiamo il punto d&apos;incontro tra il mondo dell&apos;antiquariato e quello del design moderno.
           </p>
         </div>
       </section>
@@ -45,37 +35,27 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border-primary">
           {/* Our Manifesto */}
           <div className="p-8 lg:p-12">
-            <h2 className="text-caption text-text-tertiary mb-6">Il Nostro Manifesto</h2>
+            <h2 className="text-caption text-text-tertiary mb-6">Il progetto The Antiques</h2>
             <p className="text-body text-text-secondary leading-relaxed">
-              Da The Antiques, crediamo nel potere della semplicità per creare spazi che
-              ispirano calma e chiarezza. Il nostro manifesto è curare pezzi senza tempo e funzionali
-              che incarnano autenticità, storia, sostenibilità e bellezza minimalista, offrendo
-              oggetti che elevano e arricchiscono il tuo spazio. Ogni membro gioca un ruolo vitale nella nostra
-              missione.
+            Una realtà quasi unica nel suo genere, dove oggetti carichi di storia dialogano con linee contemporanee, offrendo nuove possibilità di interpretazione e di utilizzo negli spazi di oggi. Immergiti nella nostra collezione e scopri i nostri oggetti unici nel suo genere, immaginali nel tuo spazio e dai vita al tuo progetto.
             </p>
           </div>
 
           {/* Our Approach */}
           <div className="p-8 lg:p-12">
-            <h2 className="text-caption text-text-tertiary mb-6">L'Approccio The Antiques</h2>
+            <h2 className="text-caption text-text-tertiary mb-6">Perchè lo facciamo?</h2>
             <p className="text-body text-text-secondary leading-relaxed">
-              Il nostro team è guidato da una passione condivisa per il design eccezionale e
-              l'artigianalità. Selezioniamo con cura ogni pezzo della nostra collezione per garantire
-              che soddisfi i nostri rigorosi standard di qualità, autenticità e valore
-              duraturo. Dalla ricerca di design iconici alla scoperta di talenti emergenti, siamo
-              impegnati a portarvi la più raffinata selezione curata.
+            Non ci limitiamo a mostrare l’antiquariato, ma lo portiamo a stretto contatto con il design attuale, trasformandolo in una fonte concreta di ispirazione per l’arredamento della tua casa, di uno spazio commerciale o di un progetto creativo.
+            Ogni oggetto viene selezionato per il suo carattere, la sua autenticità e la sua capacità di convivere con stili moderni, minimal o industriali, senza perdere identità.
             </p>
           </div>
 
           {/* Press & Inquiries */}
           <div className="p-8 lg:p-12">
-            <h2 className="text-caption text-text-tertiary mb-6">Stampa & Richieste</h2>
+            <h2 className="text-caption text-text-tertiary mb-6">Sempre alla ricerca</h2>
             <p className="text-body text-text-secondary leading-relaxed mb-6">
-              Il nostro press kit offre una panoramica completa di The Antiques, inclusa la nostra
-              storia del brand, filosofia di design e informazioni dettagliate sui prodotti.
-              Fornisce immagini ad alta risoluzione, comunicati stampa e approfondimenti
-              per giornalisti e partner interessati alla nostra
-              collezione e approccio al design curato.
+            The Antiques è una continua ricerca di pezzi unici e ricercati, provenienti da tutto il mondo: dagli oggetti di design ai manufatti d’epoca, fino a esemplari rari ed esclusivi.
+            Una collezione in costante evoluzione, pensata per chi cerca qualcosa di diverso, autentico e senza tempo.
             </p>
             <Link href="/contact" className="link-arrow">
               Contattaci
