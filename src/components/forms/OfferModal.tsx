@@ -141,9 +141,9 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-lg bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
+      <div className="relative w-full max-w-lg max-h-[90vh] flex flex-col bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[var(--border-primary)]">
+        <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-[var(--border-primary)]">
           <h2 className="text-section-title">Richiedi Info</h2>
           <button
             onClick={handleClose}
@@ -155,7 +155,7 @@ export function OfferModal({ isOpen, onClose, productSlug, productTitle, product
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto">
           {status === 'success' ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 mx-auto mb-4 border border-[var(--border-primary)] flex items-center justify-center">
