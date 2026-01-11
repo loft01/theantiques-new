@@ -8,7 +8,7 @@ interface HeroProps {
   heroVideoMobile?: string
 }
 
-const heroText = "Il passato non è mai passato"
+const heroText = "Dove l'antiquariato incontra il design contemporaneo."
 
 export function Hero({
   heroVideo = "https://pub-86a8f9e390ac437988ab1a5db1a20295.r2.dev/media/the_antiques_home_.mp4",
@@ -41,7 +41,7 @@ export function Hero({
       {/* Centered text with animation */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.p
-          className="text-3xl md:text-5xl lg:text-6xl text-white italic text-center px-6 tracking-tight"
+          className="text-xl md:text-2xl lg:text-3xl text-white italic text-center px-6 tracking-tight"
           initial={{
             opacity: 0,
             scale: 1.1,

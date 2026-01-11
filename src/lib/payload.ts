@@ -292,7 +292,17 @@ export async function getHomepageCategories(limit = 10) {
   return categoriesWithCounts
 }
 
-// Get menu categories with subcategories and featured products
+// Shuffle array helper
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+// Get menu categories with subcategories and random products
 export async function getMenuCategories() {
   const payload = await getPayloadClient()
 
@@ -315,20 +325,20 @@ export async function getMenuCategories() {
       limit: 8,
     })
 
-    // Get featured products for this category
+    // Get products for this category (fetch more to randomize)
     const productsResult = await payload.find({
       collection: 'products',
       where: {
-        and: [
-          { category: { equals: category.id } },
-          { featured: { equals: true } },
-        ],
+        category: { equals: category.id },
       },
-      limit: 3,
+      limit: 20,
       depth: 2,
     })
 
-    const featured = productsResult.docs.map((product) => {
+    // Shuffle and take 4 random products
+    const shuffledProducts = shuffleArray(productsResult.docs).slice(0, 4)
+
+    const featured = shuffledProducts.map((product) => {
       const cat = product.category as Category
       const mainImage = product.mainImage && typeof product.mainImage === 'object'
         ? product.mainImage as Media
@@ -359,5 +369,34 @@ export async function getMenuCategories() {
     })
   }
 
-  return menuCategories
+  // Get random products from all categories for "Tutti i Prodotti"
+  const allProductsResult = await payload.find({
+    collection: 'products',
+    limit: 20,
+    depth: 2,
+  })
+
+  const shuffledAllProducts = shuffleArray(allProductsResult.docs).slice(0, 4)
+
+  const allProducts = shuffledAllProducts.map((product) => {
+    const cat = product.category as Category
+    const mainImage = product.mainImage && typeof product.mainImage === 'object'
+      ? product.mainImage as Media
+      : undefined
+    const firstGalleryImage = product.images?.[0] && typeof product.images[0] === 'object'
+      ? product.images[0] as Media
+      : undefined
+    const coverImage = mainImage || firstGalleryImage
+    return {
+      slug: product.slug,
+      title: product.title,
+      image: {
+        url: getMediaUrl(coverImage, 'card') || '/fallback.jpeg',
+        alt: coverImage?.alt || product.title,
+      },
+      category: cat?.name || 'Uncategorized',
+    }
+  })
+
+  return { menuCategories, allProducts }
 }

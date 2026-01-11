@@ -16,14 +16,18 @@ export default async function ContactPage() {
   // Parse address lines
   const addressLines = settings.address?.split('\n').filter(Boolean) || [
     'The Antiques',
-    'Via del Design 25',
-    '20121 Milano',
+    'Via della Fornace, 53',
+    '31023 Resana (TV)',
     'Italia'
   ]
 
+  // Contact info with fallbacks
+  const contactEmail = settings.contactEmail || 'info@loft01.it'
+  const contactPhone = settings.contactPhone || '+39 345 169 1561'
+
   // Find Instagram link from social links
   type SocialLink = NonNullable<SiteSetting['socialLinks']>[number]
-  const instagramLink = settings.socialLinks?.find((s: SocialLink) => s.platform === 'instagram')?.url || 'https://instagram.com'
+  const instagramLink = settings.socialLinks?.find((s: SocialLink) => s.platform === 'instagram')?.url || 'https://www.instagram.com/theantiques_/'
 
   return (
     <div className="min-h-screen">
@@ -50,15 +54,13 @@ export default async function ContactPage() {
 
             {/* Contact Links */}
             <div className="flex flex-wrap gap-6">
-              {settings.contactEmail && (
-                <a
-                  href={`mailto:${settings.contactEmail}`}
-                  className="link-arrow"
-                >
-                  Email
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              )}
+              <a
+                href={`mailto:${contactEmail}`}
+                className="link-arrow"
+              >
+                Email
+                <ArrowRight className="w-4 h-4" />
+              </a>
               <a
                 href={instagramLink}
                 target="_blank"
@@ -68,15 +70,13 @@ export default async function ContactPage() {
                 Instagram
                 <ArrowRight className="w-4 h-4" />
               </a>
-              {settings.contactPhone && (
-                <a
-                  href={`tel:${settings.contactPhone}`}
-                  className="link-arrow"
-                >
-                  Chiama
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              )}
+              <a
+                href={`tel:${contactPhone.replace(/\s/g, '')}`}
+                className="link-arrow"
+              >
+                Chiama
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
           </div>
 

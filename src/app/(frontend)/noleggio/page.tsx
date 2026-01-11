@@ -41,8 +41,8 @@ export default function NoleggioPage() {
             <p className="text-body text-text-secondary leading-relaxed mb-8">
               Il noleggio rappresenta una soluzione ideale per chi desidera dare personalità a un ambiente o a una produzione, mantenendo la libertà di rinnovare e sperimentare, senza rinunciare alla qualità e all&apos;autenticità dell&apos;antiquariato.
             </p>
-            <Link href="/contact" className="link-arrow self-start">
-              Richiedi informazioni
+            <Link href="/contact" className="btn-pill-filled self-start">
+              Contattaci Ora
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

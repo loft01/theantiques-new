@@ -74,16 +74,6 @@ export default async function HomePage() {
       {/* 7. Testimonials Section */}
       <QuoteSection />
 
-      {/* 8. More Products */}
-      {featuredProducts.length > 6 && (
-        <FeaturedProductsSection
-          title="Altri Pezzi Selezionati"
-          subtitle="Continua a esplorare la nostra collezione"
-        >
-          <ProductGrid products={featuredProducts.slice(6, 9)} />
-        </FeaturedProductsSection>
-      )}
-
       {/* Footer handles newsletter */}
     </div>
   )

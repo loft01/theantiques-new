@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import { Search } from 'lucide-react'
+import { Search, ChevronDown } from 'lucide-react'
 import { SearchModal } from '../search/SearchModal'
 
 interface FeaturedProduct {
@@ -27,16 +27,20 @@ interface Category {
 
 interface HeaderProps {
   categories?: Category[]
+  allProducts?: FeaturedProduct[]
 }
 
-export function Header({ categories = [] }: HeaderProps) {
+export function Header({ categories = [], allProducts = [] }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
+  const [isServicesOpen, setIsServicesOpen] = useState(false)
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>('all')
 
-  // Get featured products for hovered category
+  // Get featured products for hovered category (or all products as default)
   const hoveredCategoryData = categories.find(c => c.slug === hoveredCategory)
-  const featuredImages = hoveredCategoryData?.featured || []
+  const featuredImages = hoveredCategory === 'all'
+    ? allProducts
+    : (hoveredCategoryData?.featured || [])
 
   // Close menu on escape
   useEffect(() => {
@@ -55,7 +59,7 @@ export function Header({ categories = [] }: HeaderProps) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = ''
-      setHoveredCategory(null)
+      setHoveredCategory('all')
     }
     return () => {
       document.body.style.overflow = ''
@@ -142,9 +146,9 @@ export function Header({ categories = [] }: HeaderProps) {
                 {/* Categories Sidebar */}
                 <div className="mb-12">
                   <p className="text-caption text-text-tertiary mb-4">
-                    Design Curato,
+                    Dove l&apos;antiquariato incontra
                     <br />
-                    per un vivere senza tempo.
+                    il design contemporaneo.
                   </p>
                 </div>
 
@@ -153,7 +157,7 @@ export function Header({ categories = [] }: HeaderProps) {
                   <Link
                     href="/categories"
                     onClick={() => setIsMenuOpen(false)}
-                    onMouseEnter={() => setHoveredCategory(null)}
+                    onMouseEnter={() => setHoveredCategory('all')}
                     className="block py-3 text-body-medium border-b-2 border-border-primary hover:opacity-70 transition-opacity"
                   >
                     Tutti i Prodotti
@@ -173,6 +177,47 @@ export function Header({ categories = [] }: HeaderProps) {
 
                 {/* Secondary Links */}
                 <div className="mt-12 space-y-4">
+                  <div>
+                    <button
+                      onClick={() => setIsServicesOpen(!isServicesOpen)}
+                      className="flex items-center gap-2 text-caption text-text-secondary hover:text-text-primary transition-colors"
+                    >
+                      Servizi
+                      <ChevronDown className={`w-3 h-3 transition-transform ${isServicesOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {isServicesOpen && (
+                      <div className="mt-2 ml-3 space-y-2">
+                        <Link
+                          href="/progettazione"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                          Progettazione
+                        </Link>
+                        <Link
+                          href="/categories"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                          Shop
+                        </Link>
+                        <Link
+                          href="/noleggio"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                          Noleggio
+                        </Link>
+                        <Link
+                          href="/showroom"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block text-caption text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                          Showroom
+                        </Link>
+                      </div>
+                    )}
+                  </div>
                   <Link
                     href="/about"
                     onClick={() => setIsMenuOpen(false)}
@@ -225,10 +270,10 @@ export function Header({ categories = [] }: HeaderProps) {
                   />
                 )}
                 {/* Category name overlay */}
-                {hoveredCategoryData && (
+                {(hoveredCategory === 'all' || hoveredCategoryData) && (
                   <div className="absolute bottom-6 left-6">
                     <p className="text-section-title text-white drop-shadow-lg">
-                      {hoveredCategoryData.name}
+                      {hoveredCategory === 'all' ? 'Tutti i Prodotti' : hoveredCategoryData?.name}
                     </p>
                   </div>
                 )}

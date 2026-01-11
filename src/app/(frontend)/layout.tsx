@@ -16,7 +16,7 @@ export default async function FrontendLayout({
 }: {
   children: React.ReactNode
 }) {
-  const menuCategories = await getMenuCategories()
+  const { menuCategories, allProducts } = await getMenuCategories()
 
   return (
     <html lang="en">
@@ -30,9 +30,9 @@ export default async function FrontendLayout({
         >
           Skip to main content
         </a>
-        <Header categories={menuCategories} />
+        <Header categories={menuCategories} allProducts={allProducts} />
         <main id="main-content" className="flex-1">{children}</main>
-        <Footer />
+        <Footer categories={menuCategories.map(c => ({ slug: c.slug, name: c.name }))} />
       </body>
     </html>
   )

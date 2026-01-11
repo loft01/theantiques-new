@@ -42,8 +42,8 @@ export default function ProgettazionePage() {
             <p className="text-body text-text-secondary leading-relaxed mb-8">
               La nostra forza risiede nella conoscenza approfondita degli articoli e nella capacità di inserirli in progetti coerenti, creando atmosfere autentiche, equilibrate e senza tempo.
             </p>
-            <Link href="/contact" className="link-arrow self-start">
-              Inizia un progetto con noi
+            <Link href="/contact" className="btn-pill-filled self-start">
+              Contattaci Ora
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

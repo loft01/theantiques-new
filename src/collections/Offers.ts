@@ -8,7 +8,7 @@ export const Offers: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'product', 'status', 'createdAt'],
+    defaultColumns: ['product', 'createdAt', 'name', 'offerAmount'],
   },
   fields: [
     {
@@ -17,6 +17,9 @@ export const Offers: CollectionConfig = {
       type: 'relationship',
       relationTo: 'products',
       required: true,
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: 'name',

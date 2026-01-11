@@ -42,8 +42,8 @@ export default function ShowroomPage() {
               Lo showroom si trova a Resana, in una posizione strategica e facilmente raggiungibile anche dalle grandi città, come Milano, grazie alla comoda uscita di Padova.
               Un luogo dove l&apos;antiquariato prende forma, pensato non solo per l&apos;acquisto, ma anche come punto di incontro e di ispirazione per nuovi progetti.
             </p>
-            <Link href="/contact" className="link-arrow self-start">
-              Contattaci per una visita
+            <Link href="/contact" className="btn-pill-filled self-start">
+              Contattaci Ora
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

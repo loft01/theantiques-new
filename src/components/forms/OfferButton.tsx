@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, X } from 'lucide-react'
 import { OfferModal } from './OfferModal'
 
 interface OfferButtonProps {
@@ -22,7 +22,7 @@ export function OfferButton({ productSlug, productTitle, productPrice, disabled 
         className="btn-pill-filled disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {disabled ? 'Venduto' : 'Richiedi Info'}
-        <ArrowRight className="w-4 h-4" />
+        {disabled ? <X className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
       </button>
 
       <OfferModal
